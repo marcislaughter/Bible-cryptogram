@@ -37,11 +37,18 @@
   border-bottom: 2px solid #000;
   text-transform: uppercase;
   background-color: #eee;
+  cursor: pointer;
+  caret-color: transparent;
 }
 
 .guess-input:disabled {
   background-color: transparent;
   border: none;
+  cursor: default;
+}
+
+.guess-input:focus {
+  outline: none;
 }
 
 .guess-input.selected {
