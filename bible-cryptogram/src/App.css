@@ -45,8 +45,14 @@
 }
 
 .guess-input.selected {
-  background-color: #aadeff;
-  border-color: #007bff;
+  background-color: #0056b3;
+  border-color: #003d82;
+  color: white;
+}
+
+.guess-input.same-letter {
+  background-color: #e6f3ff;
+  border-color: #0056b3;
 }
 
 .encrypted-char {

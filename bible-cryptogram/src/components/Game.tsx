@@ -23,6 +23,7 @@ const Game: React.FC = () => {
   const [encryptedQuote, setEncryptedQuote] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
+  const [selectedPosition, setSelectedPosition] = useState<number>(-1);
   const [isSolved, setIsSolved] = useState(false);
 
   // Check if the puzzle is solved
@@ -50,6 +51,7 @@ const Game: React.FC = () => {
     setEncryptedQuote(applyCipher(quote.text));
     setGuesses({});
     setSelectedChar(null);
+    setSelectedPosition(-1);
     setIsSolved(false);
   };
 
@@ -64,25 +66,67 @@ const Game: React.FC = () => {
       
       // Only handle letter keys
       if (/^[A-Z]$/.test(key)) {
-        if (selectedChar) {
+        if (selectedChar && selectedPosition >= 0) {
           handleGuessChange(selectedChar, key);
-          setSelectedChar(null); // Clear selection after typing
+          moveToNextCharacter(); // Move to next character after typing
         }
       } else if (key === 'ESCAPE') {
-        setSelectedChar(null); // Clear selection with Escape
+        setSelectedChar(null);
+        setSelectedPosition(-1);
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         if (selectedChar && guesses[selectedChar]) {
           const newGuesses = { ...guesses };
           delete newGuesses[selectedChar];
           setGuesses(newGuesses);
           setSelectedChar(null);
+          setSelectedPosition(-1);
         }
+      } else if (key === 'ARROWLEFT') {
+        moveToPreviousCharacter();
+      } else if (key === 'ARROWRIGHT') {
+        moveToNextCharacter();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedChar, guesses]);
+  }, [selectedChar, selectedPosition, guesses]);
+
+  // Function to move to the next character position
+  const moveToNextCharacter = () => {
+    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
+    
+    if (selectedPosition >= 0 && selectedPosition < allChars.length - 1) {
+      const nextPosition = selectedPosition + 1;
+      setSelectedPosition(nextPosition);
+      setSelectedChar(allChars[nextPosition]);
+    } else if (selectedPosition === -1 && allChars.length > 0) {
+      // If no character is selected, select the first one
+      setSelectedPosition(0);
+      setSelectedChar(allChars[0]);
+    }
+  };
+
+  // Function to move to the previous character position
+  const moveToPreviousCharacter = () => {
+    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
+    
+    if (selectedPosition > 0) {
+      const prevPosition = selectedPosition - 1;
+      setSelectedPosition(prevPosition);
+      setSelectedChar(allChars[prevPosition]);
+    } else if (selectedPosition === 0) {
+      // Wrap to the last character
+      const lastPosition = allChars.length - 1;
+      setSelectedPosition(lastPosition);
+      setSelectedChar(allChars[lastPosition]);
+    } else if (selectedPosition === -1 && allChars.length > 0) {
+      // If no character is selected, select the last one
+      const lastPosition = allChars.length - 1;
+      setSelectedPosition(lastPosition);
+      setSelectedChar(allChars[lastPosition]);
+    }
+  };
 
   const handleGuessChange = (encryptedChar: string, guess: string) => {
     const newGuesses = { ...guesses, [encryptedChar]: guess.toUpperCase() };
@@ -94,9 +138,10 @@ const Game: React.FC = () => {
     }
   };
 
-  const handleInputClick = (char: string) => {
+  const handleInputClick = (char: string, position: number) => {
     if (/[A-Z]/.test(char)) {
       setSelectedChar(char);
+      setSelectedPosition(position);
     }
   };
 
@@ -104,6 +149,10 @@ const Game: React.FC = () => {
   const handleInputChange = (encryptedChar: string, value: string) => {
     if (/^[A-Z]?$/.test(value)) {
       handleGuessChange(encryptedChar, value);
+      if (value) {
+        // Move to next character after typing in input field
+        setTimeout(() => moveToNextCharacter(), 0);
+      }
     }
   };
 
@@ -147,28 +196,48 @@ const Game: React.FC = () => {
         onGiveUp={handleGiveUp}
       />
       <div className="quote-container">
-        {encryptedQuote.split(' ').map((word, wordIndex) => (
-          <div key={wordIndex} className="word-container">
-            {word.split('').map((char, charIndex) => (
-              <div
-                key={charIndex}
-                className="char-container"
-                onClick={() => handleInputClick(char)}
-              >
-                <input
-                  type="text"
-                  maxLength={1}
-                  className={`guess-input ${selectedChar === char ? 'selected' : ''}`}
-                  value={guesses[char] || ''}
-                  onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
-                  onFocus={() => setSelectedChar(char)}
-                  disabled={!/[A-Z]/.test(char)}
-                />
-                <div className="encrypted-char">{char}</div>
-              </div>
-            ))}
-          </div>
-        ))}
+        {(() => {
+          let letterIndex = 0;
+          return encryptedQuote.split(' ').map((word, wordIndex) => (
+            <div key={wordIndex} className="word-container">
+              {word.split('').map((char, charIndex) => {
+                const isLetter = /[A-Z]/.test(char);
+                const currentLetterIndex = isLetter ? letterIndex++ : -1;
+                
+                // Check if this character should be highlighted
+                const isSelected = selectedChar === char && selectedPosition === currentLetterIndex;
+                const isSameLetter = selectedChar === char; // Highlight all instances of the same letter
+                
+                return (
+                  <div
+                    key={charIndex}
+                    className="char-container"
+                    onClick={() => isLetter && handleInputClick(char, currentLetterIndex)}
+                  >
+                    <input
+                      type="text"
+                      maxLength={1}
+                      className={`guess-input ${
+                        isSelected ? 'selected' : 
+                        isSameLetter ? 'same-letter' : ''
+                      }`}
+                      value={guesses[char] || ''}
+                      onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
+                      onFocus={() => {
+                        if (isLetter) {
+                          setSelectedChar(char);
+                          setSelectedPosition(currentLetterIndex);
+                        }
+                      }}
+                      disabled={!isLetter}
+                    />
+                    <div className="encrypted-char">{char}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ));
+        })()}
       </div>
       {isSolved && (
         <div className="solved-message">
