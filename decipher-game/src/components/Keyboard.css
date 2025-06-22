@@ -1,0 +1,33 @@
+.keyboard-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.keyboard-row button {
+  padding: 15px 10px;
+  font-size: 1rem;
+  min-width: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.keyboard-row button:hover {
+  background-color: #e0e0e0;
+}
+
+.keyboard-row button.guessed {
+  background-color: #a0a0a0;
+  color: white;
+  border-color: #888;
+} 
