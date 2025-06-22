@@ -57,6 +57,33 @@ const Game: React.FC = () => {
     generateNewGame();
   }, [quote]);
 
+  // Add keyboard event listener
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toUpperCase();
+      
+      // Only handle letter keys
+      if (/^[A-Z]$/.test(key)) {
+        if (selectedChar) {
+          handleGuessChange(selectedChar, key);
+          setSelectedChar(null); // Clear selection after typing
+        }
+      } else if (key === 'ESCAPE') {
+        setSelectedChar(null); // Clear selection with Escape
+      } else if (key === 'BACKSPACE' || key === 'DELETE') {
+        if (selectedChar && guesses[selectedChar]) {
+          const newGuesses = { ...guesses };
+          delete newGuesses[selectedChar];
+          setGuesses(newGuesses);
+          setSelectedChar(null);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedChar, guesses]);
+
   const handleGuessChange = (encryptedChar: string, guess: string) => {
     const newGuesses = { ...guesses, [encryptedChar]: guess.toUpperCase() };
     setGuesses(newGuesses);
@@ -70,6 +97,13 @@ const Game: React.FC = () => {
   const handleInputClick = (char: string) => {
     if (/[A-Z]/.test(char)) {
       setSelectedChar(char);
+    }
+  };
+
+  // Add new function to handle direct input changes
+  const handleInputChange = (encryptedChar: string, value: string) => {
+    if (/^[A-Z]?$/.test(value)) {
+      handleGuessChange(encryptedChar, value);
     }
   };
 
@@ -126,7 +160,8 @@ const Game: React.FC = () => {
                   maxLength={1}
                   className={`guess-input ${selectedChar === char ? 'selected' : ''}`}
                   value={guesses[char] || ''}
-                  readOnly
+                  onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
+                  onFocus={() => setSelectedChar(char)}
                   disabled={!/[A-Z]/.test(char)}
                 />
                 <div className="encrypted-char">{char}</div>
