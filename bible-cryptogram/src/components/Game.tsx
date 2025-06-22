@@ -15,8 +15,8 @@ const createCipher = (): Record<string, string> => {
 
 const Game: React.FC = () => {
   const [quote] = useState({
-    text: "THE ONLY THING WE HAVE TO FEAR IS FEAR ITSELF",
-    author: "FRANKLIN D ROOSEVELT"
+    text: "LOVE IS PATIENT, LOVE IS KIDN, IT DOES NOT ENVY, IT DOES NOT BOAST, IT IS NOT PROUD",
+    author: "1 Corinthians 13:4"
   });
 
   const [cipher, setCipher] = useState<Record<string, string>>({});
@@ -24,6 +24,17 @@ const Game: React.FC = () => {
   const [guesses, setGuesses] = useState<Record<string, string>>({});
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
   const [isSolved, setIsSolved] = useState(false);
+
+  // Check if the puzzle is solved
+  const checkIfSolved = (currentGuesses: Record<string, string>) => {
+    const lettersInQuote = quote.text.split('').filter(char => /[A-Z]/.test(char));
+    const uniqueLetters = [...new Set(lettersInQuote)];
+    
+    return uniqueLetters.every(letter => {
+      const encryptedLetter = cipher[letter];
+      return currentGuesses[encryptedLetter] === letter;
+    });
+  };
 
   const generateNewGame = () => {
     const newCipher = createCipher();
@@ -49,6 +60,11 @@ const Game: React.FC = () => {
   const handleGuessChange = (encryptedChar: string, guess: string) => {
     const newGuesses = { ...guesses, [encryptedChar]: guess.toUpperCase() };
     setGuesses(newGuesses);
+    
+    // Check if puzzle is solved after each guess
+    if (checkIfSolved(newGuesses)) {
+      setIsSolved(true);
+    }
   };
 
   const handleInputClick = (char: string) => {
@@ -119,6 +135,12 @@ const Game: React.FC = () => {
           </div>
         ))}
       </div>
+      {isSolved && (
+        <div className="solved-message">
+          <h2>Congratulations! You solved it!</h2>
+          <p className="author">— {quote.author}</p>
+        </div>
+      )}
       <Keyboard onKeyPress={handleKeyPress} guesses={guesses} />
     </div>
   );
