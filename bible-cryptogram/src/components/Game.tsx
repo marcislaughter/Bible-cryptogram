@@ -89,13 +89,7 @@ const Game: React.FC = () => {
         setSelectedChar(null);
         setSelectedPosition(-1);
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
-        if (selectedChar && guesses[selectedChar]) {
-          const newGuesses = { ...guesses };
-          delete newGuesses[selectedChar];
-          setGuesses(newGuesses);
-          setSelectedChar(null);
-          setSelectedPosition(-1);
-        }
+        handleBackspace();
       } else if (key === 'ARROWLEFT') {
         moveToPreviousCharacter();
       } else if (key === 'ARROWRIGHT') {
