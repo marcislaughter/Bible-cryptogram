@@ -5,13 +5,20 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
+.game-container h1 {
+  color: #800080;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(128, 0, 128, 0.3);
+}
+
 .quote-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   padding: 20px;
-  border: 2px solid #ccc;
+  border: 2px solid #800080;
   border-radius: 10px;
   margin-top: 20px;
   max-width: 90%;
@@ -33,12 +40,14 @@
   height: 30px;
   text-align: center;
   font-size: 1.2rem;
-  border: 1px solid #000;
-  border-bottom: 2px solid #000;
+  border: 1px solid #800080;
+  border-bottom: 2px solid #800080;
   text-transform: uppercase;
-  background-color: #eee;
+  background-color: #e6ccff;
   cursor: pointer;
   caret-color: transparent;
+  color: #800080;
+  transition: all 0.2s ease;
 }
 
 .guess-input:disabled {
@@ -49,29 +58,33 @@
 
 .guess-input:focus {
   outline: none;
+  border-color: #800080;
+  background-color: #800080;
+  color: white;
 }
 
 .guess-input.selected {
-  background-color: #0056b3;
-  border-color: #003d82;
+  background-color: #3da542;
+  border-color: #3da542;
   color: white;
 }
 
 .guess-input.same-letter {
-  background-color: #e6f3ff;
-  border-color: #0056b3;
+  background-color: #a7d379;
+  border-color: #3da542;
+  color: #800080;
 }
 
 .guess-input.correct {
-  background-color: #d4edda;
-  border-color: #28a745;
-  color: #155724;
+  background-color: #3da542;
+  border-color: #3da542;
+  color: white;
 }
 
 .guess-input.incorrect {
-  background-color: #f8d7da;
-  border-color: #dc3545;
-  color: #721c24;
+  background-color: #a3a3a3;
+  border-color: #800080;
+  color: white;
 }
 
 .encrypted-char {
@@ -82,13 +95,14 @@
   align-items: center;
   font-size: 1.2rem;
   font-weight: bold;
+  color: #800080;
 }
 
 .solved-message {
   text-align: center;
   margin: 20px 0;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #800080 0%, #3da542 100%);
   color: white;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -111,7 +125,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;

@@ -9,23 +9,27 @@
 .controls-container button {
   padding: 10px 20px;
   font-size: 16px;
-  border: 2px solid #333;
+  border: 2px solid #800080;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: #e6ccff;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #800080;
+  font-weight: bold;
 }
 
 .controls-container button:hover:not(.disabled) {
-  background-color: #f0f0f0;
+  background-color: #800080;
+  border-color: #800080;
+  color: white;
   transform: translateY(-2px);
 }
 
 .controls-container button.disabled {
-  background-color: #ccc;
-  color: #666;
+  background-color: #a3a3a3;
+  color: white;
   cursor: not-allowed;
-  border-color: #ccc;
+  border-color: #a3a3a3;
 }
 
 .controls-container button.disabled:hover {
@@ -33,12 +37,12 @@
 }
 
 .controls-container button.active {
-  background-color: #28a745;
+  background-color: #800080;
   color: white;
-  border-color: #28a745;
+  border-color: #800080;
 }
 
 .controls-container button.active:hover {
-  background-color: #218838;
-  border-color: #1e7e34;
+  background-color: #3da542;
+  border-color: #3da542;
 } 

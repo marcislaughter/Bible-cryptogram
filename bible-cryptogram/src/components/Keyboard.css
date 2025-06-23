@@ -15,32 +15,35 @@
   padding: 15px 10px;
   font-size: 1rem;
   min-width: 40px;
-  border: 1px solid #ccc;
+  border: 1px solid #800080;
   border-radius: 5px;
-  background-color: #f0f0f0;
+  background-color: #e6ccff;
   cursor: pointer;
   font-weight: bold;
+  color: #800080;
+  transition: all 0.2s ease;
 }
 
 .keyboard-row button:hover {
-  background-color: #e0e0e0;
+  background-color: #800080;
+  border-color: #800080;
+  color: white;
 }
 
 .keyboard-row button.guessed {
-  background-color: #a0a0a0;
+  background-color: #a3a3a3;
   color: white;
-  border-color: #888;
+  border-color: #800080;
 }
 
 .backspace-button {
-  background-color: #dc3545 !important;
+  background-color: #800080 !important;
   color: white !important;
-  border-color: #dc3545 !important;
+  border-color: #800080 !important;
   min-width: 60px !important;
   font-size: 1.2rem !important;
 }
 
 .backspace-button:hover {
-  background-color: #c82333 !important;
-  border-color: #bd2130 !important;
+  text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white;
 } 
