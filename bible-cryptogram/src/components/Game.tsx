@@ -25,6 +25,8 @@ const Game: React.FC = () => {
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<number>(-1);
   const [isSolved, setIsSolved] = useState(false);
+  const [hintsRemaining, setHintsRemaining] = useState(3);
+  const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
@@ -51,6 +53,8 @@ const Game: React.FC = () => {
     const encrypted = applyCipher(quote.text);
     setEncryptedQuote(encrypted);
     setGuesses({});
+    setHintsRemaining(3);
+    setRevealedLetters([]);
     
     // Select the first letter by default
     const firstLetter = encrypted.split('').find(char => /[A-Z]/.test(char));
@@ -175,17 +179,40 @@ const Game: React.FC = () => {
   const handleReset = () => {
     setGuesses({});
     setIsSolved(false);
+    setHintsRemaining(3);
+    setRevealedLetters([]);
   };
 
   const handleHint = () => {
-    const unsolvedLetters = Object.keys(cipher).filter(
-      originalChar => !guesses[cipher[originalChar]] || guesses[cipher[originalChar]] !== originalChar
+    if (hintsRemaining <= 0) return;
+
+    // Get letter frequency in the original quote
+    const letterFrequency: Record<string, number> = {};
+    quote.text.split('').forEach(char => {
+      if (/[A-Z]/.test(char)) {
+        letterFrequency[char] = (letterFrequency[char] || 0) + 1;
+      }
+    });
+
+    // Sort letters by frequency (most frequent first)
+    const sortedLetters = Object.entries(letterFrequency)
+      .sort(([,a], [,b]) => b - a)
+      .map(([letter]) => letter);
+
+    // Find the next most frequent letter that hasn't been revealed yet
+    const nextLetterToReveal = sortedLetters.find(letter => 
+      !revealedLetters.includes(letter) && 
+      (!guesses[cipher[letter]] || guesses[cipher[letter]] !== letter)
     );
 
-    if (unsolvedLetters.length > 0) {
-      const randomLetter = unsolvedLetters[Math.floor(Math.random() * unsolvedLetters.length)];
-      handleGuessChange(cipher[randomLetter], randomLetter);
+    if (nextLetterToReveal) {
+      // Reveal the letter
+      handleGuessChange(cipher[nextLetterToReveal], nextLetterToReveal);
+      setRevealedLetters(prev => [...prev, nextLetterToReveal]);
     }
+
+    // Decrease hints remaining
+    setHintsRemaining(prev => prev - 1);
   };
 
   const handleGiveUp = () => {
@@ -204,6 +231,7 @@ const Game: React.FC = () => {
         onReset={handleReset}
         onHint={handleHint}
         onGiveUp={handleGiveUp}
+        hintsRemaining={hintsRemaining}
       />
       <div className="quote-container">
         {(() => {

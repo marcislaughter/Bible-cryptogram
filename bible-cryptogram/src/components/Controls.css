@@ -2,18 +2,32 @@
   margin-top: 20px;
   display: flex;
   gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
 }
 
 .controls-container button {
   padding: 10px 20px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
+  font-size: 16px;
+  border: 2px solid #333;
   border-radius: 5px;
-  background-color: #f0f0f0;
+  background-color: #fff;
   cursor: pointer;
-  font-weight: bold;
+  transition: all 0.2s ease;
 }
 
-.controls-container button:hover {
-  background-color: #e0e0e0;
+.controls-container button:hover:not(.disabled) {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.controls-container button.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.controls-container button.disabled:hover {
+  transform: none;
 } 
