@@ -13,16 +13,16 @@
   border-radius: 5px;
   background-color: #e6ccff;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   color: #800080;
   font-weight: bold;
+  width: 150px;
 }
 
 .controls-container button:hover:not(.disabled) {
   background-color: #800080;
   border-color: #800080;
   color: white;
-  transform: translateY(-2px);
 }
 
 .controls-container button.disabled {
@@ -40,9 +40,11 @@
   background-color: #800080;
   color: white;
   border-color: #800080;
+  transform: none;
 }
 
 .controls-container button.active:hover {
-  background-color: #3da542;
-  border-color: #3da542;
+  background-color: #800080;
+  border-color: #800080;
+  transform: none;
 } 
