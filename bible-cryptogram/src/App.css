@@ -82,9 +82,9 @@
 }
 
 .guess-input.incorrect {
-  background-color: #a3a3a3;
+  background-color: #e6ccff;
   border-color: #800080;
-  color: white;
+  color: #ff0000;
 }
 
 .encrypted-char {
