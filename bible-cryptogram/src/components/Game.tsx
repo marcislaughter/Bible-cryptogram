@@ -27,6 +27,7 @@ const Game: React.FC = () => {
   const [isSolved, setIsSolved] = useState(false);
   const [hintsRemaining, setHintsRemaining] = useState(3);
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
+  const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
@@ -181,6 +182,7 @@ const Game: React.FC = () => {
     setIsSolved(false);
     setHintsRemaining(3);
     setRevealedLetters([]);
+    setAutoCheckEnabled(false);
   };
 
   const handleHint = () => {
@@ -215,13 +217,32 @@ const Game: React.FC = () => {
     setHintsRemaining(prev => prev - 1);
   };
 
-  const handleGiveUp = () => {
-    const correctGuesses: Record<string, string> = {};
-    Object.keys(cipher).forEach(originalChar => {
-      correctGuesses[cipher[originalChar]] = originalChar;
-    });
-    setGuesses(correctGuesses);
-    setIsSolved(true);
+  const handleAutoCheck = () => {
+    setAutoCheckEnabled(!autoCheckEnabled);
+  };
+
+  // Function to check if a guess is correct
+  const isGuessCorrect = (encryptedChar: string, guess: string) => {
+    return cipher[guess] === encryptedChar;
+  };
+
+  // Function to get CSS class for input based on auto-check state
+  const getInputClass = (char: string, isSelected: boolean, isSameLetter: boolean) => {
+    let baseClass = '';
+    
+    if (isSelected) {
+      baseClass += 'selected';
+    } else if (isSameLetter) {
+      baseClass += 'same-letter';
+    }
+
+    // Add auto-check styling if enabled and there's a guess
+    if (autoCheckEnabled && guesses[char]) {
+      const isCorrect = isGuessCorrect(char, guesses[char]);
+      baseClass += isCorrect ? ' correct' : ' incorrect';
+    }
+
+    return baseClass.trim();
   };
 
   return (
@@ -230,8 +251,9 @@ const Game: React.FC = () => {
       <Controls
         onReset={handleReset}
         onHint={handleHint}
-        onGiveUp={handleGiveUp}
+        onAutoCheck={handleAutoCheck}
         hintsRemaining={hintsRemaining}
+        autoCheckEnabled={autoCheckEnabled}
       />
       <div className="quote-container">
         {(() => {
@@ -255,10 +277,7 @@ const Game: React.FC = () => {
                     <input
                       type="text"
                       maxLength={1}
-                      className={`guess-input ${
-                        isSelected ? 'selected' : 
-                        isSameLetter ? 'same-letter' : ''
-                      }`}
+                      className={`guess-input ${getInputClass(char, isSelected, isSameLetter)}`}
                       value={guesses[char] || ''}
                       onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
                       onFocus={() => {

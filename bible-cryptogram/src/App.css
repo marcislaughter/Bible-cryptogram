@@ -62,6 +62,18 @@
   border-color: #0056b3;
 }
 
+.guess-input.correct {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.guess-input.incorrect {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
 .encrypted-char {
   width: 30px;
   height: 30px;

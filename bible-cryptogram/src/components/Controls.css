@@ -30,4 +30,15 @@
 
 .controls-container button.disabled:hover {
   transform: none;
+}
+
+.controls-container button.active {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.controls-container button.active:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
 } 
