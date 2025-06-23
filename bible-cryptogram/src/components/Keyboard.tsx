@@ -3,10 +3,11 @@ import './Keyboard.css';
 
 interface KeyboardProps {
   onKeyPress: (key: string) => void;
+  onBackspace: () => void;
   guesses: Record<string, string>;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, guesses }) => {
+const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses }) => {
   const rows = [
     'QWERTYUIOP',
     'ASDFGHJKL',
@@ -28,6 +29,14 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, guesses }) => {
               {key}
             </button>
           ))}
+          {rowIndex === rows.length - 1 && (
+            <button 
+              onClick={onBackspace}
+              className="backspace-button"
+            >
+              ←
+            </button>
+          )}
         </div>
       ))}
     </div>

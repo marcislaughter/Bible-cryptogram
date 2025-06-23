@@ -177,6 +177,16 @@ const Game: React.FC = () => {
     }
   };
 
+  const handleBackspace = () => {
+    if (selectedChar && guesses[selectedChar]) {
+      const newGuesses = { ...guesses };
+      delete newGuesses[selectedChar];
+      setGuesses(newGuesses);
+    }
+    // Move to the previous character after deleting
+    moveToPreviousCharacter();
+  };
+
   const handleReset = () => {
     setGuesses({});
     setIsSolved(false);
@@ -302,7 +312,7 @@ const Game: React.FC = () => {
           <p className="author">— {quote.author}</p>
         </div>
       )}
-      <Keyboard onKeyPress={handleKeyPress} guesses={guesses} />
+      <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={guesses} />
     </div>
   );
 };

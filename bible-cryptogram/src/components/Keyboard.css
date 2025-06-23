@@ -30,4 +30,17 @@
   background-color: #a0a0a0;
   color: white;
   border-color: #888;
+}
+
+.backspace-button {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border-color: #dc3545 !important;
+  min-width: 60px !important;
+  font-size: 1.2rem !important;
+}
+
+.backspace-button:hover {
+  background-color: #c82333 !important;
+  border-color: #bd2130 !important;
 } 
