@@ -168,6 +168,8 @@ const Game: React.FC = () => {
   const handleKeyPress = (key: string) => {
     if (selectedChar) {
       handleGuessChange(selectedChar, key);
+      // Move to the next character after typing
+      moveToNextCharacter();
     }
   };
 
