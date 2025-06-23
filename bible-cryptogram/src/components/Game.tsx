@@ -48,10 +48,20 @@ const Game: React.FC = () => {
         .join('');
     };
 
-    setEncryptedQuote(applyCipher(quote.text));
+    const encrypted = applyCipher(quote.text);
+    setEncryptedQuote(encrypted);
     setGuesses({});
-    setSelectedChar(null);
-    setSelectedPosition(-1);
+    
+    // Select the first letter by default
+    const firstLetter = encrypted.split('').find(char => /[A-Z]/.test(char));
+    if (firstLetter) {
+      setSelectedChar(firstLetter);
+      setSelectedPosition(0);
+    } else {
+      setSelectedChar(null);
+      setSelectedPosition(-1);
+    }
+    
     setIsSolved(false);
   };
 
