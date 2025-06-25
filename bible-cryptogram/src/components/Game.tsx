@@ -395,7 +395,19 @@ const Game: React.FC = () => {
     if (selectedChar && inputRefs.current[selectedChar]) {
       // Use a small delay to ensure the DOM has updated
       setTimeout(() => {
-        inputRefs.current[selectedChar]?.focus();
+        const inputElement = inputRefs.current[selectedChar];
+        if (inputElement) {
+          // Store current scroll position
+          const scrollY = window.scrollY;
+          
+          // Focus the input
+          inputElement.focus({ preventScroll: true });
+          
+          // Restore scroll position if it changed
+          if (window.scrollY !== scrollY) {
+            window.scrollTo(0, scrollY);
+          }
+        }
       }, 10);
     }
   }, [selectedChar, selectedPosition]);
