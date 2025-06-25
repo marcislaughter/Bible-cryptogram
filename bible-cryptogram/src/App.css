@@ -158,12 +158,14 @@
 }
 
 .instructions-btn {
-  background: linear-gradient(135deg, #a3a3a3 0%, #808080 100%);
-  color: white;
+  background: #a3a3a3;
+  color: black;
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 25px;
   font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -173,12 +175,42 @@
 .instructions-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
 .instructions-btn.active {
-  background: linear-gradient(135deg, #800080 0%, #a3a3a3 100%);
+  background: #800080;
+  color: white;
+}
+
+.word-stats-btn {
+  background: #a3a3a3;
+  color: black;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  border: none;
+  margin-left: 10px;
+}
+
+.word-stats-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: black;
+  text-decoration: none;
+}
+
+.word-stats-btn.active {
+  background: #800080;
+  color: white;
 }
 
 .instructions-panel {
@@ -322,4 +354,56 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: white;
   text-decoration: none;
+}
+
+.word-stats {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #800080;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+.word-stats h3 {
+  color: #800080;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.stats-content {
+  color: #333;
+  line-height: 1.6;
+}
+
+.most-common {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #e6ccff;
+  border-radius: 8px;
+  border-left: 4px solid #800080;
+}
+
+.common-patterns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.common-patterns > div {
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #a3a3a3;
+  font-size: 0.9rem;
+}
+
+.common-patterns strong {
+  color: #800080;
+  font-weight: bold;
 }

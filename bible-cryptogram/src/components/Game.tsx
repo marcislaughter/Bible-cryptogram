@@ -2,57 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
+import WordStats from './WordStats';
 
 // Bible verses data
 const BIBLE_VERSES = [
-  {
-    text: "LOVE IS PATIENT, LOVE IS KIND, IT DOES NOT ENVY, IT DOES NOT BOAST, IT IS NOT PROUD",
-    author: "1 Corinthians 13:4"
-  },
-  {
-    text: "AM I NOT FREE? AM I NOT AN APOSTLE? HAVE I NOT SEEN JESUS OUR LORD? ARE YOU NOT THE RESULT OF MY WORK IN THE LORD?",
-    author: "1 Corinthians 9:1"
-  },
-  {
-    text: "EVEN THOUGH I MAY NOT BE AN APOSTLE TO OTHERS, SURELY I AM TO YOU! FOR YOU ARE THE SEAL OF MY APOSTLESHIP IN THE LORD",
-    author: "1 Corinthians 9:2"
-  },
-  {
-    text: "THIS IS MY DEFENSE TO THOSE WHO SIT IN JUDGMENT ON ME",
-    author: "1 Corinthians 9:3"
-  },
-  {
-    text: "DON'T WE HAVE THE RIGHT TO FOOD AND DRINK?",
-    author: "1 Corinthians 9:4"
-  },
-  {
-    text: "DON'T WE HAVE THE RIGHT TO TAKE A BELIEVING WIFE ALONG WITH US, AS DO THE OTHER APOSTLES AND THE LORD'S BROTHERS AND CEPHAS?",
-    author: "1 Corinthians 9:5"
-  },
-  {
-    text: "OR IS IT ONLY I AND BARNABAS WHO LACK THE RIGHT TO NOT WORK FOR A LIVING?",
-    author: "1 Corinthians 9:6"
-  },
-  {
-    text: "WHO SERVES AS A SOLDIER AT HIS OWN EXPENSE? WHO PLANTS A VINEYARD AND DOES NOT EAT ITS GRAPES? WHO TENDS A FLOCK AND DOES NOT DRINK THE MILK?",
-    author: "1 Corinthians 9:7"
-  },
-  {
-    text: "DO I SAY THIS MERELY ON HUMAN AUTHORITY? DOESN'T THE LAW SAY THE SAME THING?",
-    author: "1 Corinthians 9:8"
-  },
-  {
-    text: "FOR IT IS WRITTEN IN THE LAW OF MOSES: DO NOT MUZZLE AN OX WHILE IT IS TREADING OUT THE GRAIN. IS IT ABOUT OXEN THAT GOD IS CONCERNED?",
-    author: "1 Corinthians 9:9"
-  },
-  {
-    text: "SURELY HE SAYS THIS FOR US, DOESN'T HE? YES, THIS WAS WRITTEN FOR US, BECAUSE WHOEVER PLOWS AND THRESHES SHOULD BE ABLE TO DO SO IN THE HOPE OF SHARING IN THE HARVEST",
-    author: "1 Corinthians 9:10"
-  },
-  {
-    text: "IF WE HAVE SOWN SPIRITUAL SEED AMONG YOU, IS IT TOO MUCH IF WE REAP A MATERIAL HARVEST FROM YOU?",
-    author: "1 Corinthians 9:11"
-  },
+
   {
     text: "IF OTHERS HAVE THIS RIGHT OF SUPPORT FROM YOU, SHOULDN'T WE HAVE IT ALL THE MORE?",
     author: "1 Corinthians 9:12"
@@ -145,6 +99,7 @@ const Game: React.FC = () => {
   const [hintsRemaining, setHintsRemaining] = useState(3);
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
+  const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const currentQuote = BIBLE_VERSES[currentVerseIndex];
@@ -329,6 +284,7 @@ const Game: React.FC = () => {
     setHintsRemaining(3);
     setRevealedLetters([]);
     setAutoCheckEnabled(false);
+    setWordStatsEnabled(false);
   };
 
   const handleHint = () => {
@@ -365,6 +321,10 @@ const Game: React.FC = () => {
 
   const handleAutoCheck = () => {
     setAutoCheckEnabled(!autoCheckEnabled);
+  };
+
+  const handleToggleWordStats = () => {
+    setWordStatsEnabled(!wordStatsEnabled);
   };
 
   // Function to check if a guess is correct
@@ -421,6 +381,12 @@ const Game: React.FC = () => {
         <Link to="/instructions" className="instructions-btn">
           Instructions
         </Link>
+        <button 
+          onClick={handleToggleWordStats}
+          className={`word-stats-btn ${wordStatsEnabled ? 'active' : ''}`}
+        >
+          {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+        </button>
       </div>
 
       <h1>Bible Cryptogram</h1>
@@ -449,6 +415,9 @@ const Game: React.FC = () => {
         hintsRemaining={hintsRemaining}
         autoCheckEnabled={autoCheckEnabled}
       />
+      
+      {/* Word Stats Display */}
+      {wordStatsEnabled && <WordStats />}
       
       <div className="quote-container">
         {(() => {

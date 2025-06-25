@@ -14,7 +14,7 @@ const Controls: React.FC<ControlsProps> = ({
   onHint, 
   onAutoCheck, 
   hintsRemaining, 
-  autoCheckEnabled 
+  autoCheckEnabled
 }) => {
   return (
     <div className="controls-container">
