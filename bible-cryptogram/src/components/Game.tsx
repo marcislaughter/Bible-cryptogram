@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 
@@ -415,6 +416,13 @@ const Game: React.FC = () => {
 
   return (
     <div className="game-container">
+      {/* Instructions Link in Top Right */}
+      <div className="instructions-link">
+        <Link to="/instructions" className="instructions-btn">
+          Instructions
+        </Link>
+      </div>
+
       <h1>Bible Cryptogram</h1>
       
       {/* Verse selector */}
