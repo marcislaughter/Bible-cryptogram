@@ -205,8 +205,11 @@ const Game: React.FC = () => {
       // Only handle letter keys
       if (/^[A-Z]$/.test(key)) {
         if (selectedChar && selectedPosition >= 0) {
-          handleGuessChange(selectedChar, key);
-          moveToNextCharacter(); // Move to next character after typing
+          const guessAccepted = handleGuessChange(selectedChar, key);
+          // Move to next character after typing only if guess was accepted
+          if (guessAccepted) {
+            moveToNextCharacter();
+          }
         }
       } else if (key === 'ESCAPE') {
         setSelectedChar(null);
@@ -261,6 +264,14 @@ const Game: React.FC = () => {
   };
 
   const handleGuessChange = (encryptedChar: string, guess: string) => {
+    // Check if this letter is already used in another position
+    const isLetterAlreadyUsed = Object.values(guesses).includes(guess.toUpperCase());
+    
+    // If the letter is already used and it's not the same encrypted character, don't allow it
+    if (isLetterAlreadyUsed && guesses[encryptedChar] !== guess.toUpperCase()) {
+      return false; // Return false to indicate the guess was rejected
+    }
+    
     const newGuesses = { ...guesses, [encryptedChar]: guess.toUpperCase() };
     setGuesses(newGuesses);
     
@@ -268,6 +279,8 @@ const Game: React.FC = () => {
     if (checkIfSolved(newGuesses)) {
       setIsSolved(true);
     }
+    
+    return true; // Return true to indicate the guess was accepted
   };
 
   const handleInputClick = (char: string, position: number) => {
@@ -280,9 +293,9 @@ const Game: React.FC = () => {
   // Add new function to handle direct input changes
   const handleInputChange = (encryptedChar: string, value: string) => {
     if (/^[A-Z]?$/.test(value)) {
-      handleGuessChange(encryptedChar, value);
-      if (value) {
-        // Move to next character after typing in input field
+      const guessAccepted = handleGuessChange(encryptedChar, value);
+      if (value && guessAccepted) {
+        // Move to next character after typing in input field only if guess was accepted
         setTimeout(() => moveToNextCharacter(), 0);
       }
     }
@@ -290,9 +303,11 @@ const Game: React.FC = () => {
 
   const handleKeyPress = (key: string) => {
     if (selectedChar) {
-      handleGuessChange(selectedChar, key);
-      // Move to the next character after typing
-      moveToNextCharacter();
+      const guessAccepted = handleGuessChange(selectedChar, key);
+      // Move to the next character after typing only if guess was accepted
+      if (guessAccepted) {
+        moveToNextCharacter();
+      }
     }
   };
 
