@@ -453,6 +453,12 @@ const Game: React.FC = () => {
       )}
       
       <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={guesses} />
+      
+      <div className="citation">
+        Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
+        Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
+        Used by permission. All rights reserved worldwide.
+      </div>
     </div>
   );
 };
