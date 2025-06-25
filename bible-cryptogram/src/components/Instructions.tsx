@@ -17,6 +17,16 @@ const Instructions: React.FC = () => {
             <li>Your goal is to figure out the correct letter for each encrypted character</li>
           </ul>
 
+          <h2>Tips</h2>
+          <ul>
+            <li>Look for letters used frequently. The most frequent letters are 'E', 'T', 'A', 'O', 'I', 'N', 'S', 'R'</li>
+            <li>Look for double letters. The most frequent double letters are 'LL', 'EE', 'SS', 'OO', 'TT', 'FF'</li>
+            <li>One letter words are likely either I or A</li>
+            <li>The most common two-letter word are 'to', 'of', 'in' 'it' 'as', 'at'</li>
+            <li>The most commmon three-letter words are 'the', 'and', 'are', 'for', 'not', 'you'</li>
+            <li>For example, a three-letter word used multiple times in the text with the first and third letters having a high frequency is likely "the"</li>
+          </ul>
+
           <h2>How to Play</h2>
           <ul>
             <li><strong>Click on any encrypted letter</strong> to select it, or use arrow keys to navigate</li>
@@ -33,14 +43,6 @@ const Instructions: React.FC = () => {
             <li><strong>Auto Check</strong>: Enable to see if your guesses are correct (green = correct, red = incorrect)</li>
             <li><strong>Reset</strong>: Start over with the same verse</li>
             <li><strong>Verse Selector</strong>: Choose from different Bible verses</li>
-          </ul>
-
-          <h2>Tips</h2>
-          <ul>
-            <li>Look for common letter patterns (like 'THE', 'AND', 'THAT')</li>
-            <li>Consider letter frequency - 'E', 'T', 'A', 'O' are the most common letters in English</li>
-            <li>Pay attention to word length and letter patterns</li>
-            <li>Use the hints strategically when you're stuck</li>
           </ul>
 
           <h2>Winning</h2>
