@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 
@@ -144,6 +144,7 @@ const Game: React.FC = () => {
   const [hintsRemaining, setHintsRemaining] = useState(3);
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const currentQuote = BIBLE_VERSES[currentVerseIndex];
 
@@ -389,6 +390,16 @@ const Game: React.FC = () => {
     return baseClass.trim();
   };
 
+  // Add new useEffect to auto-focus the selected input
+  useEffect(() => {
+    if (selectedChar && inputRefs.current[selectedChar]) {
+      // Use a small delay to ensure the DOM has updated
+      setTimeout(() => {
+        inputRefs.current[selectedChar]?.focus();
+      }, 10);
+    }
+  }, [selectedChar, selectedPosition]);
+
   return (
     <div className="game-container">
       <h1>Bible Cryptogram</h1>
@@ -438,6 +449,11 @@ const Game: React.FC = () => {
                     onClick={() => isLetter && handleInputClick(char, currentLetterIndex)}
                   >
                     <input
+                      ref={(el) => {
+                        if (isLetter) {
+                          inputRefs.current[char] = el;
+                        }
+                      }}
                       type="text"
                       maxLength={1}
                       className={`guess-input ${getInputClass(char, isSelected, isSameLetter)}`}
