@@ -392,11 +392,12 @@ const Game: React.FC = () => {
 
   // Add new useEffect to auto-focus the selected input
   useEffect(() => {
-    if (selectedChar && inputRefs.current[selectedChar]) {
-      // Use a small delay to ensure the DOM has updated
-      setTimeout(() => {
-        const inputElement = inputRefs.current[selectedChar];
-        if (inputElement) {
+    if (selectedChar && selectedPosition >= 0) {
+      const refKey = `${selectedChar}-${selectedPosition}`;
+      const inputElement = inputRefs.current[refKey];
+      if (inputElement) {
+        // Use a small delay to ensure the DOM has updated
+        setTimeout(() => {
           // Store current scroll position
           const scrollY = window.scrollY;
           
@@ -407,8 +408,8 @@ const Game: React.FC = () => {
           if (window.scrollY !== scrollY) {
             window.scrollTo(0, scrollY);
           }
-        }
-      }, 10);
+        }, 10);
+      }
     }
   }, [selectedChar, selectedPosition]);
 
@@ -463,7 +464,8 @@ const Game: React.FC = () => {
                     <input
                       ref={(el) => {
                         if (isLetter) {
-                          inputRefs.current[char] = el;
+                          const refKey = `${char}-${currentLetterIndex}`;
+                          inputRefs.current[refKey] = el;
                         }
                       }}
                       type="text"
