@@ -221,23 +221,26 @@ const Game: React.FC = () => {
   };
 
   const handleGuessChange = (encryptedChar: string, guess: string) => {
-    // Check if this letter is already used in another position
-    const isLetterAlreadyUsed = Object.values(guesses).includes(guess.toUpperCase());
-    
-    // If the letter is already used and it's not the same encrypted character, don't allow it
-    if (isLetterAlreadyUsed && guesses[encryptedChar] !== guess.toUpperCase()) {
-      return false; // Return false to indicate the guess was rejected
-    }
-    
-    const newGuesses = { ...guesses, [encryptedChar]: guess.toUpperCase() };
+    const upperGuess = guess.toUpperCase();
+
+    // Remove this guess from any other cell
+    const newGuesses = Object.fromEntries(
+      Object.entries(guesses).map(([key, value]) =>
+        value === upperGuess && key !== encryptedChar ? [key, ''] : [key, value]
+      )
+    );
+
+    // Set the guess for the current cell
+    newGuesses[encryptedChar] = upperGuess;
+
     setGuesses(newGuesses);
-    
+
     // Check if puzzle is solved after each guess
     if (checkIfSolved(newGuesses)) {
       setIsSolved(true);
     }
-    
-    return true; // Return true to indicate the guess was accepted
+
+    return true; // Always accept the guess now
   };
 
   const handleInputClick = (char: string, position: number) => {
@@ -375,7 +378,7 @@ const Game: React.FC = () => {
   }, [selectedChar, selectedPosition]);
 
   return (
-    <div className="game-container">
+    <div className={`game-container${isSolved ? ' win-gradient' : ''}`}>
       {/* Instructions Link in Top Right */}
       <div className="instructions-link">
         <Link to="/instructions" className="instructions-btn">
