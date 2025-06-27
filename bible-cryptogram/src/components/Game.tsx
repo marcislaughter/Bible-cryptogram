@@ -348,8 +348,22 @@ const Game: React.FC = () => {
     }
   }, [selectedChar, selectedPosition]);
 
+  // Add useEffect to manage body background when puzzle is solved
+  useEffect(() => {
+    if (isSolved) {
+      document.body.classList.add('win-gradient');
+    } else {
+      document.body.classList.remove('win-gradient');
+    }
+    
+    // Cleanup function to remove the class when component unmounts
+    return () => {
+      document.body.classList.remove('win-gradient');
+    };
+  }, [isSolved]);
+
   return (
-    <div className={`game-container${isSolved ? ' win-gradient' : ''}`}>
+    <div className="game-container">
       {/* Instructions Link in Top Right */}
       <div className="instructions-link">
         <Link to="/instructions" className="instructions-btn">
