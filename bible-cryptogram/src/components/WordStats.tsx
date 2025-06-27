@@ -5,21 +5,16 @@ const WordStats: React.FC = () => {
     <div className="word-stats">
       <h3>Letter Frequency in English</h3>
       <div className="stats-content">
-        <div className="most-common">
           <strong>Most Common Letters:</strong> E, T, A, O, I, N, S, H, R, D, L, C, U, M, F, G, Y, P, B, V, K, J, X, Q, Z 
-        </div>
-        <div className="common-patterns">
-          <div><strong>Most common letters at the beginning of a word:</strong> T, A, O, D, O, W, K, J, Q</div> 
-          <div><strong>Most common letters at end of word:</strong> E, S, D, T</div>
-          <div><strong>Common Double Letters:</strong> EE, LL, SS, OO, TT, FF, RR, NN, PP, CC</div>
-          <div><strong>Common Double Letters at end of word:</strong> EE, LL, SS, FF</div>
-          <div><strong>Words frequently following comma:</strong> AND, BUT, WHO, FOR</div>
-          <div><strong>Common Two-Letter Words:</strong> TO, OF, IN, IT, IS, AS, AT, BE, BY, HE, WE, ME, UP, ON, AN, OR, IF, MY, DO, GO, NO, SO, US, AM</div>
-          <div><strong>Common Three-Letter Words:</strong> THE, AND, FOR, ARE, BUT, NOT, YOU, ALL</div>
-          <div><strong>Common Four-Letter Words:</strong> THAT, WITH, HAVE, THIS, WILL, FROM, THEY, WANT, BEEN, GOOD, MUCH, SOME</div>
+          <div><strong>Most common letters at the beginning of a word:</strong> T, A, O, I, S, W, C, B, P, H, F, M, D, E, R, L, N, G, U, K, V, Y, J, Q, X, Z</div> 
+          <div><strong>Most common letters at end of word:</strong> E, S, D, T, N, R, Y, L, A, I, O, U, M, P, C, H, G, F, B, V, K, W, X, J, Q, Z</div>
+          <div><strong>Common double letters:</strong> EE, LL, SS, OO, TT, FF, RR, NN, PP, CC</div>
+          <div><strong>Common double letters at end of word:</strong> EE, LL, SS, FF</div>
+          <div><strong>Common three-letter Words With a distinct pattern:</strong> aLL, sEE, aDD</div>
+          <div><strong>Common four-letter Words With a distinct pattern:</strong> nEEd, EvEn, ThaT, gOOd, frEE, hErE, bEEn, bOOk, fuLL, wiLL, wErE, AreA</div>
+          <div><strong>Common five-letter words with a distinct pattern:</strong> thErE, whErE, lEvEl, shaLL, nEvEr, bOOks, smaLL, claSS, preSS, staFF, wHicH, sTaTe, thrEE, stiLL, tOOls, thEsE TiTle</div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -21,10 +21,10 @@ const Instructions: React.FC = () => {
           <ul>
             <li>Look for letters used frequently. The most frequent letters are 'E', 'T', 'A', 'O', 'I', 'N', 'S', 'R'</li>
             <li>Look for double letters. The most frequent double letters are 'LL', 'EE', 'SS', 'OO', 'TT', 'FF'</li>
-            <li>One letter words are likely either I or A</li>
-            <li>The most common two-letter word are 'to', 'of', 'in' 'it' 'as', 'at'</li>
-            <li>The most commmon three-letter words are 'the', 'and', 'are', 'for', 'not', 'you'</li>
-            <li>For example, a three-letter word used multiple times in the text with the first and third letters having a high frequency is likely "the"</li>
+            <li>One letter words are either I or A</li>
+            <li>A three letter word appearing multiple times with common first and third letters is likely "the"</li>
+            <li>A three letter word after a comma with common first and second letters is likely "and"</li>
+            <li>Toggle the stats tab to see more common word facts"</li>
           </ul>
 
           <h2>How to Play</h2>
