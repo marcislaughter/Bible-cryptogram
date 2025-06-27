@@ -71,7 +71,7 @@ const Game: React.FC = () => {
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [currentQuote, setCurrentQuote] = useState(BIBLE_VERSES[0]);
-  const inputRefs = useRef<Record<string, HTMLInputElement>>({});
+  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
