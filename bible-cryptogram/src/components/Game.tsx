@@ -301,6 +301,12 @@ const Game: React.FC = () => {
     setWordStatsEnabled(!wordStatsEnabled);
   };
 
+  // Function to handle next verse button
+  const handleNextVerse = () => {
+    const nextIndex = (currentVerseIndex + 1) % BIBLE_VERSES.length;
+    setCurrentVerseIndex(nextIndex);
+  };
+
   // Function to check if a guess is correct
   const isGuessCorrect = (encryptedChar: string, guess: string) => {
     return cipher[guess] === encryptedChar;
@@ -459,6 +465,12 @@ const Game: React.FC = () => {
         <div className="solved-message">
           <h2>Congratulations! You solved it!</h2>
           <p className="author">— {currentQuote.author}</p>
+          <button 
+            onClick={handleNextVerse}
+            className="next-verse-btn"
+          >
+            Next Verse
+          </button>
         </div>
       )}
       
