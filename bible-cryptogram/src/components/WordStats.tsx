@@ -3,7 +3,7 @@ import React from 'react';
 const WordStats: React.FC = () => {
   return (
     <div className="word-stats">
-      <h3>Letter Frequency in English</h3>
+      <h3>Common English Word Stats</h3>
       <div className="stats-content">
           <strong>Most Common Letters:</strong> E, T, A, O, I, N, S, H, R, D, L, C, U, M, F, G, Y, P, B, V, K, J, X, Q, Z 
           <div><strong>Most common letters at the beginning of a word:</strong> T, A, O, I, S, W, C, B, P, H, F, M, D, E, R, L, N, G, U, K, V, Y, J, Q, X, Z</div> 
