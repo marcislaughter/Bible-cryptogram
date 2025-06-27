@@ -8,7 +8,7 @@
 
 .game-container h1 {
   color: #a3a3a3;
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(128, 0, 128, 0.3);
 }
@@ -27,7 +27,7 @@
 
 .word-container {
   display: flex;
-  gap: 5px;
+  gap: 3px;
 }
 
 .char-container {
@@ -37,10 +37,10 @@
 }
 
 .guess-input {
-  width: 30px;
+  width: 20px;
   height: 30px;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border: 1px solid #800080;
   border-bottom: 2px solid #800080;
   text-transform: uppercase;
@@ -90,12 +90,12 @@
 }
 
 .encrypted-char {
-  width: 30px;
+  width: 20px;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #a3a3a3;
 }
@@ -113,13 +113,13 @@
 
 .solved-message h2 {
   margin: 0 0 10px 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .solved-message .author {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-style: italic;
   opacity: 0.9;
 }
