@@ -219,7 +219,7 @@
   border-radius: 15px;
   padding: 25px;
   margin: 20px 0;
-  max-width: 800px;
+  max-width: 1600px;
   width: 90%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   animation: slideDown 0.3s ease-out;
@@ -282,7 +282,7 @@
 }
 
 .instructions-container {
-  max-width: 800px;
+  max-width: 1600px;
   margin: 0 auto;
   background: white;
   border-radius: 15px;
@@ -362,7 +362,7 @@
   border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
-  max-width: 800px;
+  max-width: 1600px;
   width: 90%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   animation: slideDown 0.3s ease-out;
