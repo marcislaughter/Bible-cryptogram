@@ -60,7 +60,6 @@ const createCipher = (): Record<string, string> => {
 };
 
 const Game: React.FC = () => {
-  const [currentVerseIndex, setCurrentVerseIndex] = useState(0);
   const [cipher, setCipher] = useState<Record<string, string>>({});
   const [encryptedQuote, setEncryptedQuote] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
@@ -71,9 +70,8 @@ const Game: React.FC = () => {
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
-  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
-
-  const currentQuote = BIBLE_VERSES[currentVerseIndex];
+  const [currentQuote, setCurrentQuote] = useState(BIBLE_VERSES[0]);
+  const inputRefs = useRef<Record<string, HTMLInputElement>>({});
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
@@ -116,14 +114,9 @@ const Game: React.FC = () => {
     setIsSolved(false);
   };
 
-  // Handle verse change
-  const handleVerseChange = (newIndex: number) => {
-    setCurrentVerseIndex(newIndex);
-  };
-
   useEffect(() => {
     generateNewGame();
-  }, [currentVerseIndex]);
+  }, [currentQuote]);
 
   // Add keyboard event listener
   useEffect(() => {
@@ -303,8 +296,9 @@ const Game: React.FC = () => {
 
   // Function to handle next verse button
   const handleNextVerse = () => {
-    const nextIndex = (currentVerseIndex + 1) % BIBLE_VERSES.length;
-    setCurrentVerseIndex(nextIndex);
+    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.text === currentQuote.text);
+    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    setCurrentQuote(BIBLE_VERSES[nextIndex]);
   };
 
   // Function to check if a guess is correct
@@ -384,23 +378,6 @@ const Game: React.FC = () => {
       </div>
 
       <h1>Bible Cryptogram</h1>
-      
-      {/* Verse selector */}
-      <div className="verse-selector">
-        <label htmlFor="verse-select">Select Verse: </label>
-        <select 
-          id="verse-select"
-          value={currentVerseIndex}
-          onChange={(e) => handleVerseChange(Number(e.target.value))}
-          className="verse-dropdown"
-        >
-          {BIBLE_VERSES.map((verse, index) => (
-            <option key={index} value={index}>
-              {verse.author}
-            </option>
-          ))}
-        </select>
-      </div>
 
       <Controls
         onReset={handleReset}
