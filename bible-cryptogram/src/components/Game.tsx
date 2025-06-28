@@ -441,7 +441,12 @@ const Game: React.FC = () => {
                   <div
                     key={charIndex}
                     className="char-container"
-                    onClick={() => isLetter && handleInputClick(char, currentLetterIndex)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isLetter) {
+                        handleInputClick(char, currentLetterIndex);
+                      }
+                    }}
                   >
                     <input
                       ref={(el) => {
