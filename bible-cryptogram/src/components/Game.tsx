@@ -5,6 +5,15 @@ import Controls from './Controls';
 import WordStats from './WordStats';
 import logo from '../assets/heart logo.png';
 
+// Debounce utility function
+const debounce = (func: Function, wait: number) => {
+  let timeout: number;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
 // Bible verses data
 const BIBLE_VERSES = [
   {
@@ -72,7 +81,17 @@ const Game: React.FC = () => {
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [currentQuote, setCurrentQuote] = useState(BIBLE_VERSES[0]);
+  const [isTouching, setIsTouching] = useState(false);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  // Create debounced movement functions
+  const debouncedMoveNext = useRef(
+    debounce(() => moveToNextCharacter(), 150)
+  ).current;
+
+  const debouncedMovePrevious = useRef(
+    debounce(() => moveToPreviousCharacter(), 150)
+  ).current;
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
@@ -407,28 +426,37 @@ const Game: React.FC = () => {
           const isRightHalf = e.clientX > rect.left + rect.width / 2;
           
           if (isRightHalf) {
-            moveToNextCharacter();
+            debouncedMoveNext();
           } else {
-            moveToPreviousCharacter();
+            debouncedMovePrevious();
           }
         }}
         onTouchStart={(e) => {
-          // Only handle touch events if not touching a letter cell
-          if (!(e.target as HTMLElement).closest('.char-container')) {
+          // Only handle touch events if not touching a letter cell and not already touching
+          if (!(e.target as HTMLElement).closest('.char-container') && !isTouching) {
             e.preventDefault(); // Prevent click event from firing
+            setIsTouching(true);
+          }
+        }}
+        onTouchEnd={(e) => {
+          if (isTouching) {
             // Get the container's bounding rectangle
-            const rect = e.currentTarget.getBoundingClientRect();
-            // Use the first touch point
-            const touch = e.touches[0];
-            // Calculate if touch is in right half
+            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+            // Use the last touch point
+            const touch = e.changedTouches[0];
+            // Calculate if touch ended in right half
             const isRightHalf = touch.clientX > rect.left + rect.width / 2;
             
             if (isRightHalf) {
-              moveToNextCharacter();
+              debouncedMoveNext();
             } else {
-              moveToPreviousCharacter();
+              debouncedMovePrevious();
             }
+            setIsTouching(false);
           }
+        }}
+        onTouchCancel={() => {
+          setIsTouching(false);
         }}
       >
         {(() => {
