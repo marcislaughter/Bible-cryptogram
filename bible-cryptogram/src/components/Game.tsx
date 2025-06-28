@@ -398,7 +398,20 @@ const Game: React.FC = () => {
       {/* Word Stats Display */}
       {wordStatsEnabled && <WordStats />}
       
-      <div className="quote-container">
+      <div className="quote-container" onClick={(e) => {
+        // Get the container's bounding rectangle
+        const rect = e.currentTarget.getBoundingClientRect();
+        // Calculate if click is in right half
+        const isRightHalf = e.clientX > rect.left + rect.width / 2;
+        
+        if (isRightHalf) {
+          moveToNextCharacter();
+        } else {
+          moveToPreviousCharacter();
+        }
+      }}>
+        <div className="left-click-area" />
+        <div className="right-click-area" />
         {(() => {
           let letterIndex = 0;
           return encryptedQuote.split(' ').map((word, wordIndex) => (
