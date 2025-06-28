@@ -400,6 +400,10 @@ const Game: React.FC = () => {
       
       <div className="quote-container" 
         onClick={(e) => {
+          // Prevent default to maintain focus
+          e.preventDefault();
+          e.stopPropagation();
+          
           // Get the container's bounding rectangle
           const rect = e.currentTarget.getBoundingClientRect();
           // Calculate if click is in right half
@@ -409,6 +413,15 @@ const Game: React.FC = () => {
             moveToNextCharacter();
           } else {
             moveToPreviousCharacter();
+          }
+
+          // Ensure the current input stays focused
+          if (selectedChar && selectedPosition >= 0) {
+            const refKey = `${selectedChar}-${selectedPosition}`;
+            const inputElement = inputRefs.current[refKey];
+            if (inputElement) {
+              inputElement.focus();
+            }
           }
         }}
       >
