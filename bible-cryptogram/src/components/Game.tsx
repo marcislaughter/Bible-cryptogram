@@ -431,7 +431,8 @@ const Game: React.FC = () => {
             <div key={wordIndex} className="word-container">
               {word.split('').map((char, charIndex) => {
                 const isLetter = /[A-Z]/.test(char);
-                const currentLetterIndex = isLetter ? letterIndex++ : -1;
+                const currentLetterIndex = isLetter ? letterIndex : -1;
+                if (isLetter) letterIndex++;
                 
                 // Check if this character should be highlighted
                 const isSelected = selectedChar === char && selectedPosition === currentLetterIndex;
