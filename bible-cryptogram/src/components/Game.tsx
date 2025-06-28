@@ -398,20 +398,36 @@ const Game: React.FC = () => {
       {/* Word Stats Display */}
       {wordStatsEnabled && <WordStats />}
       
-      <div className="quote-container" onClick={(e) => {
-        // Get the container's bounding rectangle
-        const rect = e.currentTarget.getBoundingClientRect();
-        // Calculate if click is in right half
-        const isRightHalf = e.clientX > rect.left + rect.width / 2;
-        
-        if (isRightHalf) {
-          moveToNextCharacter();
-        } else {
-          moveToPreviousCharacter();
-        }
-      }}>
-        <div className="left-click-area" />
-        <div className="right-click-area" />
+      <div className="quote-container" 
+        onClick={(e) => {
+          // Get the container's bounding rectangle
+          const rect = e.currentTarget.getBoundingClientRect();
+          // Calculate if click is in right half
+          const isRightHalf = e.clientX > rect.left + rect.width / 2;
+          
+          if (isRightHalf) {
+            moveToNextCharacter();
+          } else {
+            moveToPreviousCharacter();
+          }
+        }}
+        onTouchStart={(e) => {
+          // Prevent default to avoid any unwanted scrolling
+          e.preventDefault();
+          // Get the container's bounding rectangle
+          const rect = e.currentTarget.getBoundingClientRect();
+          // Use the first touch point
+          const touch = e.touches[0];
+          // Calculate if touch is in right half
+          const isRightHalf = touch.clientX > rect.left + rect.width / 2;
+          
+          if (isRightHalf) {
+            moveToNextCharacter();
+          } else {
+            moveToPreviousCharacter();
+          }
+        }}
+      >
         {(() => {
           let letterIndex = 0;
           return encryptedQuote.split(' ').map((word, wordIndex) => (
