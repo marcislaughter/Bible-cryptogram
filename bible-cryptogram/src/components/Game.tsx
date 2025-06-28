@@ -400,10 +400,7 @@ const Game: React.FC = () => {
       
       <div className="quote-container" 
         onClick={(e) => {
-          // Prevent default to maintain focus
-          e.preventDefault();
-          e.stopPropagation();
-          
+          // Handle click events for navigation
           // Get the container's bounding rectangle
           const rect = e.currentTarget.getBoundingClientRect();
           // Calculate if click is in right half
@@ -414,13 +411,22 @@ const Game: React.FC = () => {
           } else {
             moveToPreviousCharacter();
           }
-
-          // Ensure the current input stays focused
-          if (selectedChar && selectedPosition >= 0) {
-            const refKey = `${selectedChar}-${selectedPosition}`;
-            const inputElement = inputRefs.current[refKey];
-            if (inputElement) {
-              inputElement.focus();
+        }}
+        onTouchStart={(e) => {
+          // Only handle touch events if not touching a letter cell
+          if (!(e.target as HTMLElement).closest('.char-container')) {
+            e.preventDefault(); // Prevent click event from firing
+            // Get the container's bounding rectangle
+            const rect = e.currentTarget.getBoundingClientRect();
+            // Use the first touch point
+            const touch = e.touches[0];
+            // Calculate if touch is in right half
+            const isRightHalf = touch.clientX > rect.left + rect.width / 2;
+            
+            if (isRightHalf) {
+              moveToNextCharacter();
+            } else {
+              moveToPreviousCharacter();
             }
           }
         }}
