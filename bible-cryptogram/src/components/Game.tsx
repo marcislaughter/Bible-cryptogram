@@ -370,6 +370,9 @@ const Game: React.FC = () => {
         <Link to="/instructions" className="instructions-btn">
           Instructions
         </Link>
+        <Link to="/memorization" className="instructions-btn">
+          Why Memorize?
+        </Link>
         <button 
           onClick={handleToggleWordStats}
           className={`word-stats-btn ${wordStatsEnabled ? 'active' : ''}`}
