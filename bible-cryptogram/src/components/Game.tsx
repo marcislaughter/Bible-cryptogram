@@ -434,19 +434,13 @@ const Game: React.FC = () => {
           }
         }}
         onTouchStart={(e) => {
-          // Always prevent default to avoid any click event conflicts
-          e.preventDefault();
+          // Only prevent default if we're not touching a letter cell
+          if (!e.target.closest('.char-container')) {
+            e.preventDefault();
+          }
           
           // If we're already in a touch interaction, ignore this touch
           if (isTouching) return;
-          
-          // If we're touching a letter cell, handle that separately
-          if ((e.target as HTMLElement).closest('.char-container')) {
-            const char = (e.target as HTMLElement).closest('.char-container') as HTMLElement;
-            // Let the existing letter cell click handler work
-            char?.click();
-            return;
-          }
           
           setIsTouching(true);
         }}
