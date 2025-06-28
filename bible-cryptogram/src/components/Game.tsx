@@ -435,7 +435,7 @@ const Game: React.FC = () => {
         }}
         onTouchStart={(e) => {
           // Only prevent default if we're not touching a letter cell
-          if (!e.target.closest('.char-container')) {
+          if (!(e.target as HTMLElement).closest('.char-container')) {
             e.preventDefault();
           }
           
