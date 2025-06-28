@@ -419,7 +419,9 @@ const Game: React.FC = () => {
       
       <div className="quote-container" 
         onClick={(e) => {
-          // Handle click events for navigation
+          // Don't handle click if we're in a touch interaction
+          if (isTouching) return;
+          
           // Get the container's bounding rectangle
           const rect = e.currentTarget.getBoundingClientRect();
           // Calculate if click is in right half
@@ -432,28 +434,38 @@ const Game: React.FC = () => {
           }
         }}
         onTouchStart={(e) => {
-          // Only handle touch events if not touching a letter cell and not already touching
-          if (!(e.target as HTMLElement).closest('.char-container') && !isTouching) {
-            e.preventDefault(); // Prevent click event from firing
-            setIsTouching(true);
+          // Always prevent default to avoid any click event conflicts
+          e.preventDefault();
+          
+          // If we're already in a touch interaction, ignore this touch
+          if (isTouching) return;
+          
+          // If we're touching a letter cell, handle that separately
+          if ((e.target as HTMLElement).closest('.char-container')) {
+            const char = (e.target as HTMLElement).closest('.char-container') as HTMLElement;
+            // Let the existing letter cell click handler work
+            char?.click();
+            return;
           }
+          
+          setIsTouching(true);
         }}
         onTouchEnd={(e) => {
-          if (isTouching) {
-            // Get the container's bounding rectangle
-            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-            // Use the last touch point
-            const touch = e.changedTouches[0];
-            // Calculate if touch ended in right half
-            const isRightHalf = touch.clientX > rect.left + rect.width / 2;
-            
-            if (isRightHalf) {
-              debouncedMoveNext();
-            } else {
-              debouncedMovePrevious();
-            }
-            setIsTouching(false);
+          if (!isTouching) return;
+          
+          // Get the container's bounding rectangle
+          const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+          // Use the last touch point
+          const touch = e.changedTouches[0];
+          // Calculate if touch ended in right half
+          const isRightHalf = touch.clientX > rect.left + rect.width / 2;
+          
+          if (isRightHalf) {
+            debouncedMoveNext();
+          } else {
+            debouncedMovePrevious();
           }
+          setIsTouching(false);
         }}
         onTouchCancel={() => {
           setIsTouching(false);
