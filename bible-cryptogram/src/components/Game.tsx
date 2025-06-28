@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
+import logo from '../assets/heart logo.png';
 
 // Bible verses data
 const BIBLE_VERSES = [
@@ -377,7 +378,11 @@ const Game: React.FC = () => {
         </button>
       </div>
 
-      <h1>Bible Cryptogram</h1>
+      {/* Title and Logo Container */}
+      <div className="title-logo-container">
+        <h1>Bible Cryptogram</h1>
+        <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
+      </div>
 
       <Controls
         onReset={handleReset}

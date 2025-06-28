@@ -193,6 +193,8 @@ body.win-gradient {
   top: 20px;
   right: 20px;
   z-index: 100;
+  display: flex;
+  gap: 10px;
 }
 
 .instructions-btn {
@@ -444,4 +446,23 @@ body.win-gradient {
 .common-patterns strong {
   color: #800080;
   font-weight: bold;
+}
+
+.title-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.game-logo {
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.game-logo:hover {
+  transform: scale(1.1);
 }
