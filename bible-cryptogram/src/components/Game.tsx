@@ -411,22 +411,6 @@ const Game: React.FC = () => {
             moveToPreviousCharacter();
           }
         }}
-        onTouchStart={(e) => {
-          // Prevent default to avoid any unwanted scrolling
-          e.preventDefault();
-          // Get the container's bounding rectangle
-          const rect = e.currentTarget.getBoundingClientRect();
-          // Use the first touch point
-          const touch = e.touches[0];
-          // Calculate if touch is in right half
-          const isRightHalf = touch.clientX > rect.left + rect.width / 2;
-          
-          if (isRightHalf) {
-            moveToNextCharacter();
-          } else {
-            moveToPreviousCharacter();
-          }
-        }}
       >
         {(() => {
           let letterIndex = 0;
