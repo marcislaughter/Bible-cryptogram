@@ -5,7 +5,7 @@ import Controls from './Controls';
 import WordStats from './WordStats';
 import logo from '../assets/heart logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 // Debounce utility function
 const debounce = (func: Function, wait: number) => {
@@ -153,7 +153,9 @@ const Game: React.FC = () => {
   const [currentQuote, setCurrentQuote] = useState(BIBLE_VERSES[0]);
   const [isTouching, setIsTouching] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLDivElement>(null);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   // Create debounced movement functions
@@ -454,11 +456,14 @@ const Game: React.FC = () => {
     };
   }, [isSolved]);
 
-  // Add click outside handler for menu
+  // Add click outside handler for both menus
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
+      }
+      if (hamburgerRef.current && !hamburgerRef.current.contains(event.target as Node)) {
+        setIsHamburgerOpen(false);
       }
     };
 
@@ -469,181 +474,202 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <div className="game-container">
-      {/* Menu in Top Right */}
-      <div className="menu-container" ref={menuRef}>
-        <button 
-          className="menu-button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-        {isMenuOpen && (
-          <div className="menu-dropdown">
-            <Link to="/memorization" className="menu-item" onClick={() => setIsMenuOpen(false)}>
-              Why Memorize?
-            </Link>
-            <Link to="/faith" className="menu-item" onClick={() => setIsMenuOpen(false)}>
-              Statement of Faith
-            </Link>
+    <>
+      <div className="top-banner">
+        <div className="banner-content">
+          <div className="cryptogram-dropdown" ref={menuRef}>
             <button 
-              onClick={() => {
-                handleToggleWordStats();
-                setIsMenuOpen(false);
-              }}
-              className="menu-item"
+              className="cryptogram-button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+              Cryptogram <FontAwesomeIcon icon={faChevronDown} />
+            </button>
+            {isMenuOpen && (
+              <div className="menu-dropdown">
+                <button className="menu-item">
+                  Unscramble
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="hamburger-menu" ref={hamburgerRef}>
+            <button 
+              className="hamburger-button"
+              onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </button>
+            {isHamburgerOpen && (
+              <div className="menu-dropdown">
+                <Link to="/memorization" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
+                  Why Memorize?
+                </Link>
+                <Link to="/faith" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
+                  Statement of Faith
+                </Link>
+                <button 
+                  onClick={() => {
+                    handleToggleWordStats();
+                    setIsHamburgerOpen(false);
+                  }}
+                  className="menu-item"
+                >
+                  {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="game-container">
+        {/* Title and Logo Container */}
+        <div className="title-logo-container">
+          <div className="title-with-help">
+            <h1>Bible Cryptogram</h1>
+            <Link to="/instructions" className="title-help-btn">
+              <FontAwesomeIcon icon={faQuestion} />
+            </Link>
+          </div>
+          <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
+        </div>
+
+        <Controls
+          onReset={handleReset}
+          onNextVerse={handleNextVerse}
+          onHint={handleHint}
+          onAutoCheck={handleAutoCheck}
+          hintsRemaining={hintsRemaining}
+          autoCheckEnabled={autoCheckEnabled}
+        />
+        
+        {/* Word Stats Display */}
+        {wordStatsEnabled && <WordStats />}
+        
+        <div className="quote-container" 
+          onClick={(e) => {
+            // Don't handle click if we're in a touch interaction
+            if (isTouching) return;
+            
+            // Get the container's bounding rectangle
+            const rect = e.currentTarget.getBoundingClientRect();
+            // Calculate if click is in right half
+            const isRightHalf = e.clientX > rect.left + rect.width / 2;
+            
+            if (isRightHalf) {
+              debouncedMoveNext();
+            } else {
+              debouncedMovePrevious();
+            }
+          }}
+          onTouchStart={(e) => {
+            // Only prevent default if we're not touching a letter cell
+            if (!(e.target as HTMLElement).closest('.char-container')) {
+              e.preventDefault();
+            }
+            
+            // If we're already in a touch interaction, ignore this touch
+            if (isTouching) return;
+            
+            setIsTouching(true);
+          }}
+          onTouchEnd={(e) => {
+            if (!isTouching) return;
+            
+            // Get the container's bounding rectangle
+            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+            // Use the last touch point
+            const touch = e.changedTouches[0];
+            // Calculate if touch ended in right half
+            const isRightHalf = touch.clientX > rect.left + rect.width / 2;
+            
+            if (isRightHalf) {
+              debouncedMoveNext();
+            } else {
+              debouncedMovePrevious();
+            }
+            setIsTouching(false);
+          }}
+          onTouchCancel={() => {
+            setIsTouching(false);
+          }}
+        >
+          {(() => {
+            let letterIndex = 0;
+            return encryptedQuote.split(' ').map((word, wordIndex) => (
+              <div key={wordIndex} className="word-container">
+                {word.split('').map((char, charIndex) => {
+                  const isLetter = /[A-Z]/.test(char);
+                  const currentLetterIndex = isLetter ? letterIndex : -1;
+                  if (isLetter) letterIndex++;
+                  
+                  // Check if this character should be highlighted
+                  const isSelected = selectedChar === char && selectedPosition === currentLetterIndex;
+                  const isSameLetter = selectedChar === char; // Highlight all instances of the same letter
+                  
+                  return (
+                    <div
+                      key={charIndex}
+                      className="char-container"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isLetter) {
+                          handleInputClick(char, currentLetterIndex);
+                        }
+                      }}
+                    >
+                      <input
+                        ref={(el) => {
+                          if (isLetter) {
+                            const refKey = `${char}-${currentLetterIndex}`;
+                            inputRefs.current[refKey] = el;
+                          }
+                        }}
+                        type="text"
+                        maxLength={1}
+                        className={`guess-input ${getInputClass(char, isSelected, isSameLetter)}`}
+                        value={guesses[char] || ''}
+                        onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
+                        onFocus={() => {
+                          if (isLetter) {
+                            setSelectedChar(char);
+                            setSelectedPosition(currentLetterIndex);
+                          }
+                        }}
+                        disabled={!isLetter}
+                      />
+                      <div className="encrypted-char">{char}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ));
+          })()}
+        </div>
+        
+        {isSolved && (
+          <div className="solved-message">
+            <h2>Congratulations! You solved it!</h2>
+            <p className="author">— {currentQuote.author}</p>
+            <button 
+              onClick={handleNextVerse}
+              className="next-verse-btn"
+            >
+              Next Verse
             </button>
           </div>
         )}
-      </div>
-
-      {/* Title and Logo Container */}
-      <div className="title-logo-container">
-        <div className="title-with-help">
-          <h1>Bible Cryptogram</h1>
-          <Link to="/instructions" className="title-help-btn">
-            <FontAwesomeIcon icon={faQuestion} />
-          </Link>
+        
+        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={guesses} />
+        
+        <div className="citation">
+          Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
+          Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
+          Used by permission. All rights reserved worldwide.
         </div>
-        <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
       </div>
-
-      <Controls
-        onReset={handleReset}
-        onNextVerse={handleNextVerse}
-        onHint={handleHint}
-        onAutoCheck={handleAutoCheck}
-        hintsRemaining={hintsRemaining}
-        autoCheckEnabled={autoCheckEnabled}
-      />
-      
-      {/* Word Stats Display */}
-      {wordStatsEnabled && <WordStats />}
-      
-      <div className="quote-container" 
-        onClick={(e) => {
-          // Don't handle click if we're in a touch interaction
-          if (isTouching) return;
-          
-          // Get the container's bounding rectangle
-          const rect = e.currentTarget.getBoundingClientRect();
-          // Calculate if click is in right half
-          const isRightHalf = e.clientX > rect.left + rect.width / 2;
-          
-          if (isRightHalf) {
-            debouncedMoveNext();
-          } else {
-            debouncedMovePrevious();
-          }
-        }}
-        onTouchStart={(e) => {
-          // Only prevent default if we're not touching a letter cell
-          if (!(e.target as HTMLElement).closest('.char-container')) {
-            e.preventDefault();
-          }
-          
-          // If we're already in a touch interaction, ignore this touch
-          if (isTouching) return;
-          
-          setIsTouching(true);
-        }}
-        onTouchEnd={(e) => {
-          if (!isTouching) return;
-          
-          // Get the container's bounding rectangle
-          const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-          // Use the last touch point
-          const touch = e.changedTouches[0];
-          // Calculate if touch ended in right half
-          const isRightHalf = touch.clientX > rect.left + rect.width / 2;
-          
-          if (isRightHalf) {
-            debouncedMoveNext();
-          } else {
-            debouncedMovePrevious();
-          }
-          setIsTouching(false);
-        }}
-        onTouchCancel={() => {
-          setIsTouching(false);
-        }}
-      >
-        {(() => {
-          let letterIndex = 0;
-          return encryptedQuote.split(' ').map((word, wordIndex) => (
-            <div key={wordIndex} className="word-container">
-              {word.split('').map((char, charIndex) => {
-                const isLetter = /[A-Z]/.test(char);
-                const currentLetterIndex = isLetter ? letterIndex : -1;
-                if (isLetter) letterIndex++;
-                
-                // Check if this character should be highlighted
-                const isSelected = selectedChar === char && selectedPosition === currentLetterIndex;
-                const isSameLetter = selectedChar === char; // Highlight all instances of the same letter
-                
-                return (
-                  <div
-                    key={charIndex}
-                    className="char-container"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (isLetter) {
-                        handleInputClick(char, currentLetterIndex);
-                      }
-                    }}
-                  >
-                    <input
-                      ref={(el) => {
-                        if (isLetter) {
-                          const refKey = `${char}-${currentLetterIndex}`;
-                          inputRefs.current[refKey] = el;
-                        }
-                      }}
-                      type="text"
-                      maxLength={1}
-                      className={`guess-input ${getInputClass(char, isSelected, isSameLetter)}`}
-                      value={guesses[char] || ''}
-                      onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
-                      onFocus={() => {
-                        if (isLetter) {
-                          setSelectedChar(char);
-                          setSelectedPosition(currentLetterIndex);
-                        }
-                      }}
-                      disabled={!isLetter}
-                    />
-                    <div className="encrypted-char">{char}</div>
-                  </div>
-                );
-              })}
-            </div>
-          ));
-        })()}
-      </div>
-      
-      {isSolved && (
-        <div className="solved-message">
-          <h2>Congratulations! You solved it!</h2>
-          <p className="author">— {currentQuote.author}</p>
-          <button 
-            onClick={handleNextVerse}
-            className="next-verse-btn"
-          >
-            Next Verse
-          </button>
-        </div>
-      )}
-      
-      <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={guesses} />
-      
-      <div className="citation">
-        Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
-        Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
-        Used by permission. All rights reserved worldwide.
-      </div>
-    </div>
+    </>
   );
 };
 
