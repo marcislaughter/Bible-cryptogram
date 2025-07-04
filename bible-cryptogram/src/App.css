@@ -532,7 +532,7 @@ body.win-gradient {
 .banner-right {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-right: 20px;
 }
 
@@ -583,9 +583,6 @@ body.win-gradient {
 }
 
 .hamburger-menu {
-  position: absolute;
-  right: 20px;
-  height: 100%;
   display: flex;
   align-items: center;
 }
