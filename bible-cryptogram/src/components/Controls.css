@@ -4,6 +4,28 @@
   gap: 10px;
   margin-bottom: 20px;
   justify-content: center;
+  align-items: center;
+}
+
+.instructions-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.instructions-btn:hover {
+  background-color: #666666;
+}
+
+.instructions-btn svg {
+  font-size: 20px;
 }
 
 .controls-container button {

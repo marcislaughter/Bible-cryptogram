@@ -4,6 +4,8 @@ import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
 import logo from '../assets/heart logo.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 
 // Debounce utility function
 const debounce = (func: Function, wait: number) => {
@@ -454,9 +456,6 @@ const Game: React.FC = () => {
     <div className="game-container">
       {/* Instructions Link in Top Right */}
       <div className="instructions-link">
-        <Link to="/instructions" className="instructions-btn">
-          Instructions
-        </Link>
         <Link to="/memorization" className="instructions-btn">
           Why Memorize?
         </Link>
@@ -473,7 +472,12 @@ const Game: React.FC = () => {
 
       {/* Title and Logo Container */}
       <div className="title-logo-container">
-        <h1>Bible Cryptogram</h1>
+        <div className="title-with-help">
+          <h1>Bible Cryptogram</h1>
+          <Link to="/instructions" className="title-help-btn">
+            <FontAwesomeIcon icon={faQuestion} />
+          </Link>
+        </div>
         <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
       </div>
 
