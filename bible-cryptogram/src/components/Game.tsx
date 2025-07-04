@@ -67,7 +67,7 @@ const BIBLE_VERSES = [
     author: "1 Corinthians 10:22"
   },
   {
-    text: "'I HAVE THE RIGHT TO DO ANYTHING,' YOU SAY—BUT NOT EVERYTHING IS BENEFICIAL.",
+    text: '"I HAVE THE RIGHT TO DO ANYTHING" YOU SAY—BUT NOT EVERYTHING IS BENEFICIAL.',
     author: "1 Corinthians 10:23a"
   },
   {
@@ -515,7 +515,7 @@ const Game: React.FC = () => {
                   }}
                   className="menu-item"
                 >
-                  {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+                  {wordStatsEnabled ? 'Unpin Word Stats' : 'Pin Word Stats'}
                 </button>
               </div>
             )}
