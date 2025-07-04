@@ -1,7 +1,7 @@
 import React from 'react';
 import './Controls.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLightbulb, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faLightbulb, faRotateLeft, faCheck, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 interface ControlsProps {
   onReset: () => void;
@@ -23,7 +23,7 @@ const Controls: React.FC<ControlsProps> = ({
   return (
     <div className="controls-container">
       <button onClick={onReset}><FontAwesomeIcon icon={faRotateLeft} /> Reset</button>
-      <button onClick={onNextVerse}>Next Verse ➜</button>
+      <button onClick={onNextVerse}><FontAwesomeIcon icon={faArrowRight} /> Next Verse</button>
       <button 
         onClick={onHint} 
         disabled={hintsRemaining <= 0}
@@ -33,9 +33,9 @@ const Controls: React.FC<ControlsProps> = ({
       </button>
       <button 
         onClick={onAutoCheck}
-        className={autoCheckEnabled ? 'active' : ''}
+        className={`auto-check-btn ${autoCheckEnabled ? 'active' : ''}`}
       >
-        {autoCheckEnabled ? '✓ Auto Check' : 'Auto Check'}
+        <FontAwesomeIcon icon={faCheck} /> Auto Check
       </button>
     </div>
   );

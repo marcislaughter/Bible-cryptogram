@@ -52,4 +52,8 @@
 .controls-container button svg {
   margin-right: 5px;
   color: inherit;
+}
+
+.controls-container .auto-check-btn {
+  padding: 10px 15px;
 } 
