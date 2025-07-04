@@ -493,32 +493,37 @@ const Game: React.FC = () => {
             )}
           </div>
 
-          <div className="hamburger-menu" ref={hamburgerRef}>
-            <button 
-              className="hamburger-button"
-              onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </button>
-            {isHamburgerOpen && (
-              <div className="menu-dropdown">
-                <Link to="/memorization" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
-                  Why Memorize?
-                </Link>
-                <Link to="/faith" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
-                  Statement of Faith
-                </Link>
-                <button 
-                  onClick={() => {
-                    handleToggleWordStats();
-                    setIsHamburgerOpen(false);
-                  }}
-                  className="menu-item"
-                >
-                  {wordStatsEnabled ? 'Unpin Word Stats' : 'Pin Word Stats'}
-                </button>
-              </div>
-            )}
+          <div className="banner-right">
+            <Link to="/instructions" className="help-btn">
+              <FontAwesomeIcon icon={faQuestion} />
+            </Link>
+            <div className="hamburger-menu" ref={hamburgerRef}>
+              <button 
+                className="hamburger-button"
+                onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
+              >
+                <FontAwesomeIcon icon={faBars} />
+              </button>
+              {isHamburgerOpen && (
+                <div className="menu-dropdown">
+                  <Link to="/memorization" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
+                    Why Memorize?
+                  </Link>
+                  <Link to="/faith" className="menu-item" onClick={() => setIsHamburgerOpen(false)}>
+                    Statement of Faith
+                  </Link>
+                  <button 
+                    onClick={() => {
+                      handleToggleWordStats();
+                      setIsHamburgerOpen(false);
+                    }}
+                    className="menu-item"
+                  >
+                    {wordStatsEnabled ? 'Unpin Word Stats' : 'Pin Word Stats'}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -528,9 +533,6 @@ const Game: React.FC = () => {
         <div className="title-logo-container">
           <div className="title-with-help">
             <h1>Bible Cryptogram</h1>
-            <Link to="/instructions" className="title-help-btn">
-              <FontAwesomeIcon icon={faQuestion} />
-            </Link>
           </div>
           <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
         </div>
