@@ -22,8 +22,13 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   return (
     <div className="controls-container">
+      <button 
+        onClick={onAutoCheck}
+        className={`auto-check-btn ${autoCheckEnabled ? 'active' : ''}`}
+      >
+        <FontAwesomeIcon icon={faCheck} /> Auto Check
+      </button>
       <button onClick={onReset}><FontAwesomeIcon icon={faRotateLeft} /> Reset</button>
-      <button onClick={onNextVerse}><FontAwesomeIcon icon={faArrowRight} /> Next Verse</button>
       <button 
         onClick={onHint} 
         disabled={hintsRemaining <= 0}
@@ -31,12 +36,7 @@ const Controls: React.FC<ControlsProps> = ({
       >
         <FontAwesomeIcon icon={faLightbulb} /> Hint ({hintsRemaining})
       </button>
-      <button 
-        onClick={onAutoCheck}
-        className={`auto-check-btn ${autoCheckEnabled ? 'active' : ''}`}
-      >
-        <FontAwesomeIcon icon={faCheck} /> Auto Check
-      </button>
+      <button onClick={onNextVerse}><FontAwesomeIcon icon={faArrowRight} /> Next Verse</button>
     </div>
   );
 };
