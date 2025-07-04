@@ -5,7 +5,7 @@ import Controls from './Controls';
 import WordStats from './WordStats';
 import logo from '../assets/heart logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faQuestion, faBars } from '@fortawesome/free-solid-svg-icons';
 
 // Debounce utility function
 const debounce = (func: Function, wait: number) => {
@@ -152,6 +152,8 @@ const Game: React.FC = () => {
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [currentQuote, setCurrentQuote] = useState(BIBLE_VERSES[0]);
   const [isTouching, setIsTouching] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   // Create debounced movement functions
@@ -452,22 +454,49 @@ const Game: React.FC = () => {
     };
   }, [isSolved]);
 
+  // Add click outside handler for menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="game-container">
-      {/* Instructions Link in Top Right */}
-      <div className="instructions-link">
-        <Link to="/memorization" className="instructions-btn">
-          Why Memorize?
-        </Link>
-        <Link to="/faith" className="instructions-btn">
-          Statement of Faith
-        </Link>
+      {/* Menu in Top Right */}
+      <div className="menu-container" ref={menuRef}>
         <button 
-          onClick={handleToggleWordStats}
-          className={`word-stats-btn ${wordStatsEnabled ? 'active' : ''}`}
+          className="menu-button"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+          <FontAwesomeIcon icon={faBars} />
         </button>
+        {isMenuOpen && (
+          <div className="menu-dropdown">
+            <Link to="/memorization" className="menu-item" onClick={() => setIsMenuOpen(false)}>
+              Why Memorize?
+            </Link>
+            <Link to="/faith" className="menu-item" onClick={() => setIsMenuOpen(false)}>
+              Statement of Faith
+            </Link>
+            <button 
+              onClick={() => {
+                handleToggleWordStats();
+                setIsMenuOpen(false);
+              }}
+              className="menu-item"
+            >
+              {wordStatsEnabled ? '✓ Word Stats' : 'Word Stats'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Title and Logo Container */}
