@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
-import logo from '../assets/heart logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -529,14 +528,6 @@ const Game: React.FC = () => {
       </div>
 
       <div className="game-container">
-        {/* Title and Logo Container */}
-        <div className="title-logo-container">
-          <div className="title-with-help">
-            <h1>Bible Cryptogram</h1>
-          </div>
-          <img src={logo} alt="Bible Cryptogram Logo" className="game-logo" />
-        </div>
-
         <Controls
           onReset={handleReset}
           onNextVerse={handleNextVerse}

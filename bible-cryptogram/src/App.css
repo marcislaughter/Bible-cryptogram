@@ -24,13 +24,6 @@ body.win-gradient {
   padding: 0 20px;
 }
 
-.game-container h1 {
-  color: #a3a3a3;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(128, 0, 128, 0.3);
-}
-
 .quote-container {
   display: flex;
   flex-wrap: wrap;
@@ -397,44 +390,7 @@ body.win-gradient {
   margin-bottom: 20px;
 }
 
-.game-logo {
-  width: 35px;
-  height: 35px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-}
 
-.game-logo:hover {
-  transform: scale(1.1);
-}
-
-.title-with-help {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.title-help-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #808080;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
-
-.title-help-btn:hover {
-  background-color: #666666;
-}
-
-.title-help-btn svg {
-  font-size: 18px;
-}
 
 .menu-container {
   position: absolute;
