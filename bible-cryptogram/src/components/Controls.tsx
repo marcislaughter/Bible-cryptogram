@@ -3,6 +3,7 @@ import './Controls.css';
 
 interface ControlsProps {
   onReset: () => void;
+  onNextVerse: () => void;
   onHint: () => void;
   onAutoCheck: () => void;
   hintsRemaining: number;
@@ -11,6 +12,7 @@ interface ControlsProps {
 
 const Controls: React.FC<ControlsProps> = ({ 
   onReset, 
+  onNextVerse,
   onHint, 
   onAutoCheck, 
   hintsRemaining, 
@@ -19,6 +21,7 @@ const Controls: React.FC<ControlsProps> = ({
   return (
     <div className="controls-container">
       <button onClick={onReset}>Reset</button>
+      <button onClick={onNextVerse}>Next Verse ➜</button>
       <button 
         onClick={onHint} 
         disabled={hintsRemaining <= 0}

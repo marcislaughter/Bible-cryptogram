@@ -479,6 +479,7 @@ const Game: React.FC = () => {
 
       <Controls
         onReset={handleReset}
+        onNextVerse={handleNextVerse}
         onHint={handleHint}
         onAutoCheck={handleAutoCheck}
         hintsRemaining={hintsRemaining}
