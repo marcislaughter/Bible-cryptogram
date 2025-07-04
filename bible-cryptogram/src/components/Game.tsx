@@ -392,6 +392,9 @@ const Game: React.FC = () => {
         <Link to="/memorization" className="instructions-btn">
           Why Memorize?
         </Link>
+        <Link to="/faith" className="instructions-btn">
+          Statement of Faith
+        </Link>
         <button 
           onClick={handleToggleWordStats}
           className={`word-stats-btn ${wordStatsEnabled ? 'active' : ''}`}
