@@ -1,5 +1,7 @@
 import React from 'react';
 import './Controls.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLightbulb, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 interface ControlsProps {
   onReset: () => void;
@@ -20,14 +22,14 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   return (
     <div className="controls-container">
-      <button onClick={onReset}>Reset</button>
+      <button onClick={onReset}><FontAwesomeIcon icon={faRotateLeft} /> Reset</button>
       <button onClick={onNextVerse}>Next Verse ➜</button>
       <button 
         onClick={onHint} 
         disabled={hintsRemaining <= 0}
         className={hintsRemaining <= 0 ? 'disabled' : ''}
       >
-        Hint ({hintsRemaining})
+        <FontAwesomeIcon icon={faLightbulb} /> Hint ({hintsRemaining})
       </button>
       <button 
         onClick={onAutoCheck}

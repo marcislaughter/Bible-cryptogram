@@ -47,4 +47,9 @@
   background-color: #800080;
   border-color: #800080;
   transform: none;
+}
+
+.controls-container button svg {
+  margin-right: 5px;
+  color: inherit;
 } 
