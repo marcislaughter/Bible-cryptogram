@@ -140,6 +140,75 @@ const Game: React.FC = () => {
     }
   };
 
+  // Enhanced input change handler for mobile compatibility
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, char: string) => {
+    const value = e.target.value.toUpperCase();
+    const currentGuess = guesses[char] || '';
+    
+    // Get the new character - could be replacement or addition
+    let newChar = '';
+    if (value.length > 0) {
+      // Take the last character if multiple characters somehow got in
+      newChar = value.slice(-1);
+    }
+    
+    // Only allow A-Z letters
+    if (newChar && /^[A-Z]$/.test(newChar)) {
+      // Always replace the current guess with the new letter
+      handleGuessChange(char, newChar);
+      
+      // Clear the input value to prevent display issues on mobile
+      e.target.value = '';
+      
+      // Move to next input
+      setTimeout(() => {
+        getNextInput(e.target).focus();
+      }, 0);
+    } else if (value === '' && currentGuess) {
+      // Handle backspace/delete - only clear if there was a previous guess
+      handleGuessChange(char, '');
+    }
+  };
+
+  // Enhanced focus handler for mobile
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>, char: string) => {
+    setFocusedChar(char);
+    
+    // Force the input to be empty when focused to prevent mobile keyboard issues
+    // This ensures the mobile keyboard can properly detect new input
+    e.target.value = '';
+    
+    // Select all text to ensure next input replaces current content
+    setTimeout(() => {
+      e.target.select();
+    }, 0);
+  };
+
+  // Enhanced blur handler
+  const handleInputBlur = () => {
+    setFocusedChar(null);
+  };
+
+  // Additional input handler for mobile keyboard compatibility
+  const handleInputEvent = (e: React.FormEvent<HTMLInputElement>, char: string) => {
+    const target = e.target as HTMLInputElement;
+    const value = target.value.toUpperCase();
+    
+    if (value.length > 0) {
+      const newChar = value.slice(-1);
+      if (/^[A-Z]$/.test(newChar)) {
+        // Replace current guess
+        handleGuessChange(char, newChar);
+        
+        // Clear input and move to next
+        target.value = '';
+        setTimeout(() => {
+          getNextInput(target).focus();
+        }, 0);
+      }
+    }
+  };
+
   const handleKeyPress = (key: string) => {
     const activeElement = document.activeElement as HTMLInputElement;
     if (activeElement?.classList.contains('guess-input')) {
@@ -284,19 +353,17 @@ const Game: React.FC = () => {
                         maxLength={1}
                         className={`guess-input ${getInputClass(char)}`}
                         value={guesses[char] || ''}
-                        onChange={(e) => {
-                          const value = e.target.value.toUpperCase();
-                          if (/^[A-Z]?$/.test(value)) {
-                            handleGuessChange(char, value);
-                            if (value) {
-                              getNextInput(e.target).focus();
-                            }
-                          }
-                        }}
-                        onFocus={() => setFocusedChar(char)}
-                        onBlur={() => setFocusedChar(null)}
+                        onChange={(e) => handleInputChange(e, char)}
+                        onInput={(e) => handleInputEvent(e, char)}
+                        onFocus={(e) => handleInputFocus(e, char)}
+                        onBlur={handleInputBlur}
                         data-char={char}
                         disabled={!isLetter}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="characters"
+                        spellCheck="false"
+                        inputMode="text"
                       />
                       <div className="encrypted-char">{char}</div>
                     </div>

@@ -391,3 +391,129 @@ body.win-gradient {
 }
 
 /* All styles after this point have been moved to Instructions.css */
+
+/* Mobile-specific optimizations for keyboard handling */
+@media (max-width: 768px) {
+  .guess-input {
+    /* Force larger touch targets on mobile */
+    width: 25px;
+    height: 35px;
+    font-size: 1.1rem;
+    
+    /* Prevent zoom on iOS when focusing inputs */
+    font-size: 16px;
+    
+    /* Ensure consistent text color on mobile */
+    -webkit-text-fill-color: #800080;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  .guess-input:focus {
+    /* Force white text color on focus for mobile */
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    
+    /* Ensure focus background is visible */
+    background-color: #3da542 !important;
+    border-color: #3da542 !important;
+    
+    /* Override any mobile browser focus styles */
+    outline: none !important;
+    box-shadow: 0 0 0 2px #3da542 !important;
+    
+    /* Ensure caret is visible */
+    caret-color: white !important;
+  }
+  
+  .guess-input:focus::selection {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .guess-input:focus::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input:focus::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input.same-letter:not(:focus) {
+    /* Ensure same-letter highlighting works on mobile */
+    background-color: #a7d379 !important;
+    border-color: #a7d379 !important;
+    color: #800080 !important;
+    -webkit-text-fill-color: #800080 !important;
+  }
+  
+  .guess-input.incorrect {
+    /* Ensure incorrect styling is visible on mobile */
+    background-color: #e6ccff !important;
+    border-color: #800080 !important;
+    color: #ff0000 !important;
+    -webkit-text-fill-color: #ff0000 !important;
+  }
+  
+  .guess-input.correct {
+    /* Ensure correct styling is visible on mobile */
+    background-color: #e6ccff !important;
+    border-color: #800080 !important;
+    color: #3da542 !important;
+    -webkit-text-fill-color: #3da542 !important;
+  }
+  
+  /* Adjust spacing for mobile */
+  .word-container {
+    gap: 4px;
+  }
+  
+  .verse-container {
+    gap: 15px;
+    row-gap: 8px;
+    padding: 15px;
+  }
+}
+
+/* Additional mobile optimizations for smaller screens */
+@media (max-width: 480px) {
+  .guess-input {
+    width: 22px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  
+  .verse-container {
+    gap: 10px;
+    row-gap: 6px;
+    padding: 10px;
+  }
+  
+  .word-container {
+    gap: 2px;
+  }
+}
+
+/* Ensure consistent behavior across all mobile browsers */
+.guess-input {
+  /* Prevent text selection issues on mobile */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  /* Prevent input zoom on iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.guess-input:focus {
+  /* Re-enable text selection when focused */
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
