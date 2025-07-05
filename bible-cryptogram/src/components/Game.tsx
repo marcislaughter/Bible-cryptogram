@@ -256,10 +256,6 @@ const Game: React.FC = () => {
     setAutoCheckEnabled(!autoCheckEnabled);
   };
 
-  const handleToggleWordStats = () => {
-    setWordStatsEnabled(!wordStatsEnabled);
-  };
-
   // Function to handle next verse button
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.text === currentVerse.text);
