@@ -94,9 +94,60 @@ body.win-gradient {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: #a3a3a3;
+}
+
+.punctuation-mark {
+  width: 32px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #a3a3a3;
+  background: transparent;
+  border: none;
+  position: relative;
+}
+
+.punctuation-mark.comma {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.apostrophe {
+  align-items: flex-start;
+  padding-top: 8px;
+}
+
+.punctuation-mark.period {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.question {
+  align-items: center;
+}
+
+.punctuation-mark.exclamation {
+  align-items: center;
+}
+
+.punctuation-mark.colon {
+  align-items: center;
+}
+
+.punctuation-mark.semicolon {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.quote {
+  align-items: flex-start;
+  padding-top: 8px;
 }
 
 /* solved message */

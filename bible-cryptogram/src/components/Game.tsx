@@ -341,31 +341,49 @@ const Game: React.FC = () => {
               <div key={wordIndex} className="word-container">
                 {word.split('').map((char, charIndex) => {
                   const isLetter = /[A-Z]/.test(char);
+                  const isPunctuation = /[^A-Z\s]/.test(char);
                   if (isLetter) letterIndex++;
+                  
+                  // Determine punctuation positioning class
+                  const getPunctuationClass = (char: string) => {
+                    if (char === ',') return 'comma';
+                    if (char === "'" || char === "'") return 'apostrophe';
+                    if (char === '.') return 'period';
+                    if (char === '?') return 'question';
+                    if (char === '!') return 'exclamation';
+                    if (char === ':') return 'colon';
+                    if (char === ';') return 'semicolon';
+                    if (char === '"' || char === '"') return 'quote';
+                    return '';
+                  };
                   
                   return (
                     <div
                       key={charIndex}
                       className="char-container"
                     >
-                      <input
-                        type="text"
-                        maxLength={1}
-                        className={`guess-input ${getInputClass(char)}`}
-                        value={guesses[char] || ''}
-                        onChange={(e) => handleInputChange(e, char)}
-                        onInput={(e) => handleInputEvent(e, char)}
-                        onFocus={(e) => handleInputFocus(e, char)}
-                        onBlur={handleInputBlur}
-                        data-char={char}
-                        disabled={!isLetter}
-                        autoComplete="off"
-                        autoCorrect="off"
-                        autoCapitalize="characters"
-                        spellCheck="false"
-                        inputMode="text"
-                      />
-                      <div className="encrypted-char">{char}</div>
+                      {isPunctuation ? (
+                        <div className={`punctuation-mark ${getPunctuationClass(char)}`}>{char}</div>
+                      ) : (
+                        <input
+                          type="text"
+                          maxLength={1}
+                          className={`guess-input ${getInputClass(char)}`}
+                          value={guesses[char] || ''}
+                          onChange={(e) => handleInputChange(e, char)}
+                          onInput={(e) => handleInputEvent(e, char)}
+                          onFocus={(e) => handleInputFocus(e, char)}
+                          onBlur={handleInputBlur}
+                          data-char={char}
+                          disabled={!isLetter}
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="characters"
+                          spellCheck="false"
+                          inputMode="text"
+                        />
+                      )}
+                      {isLetter && <div className="encrypted-char">{char}</div>}
                     </div>
                   );
                 })}
