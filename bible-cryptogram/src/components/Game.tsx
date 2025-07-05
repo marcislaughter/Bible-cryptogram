@@ -19,7 +19,7 @@ const createCipher = (): Record<string, string> => {
 
 const Game: React.FC = () => {
   const [cipher, setCipher] = useState<Record<string, string>>({});
-  const [encryptedQuote, setEncryptedQuote] = useState('');
+  const [encryptedVerse, setEncryptedVerse] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
   const [isSolved, setIsSolved] = useState(false);
   const [hintsRemaining, setHintsRemaining] = useState(3);
@@ -66,7 +66,7 @@ const Game: React.FC = () => {
     };
 
     const encrypted = applyCipher(currentVerse.text);
-    setEncryptedQuote(encrypted);
+    setEncryptedVerse(encrypted);
     setGuesses({});
     setHintsRemaining(3);
     setRevealedLetters([]);
@@ -79,7 +79,7 @@ const Game: React.FC = () => {
 
   // Add effect to handle focusing after state updates
   useEffect(() => {
-    if (encryptedQuote) {  // Only try to focus if we have a quote
+    if (encryptedVerse) {  // Only try to focus if we have a quote
       requestAnimationFrame(() => {
         const firstInput = document.querySelector('.guess-input:not([disabled])') as HTMLInputElement;
         if (firstInput) {
@@ -88,7 +88,7 @@ const Game: React.FC = () => {
         }
       });
     }
-  }, [encryptedQuote]); // Run whenever encryptedQuote changes
+  }, [encryptedVerse]); // Run whenever encryptedVerse changes
 
   // Update keyboard event handler
   useEffect(() => {
@@ -268,7 +268,7 @@ const Game: React.FC = () => {
         <div className="verse-container">
           {(() => {
             let letterIndex = 0;
-            return encryptedQuote.split(' ').map((word, wordIndex) => (
+            return encryptedVerse.split(' ').map((word, wordIndex) => (
               <div key={wordIndex} className="word-container">
                 {word.split('').map((char, charIndex) => {
                   const isLetter = /[A-Z]/.test(char);
