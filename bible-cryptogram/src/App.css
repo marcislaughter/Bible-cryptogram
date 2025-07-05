@@ -74,9 +74,10 @@ body.win-gradient {
   border-color: #3da542;
   color: white;
   outline: none;
+  z-index: 1;
 }
 
-.guess-input.same-letter {
+.guess-input.same-letter:not(:focus) {
   background-color: #a7d379;
   border-color: #a7d379;
   color: #800080;

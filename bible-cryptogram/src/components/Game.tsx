@@ -27,6 +27,7 @@ const Game: React.FC = () => {
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [currentVerse, setcurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
+  const [focusedChar, setFocusedChar] = useState<string | null>(null);
 
   // Helper function to get the next input element
   const getNextInput = (currentInput: HTMLInputElement) => {
@@ -70,19 +71,24 @@ const Game: React.FC = () => {
     setHintsRemaining(3);
     setRevealedLetters([]);
     setIsSolved(false);
-
-    // Focus first input after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      const firstInput = document.querySelector('.guess-input:not([disabled])') as HTMLInputElement;
-      if (firstInput) {
-        firstInput.focus();
-      }
-    }, 100);
   };
 
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
+
+  // Add effect to handle focusing after state updates
+  useEffect(() => {
+    if (encryptedQuote) {  // Only try to focus if we have a quote
+      requestAnimationFrame(() => {
+        const firstInput = document.querySelector('.guess-input:not([disabled])') as HTMLInputElement;
+        if (firstInput) {
+          firstInput.focus();
+          setFocusedChar(firstInput.dataset.char!);
+        }
+      });
+    }
+  }, [encryptedQuote]); // Run whenever encryptedQuote changes
 
   // Update keyboard event handler
   useEffect(() => {
@@ -159,6 +165,7 @@ const Game: React.FC = () => {
     setRevealedLetters([]);
     setAutoCheckEnabled(false);
     setWordStatsEnabled(false);
+    generateNewGame(); // This will trigger the focus effect
   };
 
   const handleHint = () => {
@@ -213,8 +220,7 @@ const Game: React.FC = () => {
     let baseClass = '';
     
     // Check if this character matches the currently focused character
-    const activeElement = document.activeElement as HTMLInputElement;
-    if (activeElement?.dataset.char === char) {
+    if (focusedChar === char) {
       baseClass += 'same-letter';
     }
 
@@ -282,12 +288,13 @@ const Game: React.FC = () => {
                           const value = e.target.value.toUpperCase();
                           if (/^[A-Z]?$/.test(value)) {
                             handleGuessChange(char, value);
-                            // Only move to next cell if we have input a character
                             if (value) {
                               getNextInput(e.target).focus();
                             }
                           }
                         }}
+                        onFocus={() => setFocusedChar(char)}
+                        onBlur={() => setFocusedChar(null)}
                         data-char={char}
                         disabled={!isLetter}
                       />
