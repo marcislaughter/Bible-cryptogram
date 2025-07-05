@@ -43,12 +43,37 @@ const Game: React.FC = () => {
 
   // Create debounced movement functions
   const debouncedMoveNext = useRef(
-    debounce(() => moveToNextCharacter(), 150)
+    debounce(() => moveCharacterPosition('next'), 150)
   ).current;
 
   const debouncedMovePrevious = useRef(
-    debounce(() => moveToPreviousCharacter(), 150)
+    debounce(() => moveCharacterPosition('previous'), 150)
   ).current;
+
+  // Function to move the selected character position
+  const moveCharacterPosition = (direction: 'next' | 'previous') => {
+    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
+    if (allChars.length === 0) return;
+
+    const lastPosition = allChars.length - 1;
+    
+    if (selectedPosition === -1) {
+      // If no character is selected, select first or last based on direction
+      setSelectedPosition(direction === 'next' ? 0 : lastPosition);
+      setSelectedChar(direction === 'next' ? allChars[0] : allChars[lastPosition]);
+      return;
+    }
+
+    let newPosition;
+    if (direction === 'next') {
+      newPosition = selectedPosition < lastPosition ? selectedPosition + 1 : 0;
+    } else {
+      newPosition = selectedPosition > 0 ? selectedPosition - 1 : lastPosition;
+    }
+    
+    setSelectedPosition(newPosition);
+    setSelectedChar(allChars[newPosition]);
+  };
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: Record<string, string>) => {
@@ -106,7 +131,7 @@ const Game: React.FC = () => {
           const guessAccepted = handleGuessChange(selectedChar, key);
           // Move to next character after typing only if guess was accepted
           if (guessAccepted) {
-            moveToNextCharacter();
+            moveCharacterPosition('next');
           }
         }
       } else if (key === 'ESCAPE') {
@@ -115,51 +140,15 @@ const Game: React.FC = () => {
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         handleBackspace();
       } else if (key === 'ARROWLEFT') {
-        moveToPreviousCharacter();
+        moveCharacterPosition('previous');
       } else if (key === 'ARROWRIGHT') {
-        moveToNextCharacter();
+        moveCharacterPosition('next');
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedChar, selectedPosition, guesses]);
-
-  // Function to move to the next character position
-  const moveToNextCharacter = () => {
-    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
-    
-    if (selectedPosition >= 0 && selectedPosition < allChars.length - 1) {
-      const nextPosition = selectedPosition + 1;
-      setSelectedPosition(nextPosition);
-      setSelectedChar(allChars[nextPosition]);
-    } else if (selectedPosition === -1 && allChars.length > 0) {
-      // If no character is selected, select the first one
-      setSelectedPosition(0);
-      setSelectedChar(allChars[0]);
-    }
-  };
-
-  // Function to move to the previous character position
-  const moveToPreviousCharacter = () => {
-    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
-    
-    if (selectedPosition > 0) {
-      const prevPosition = selectedPosition - 1;
-      setSelectedPosition(prevPosition);
-      setSelectedChar(allChars[prevPosition]);
-    } else if (selectedPosition === 0) {
-      // Wrap to the last character
-      const lastPosition = allChars.length - 1;
-      setSelectedPosition(lastPosition);
-      setSelectedChar(allChars[lastPosition]);
-    } else if (selectedPosition === -1 && allChars.length > 0) {
-      // If no character is selected, select the last one
-      const lastPosition = allChars.length - 1;
-      setSelectedPosition(lastPosition);
-      setSelectedChar(allChars[lastPosition]);
-    }
-  };
 
   const handleGuessChange = (encryptedChar: string, guess: string) => {
     const upperGuess = guess.toUpperCase();
@@ -197,7 +186,7 @@ const Game: React.FC = () => {
       const guessAccepted = handleGuessChange(encryptedChar, value);
       if (value && guessAccepted) {
         // Move to next character after typing in input field only if guess was accepted
-        setTimeout(() => moveToNextCharacter(), 0);
+        setTimeout(() => moveCharacterPosition('next'), 0);
       }
     }
   };
@@ -207,7 +196,7 @@ const Game: React.FC = () => {
       const guessAccepted = handleGuessChange(selectedChar, key);
       // Move to the next character after typing only if guess was accepted
       if (guessAccepted) {
-        moveToNextCharacter();
+        moveCharacterPosition('next');
       }
     }
   };
@@ -219,7 +208,7 @@ const Game: React.FC = () => {
       setGuesses(newGuesses);
     }
     // Move to the previous character after deleting
-    moveToPreviousCharacter();
+    moveCharacterPosition('previous');
   };
 
   const handleReset = () => {
