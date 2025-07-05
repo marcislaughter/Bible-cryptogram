@@ -109,6 +109,8 @@ body.win-gradient {
   color: #a3a3a3;
 }
 
+/* solved message */
+
 .solved-message {
   text-align: center;
   margin: 20px 0;
@@ -174,15 +176,6 @@ body.win-gradient {
   padding: 0 20px;
   line-height: 1.4;
   font-family: Arial, sans-serif;
-}
-
-.instructions-toggle {
-  margin-bottom: 20px;
-}
-
-.word-stats-btn.active {
-  background: #800080;
-  color: white;
 }
 
 .instructions-panel {
