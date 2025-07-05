@@ -91,11 +91,6 @@ body.win-gradient {
   color: #800080;
 }
 
-.guess-input.correct {
-  background-color: #3da542;
-  border-color: #3da542;
-  color: white;
-}
 
 .guess-input.incorrect {
   background-color: #e6ccff;
