@@ -16,6 +16,16 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses })
 
   const isGuessed = (key: string) => Object.values(guesses).includes(key);
 
+  const handleKeyClick = (e: React.MouseEvent, key: string) => {
+    e.preventDefault();  // Prevent default button behavior
+    onKeyPress(key);
+  };
+
+  const handleBackspaceClick = (e: React.MouseEvent) => {
+    e.preventDefault();  // Prevent default button behavior
+    onBackspace();
+  };
+
   return (
     <div className="keyboard-container">
       {rows.map((row, rowIndex) => (
@@ -23,7 +33,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses })
           {row.split('').map(key => (
             <button 
               key={key} 
-              onClick={() => onKeyPress(key)}
+              onMouseDown={(e) => handleKeyClick(e, key)}  // Changed from onClick to onMouseDown
               className={isGuessed(key) ? 'guessed' : ''}
             >
               {key}
@@ -31,7 +41,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses })
           ))}
           {rowIndex === rows.length - 1 && (
             <button 
-              onClick={onBackspace}
+              onMouseDown={handleBackspaceClick}  // Changed from onClick to onMouseDown
               className="backspace-button"
             >
               ←
