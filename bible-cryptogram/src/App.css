@@ -14,7 +14,7 @@ body.win-gradient {
   background: linear-gradient(135deg, #800080 0%, #3da542 100%);
 }
 
-.game-container {
+.cryptogram-container {
   margin-top: 70px;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ body.win-gradient {
   padding: 0 20px;
 }
 
-.quote-container {
+.verse-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -54,7 +54,6 @@ body.win-gradient {
   text-align: center;
   font-size: 1rem;
   border: 1px solid #800080;
-  border-bottom: 2px solid #800080;
   text-transform: uppercase;
   background-color: #e6ccff;
   cursor: pointer;
@@ -70,22 +69,25 @@ body.win-gradient {
   cursor: default;
 }
 
+
+/* TODO: See if we need both focus and selected. I think we might so taht we can trigger whetehr the keyboard is visible or nto on mobile */
 .guess-input:focus {
-  outline: none;
-  border-color: #800080;
-  background-color: #800080;
+  background-color: #3da542;
+  border-color: #3da542;
   color: white;
+  outline: none;
 }
 
 .guess-input.selected {
   background-color: #3da542;
   border-color: #3da542;
   color: white;
+  outline: none;
 }
 
 .guess-input.same-letter {
   background-color: #a7d379;
-  border-color: #3da542;
+  border-color: #a7d379;
   color: #800080;
 }
 

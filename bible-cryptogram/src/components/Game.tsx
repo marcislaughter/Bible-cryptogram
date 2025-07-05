@@ -527,7 +527,7 @@ const Game: React.FC = () => {
         </div>
       </div>
 
-      <div className="game-container">
+      <div className="cryptogram-container">
         <Controls
           onReset={handleReset}
           onNextVerse={handleNextVerse}
@@ -540,7 +540,7 @@ const Game: React.FC = () => {
         {/* Word Stats Display */}
         {wordStatsEnabled && <WordStats />}
         
-        <div className="quote-container" 
+        <div className="verse-container" 
           onClick={(e) => {
             // Don't handle click if we're in a touch interaction
             if (isTouching) return;
