@@ -1,0 +1,131 @@
+/* Instructions Panel Styles */
+.instructions-panel {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #a3a3a3;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 20px 0;
+  max-width: 1600px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.instructions-panel h2 {
+  color: #800080;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-shadow: 1px 1px 2px rgba(128, 0, 128, 0.2);
+}
+
+.instructions-content h3 {
+  color: #a3a3a3;
+  margin: 20px 0 10px 0;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #a3a3a3;
+  padding-bottom: 5px;
+}
+
+.instructions-content p {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.instructions-content ul {
+  margin: 10px 0 15px 20px;
+  line-height: 1.6;
+}
+
+.instructions-content li {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.instructions-content strong {
+  color: #800080;
+  font-weight: bold;
+}
+
+/* Instructions Page Styles */
+.instructions-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.instructions-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.instructions-container h1 {
+  color: #a3a3a3;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(163, 163, 163, 0.3);
+}
+
+.instructions-content h2 {
+  color: #a3a3a3;
+  margin: 30px 0 15px 0;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #a3a3a3;
+  padding-bottom: 8px;
+}
+
+.instructions-content p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.instructions-content ul {
+  margin: 15px 0 20px 25px;
+  line-height: 1.6;
+}
+
+.instructions-content li {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.instructions-content strong {
+  color: #800080;
+  font-weight: bold;
+}
+
+.back-to-game {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #a3a3a3;
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #800080 0%, #a3a3a3 100%);
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-decoration: none;
+} 
