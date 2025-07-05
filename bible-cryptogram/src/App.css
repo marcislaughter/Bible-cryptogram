@@ -179,14 +179,13 @@ body.win-gradient {
 }
 
 .word-stats {
-  background:#e6ccff;
+  background: #e6ccff;
   border: 2px solid #800080;
   border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
-  max-width: 1800px;
   width: 95%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 1800px;
 }
 
 .word-stats h3 {
@@ -199,34 +198,22 @@ body.win-gradient {
 
 .stats-content {
   color: #333;
-  line-height: 1.6;
+  line-height: 1.4;
+  padding-left: 20px;
 }
 
-.most-common {
-  margin-bottom: 15px;
-  padding: 10px;
+.stats-content div {
+  margin-bottom: 5px;
+  padding: 5px;
   background-color: #e6ccff;
-  border-radius: 8px;
-  border-left: 4px solid #800080;
-}
-
-.common-patterns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.common-patterns > div {
-  padding: 8px;
-  background-color: #f8f9fa;
   border-radius: 6px;
-  border-left: 3px solid #a3a3a3;
-  font-size: 0.9rem;
+  padding-left: 1em;
+  text-indent: -1em;
+  padding-right: 5px;
 }
 
-.common-patterns strong {
+.stats-content strong {
   color: #800080;
-  font-weight: bold;
 }
 
 .title-logo-container {
