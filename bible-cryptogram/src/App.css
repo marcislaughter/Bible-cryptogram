@@ -178,6 +178,8 @@ body.win-gradient {
   font-family: Arial, sans-serif;
 }
 
+/* words stats */
+
 .word-stats {
   background: #e6ccff;
   border: 2px solid #800080;
@@ -216,12 +218,7 @@ body.win-gradient {
   color: #800080;
 }
 
-.title-logo-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
+/* top menu */
 
 .menu-container {
   position: absolute;
@@ -267,12 +264,12 @@ body.win-gradient {
 .menu-item {
   display: block;
   padding: 12px 20px;
-  color: #333;
+  color: #e6ccff;
   text-decoration: none;
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
-  background: none;
+  background: #333333;
   width: 100%;
   text-align: left;
   font-size: 16px;
@@ -280,8 +277,8 @@ body.win-gradient {
 }
 
 .menu-item:hover {
-  background-color: #f5f5f5;
-  color: #800080;
+  background-color: #800080;
+  color: #e6ccff;
 }
 
 @keyframes slideDown {
