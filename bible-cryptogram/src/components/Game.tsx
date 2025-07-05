@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
-
-// Debounce utility function
-const debounce = (func: Function, wait: number) => {
-  let timeout: number;
-  return (...args: any[]) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
 
 // Utility function to create a substitution cipher
 const createCipher = (): Record<string, string> => {
@@ -30,49 +21,25 @@ const Game: React.FC = () => {
   const [cipher, setCipher] = useState<Record<string, string>>({});
   const [encryptedQuote, setEncryptedQuote] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
-  const [selectedChar, setSelectedChar] = useState<string | null>(null);
-  const [selectedPosition, setSelectedPosition] = useState<number>(-1);
   const [isSolved, setIsSolved] = useState(false);
   const [hintsRemaining, setHintsRemaining] = useState(3);
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [currentVerse, setcurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
-  const [isTouching, setIsTouching] = useState(false);
-  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  // Create debounced movement functions
-  const debouncedMoveNext = useRef(
-    debounce(() => moveCharacterPosition('next'), 150)
-  ).current;
+  // Helper function to get the next input element
+  const getNextInput = (currentInput: HTMLInputElement) => {
+    const allInputs = Array.from(document.querySelectorAll('.guess-input:not([disabled])'));
+    const currentIndex = allInputs.indexOf(currentInput);
+    return allInputs[(currentIndex + 1) % allInputs.length] as HTMLInputElement;
+  };
 
-  const debouncedMovePrevious = useRef(
-    debounce(() => moveCharacterPosition('previous'), 150)
-  ).current;
-
-  // Function to move the selected character position
-  const moveCharacterPosition = (direction: 'next' | 'previous') => {
-    const allChars = encryptedQuote.split('').filter(char => /[A-Z]/.test(char));
-    if (allChars.length === 0) return;
-
-    const lastPosition = allChars.length - 1;
-    
-    if (selectedPosition === -1) {
-      // If no character is selected, select first or last based on direction
-      setSelectedPosition(direction === 'next' ? 0 : lastPosition);
-      setSelectedChar(direction === 'next' ? allChars[0] : allChars[lastPosition]);
-      return;
-    }
-
-    let newPosition;
-    if (direction === 'next') {
-      newPosition = selectedPosition < lastPosition ? selectedPosition + 1 : 0;
-    } else {
-      newPosition = selectedPosition > 0 ? selectedPosition - 1 : lastPosition;
-    }
-    
-    setSelectedPosition(newPosition);
-    setSelectedChar(allChars[newPosition]);
+  // Helper function to get the previous input element
+  const getPreviousInput = (currentInput: HTMLInputElement) => {
+    const allInputs = Array.from(document.querySelectorAll('.guess-input:not([disabled])'));
+    const currentIndex = allInputs.indexOf(currentInput);
+    return allInputs[currentIndex > 0 ? currentIndex - 1 : allInputs.length - 1] as HTMLInputElement;
   };
 
   // Check if the puzzle is solved
@@ -102,53 +69,49 @@ const Game: React.FC = () => {
     setGuesses({});
     setHintsRemaining(3);
     setRevealedLetters([]);
-    
-    // Select the first letter by default
-    const firstLetter = encrypted.split('').find(char => /[A-Z]/.test(char));
-    if (firstLetter) {
-      setSelectedChar(firstLetter);
-      setSelectedPosition(0);
-    } else {
-      setSelectedChar(null);
-      setSelectedPosition(-1);
-    }
-    
     setIsSolved(false);
+
+    // Focus first input after a short delay to ensure DOM is ready
+    setTimeout(() => {
+      const firstInput = document.querySelector('.guess-input:not([disabled])') as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }, 100);
   };
 
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
 
-  // Add keyboard event listener
+  // Update keyboard event handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const activeElement = document.activeElement as HTMLInputElement;
+      if (!activeElement?.classList.contains('guess-input')) return;
+
       const key = event.key.toUpperCase();
       
-      // Only handle letter keys
       if (/^[A-Z]$/.test(key)) {
-        if (selectedChar && selectedPosition >= 0) {
-          const guessAccepted = handleGuessChange(selectedChar, key);
-          // Move to next character after typing only if guess was accepted
-          if (guessAccepted) {
-            moveCharacterPosition('next');
-          }
-        }
-      } else if (key === 'ESCAPE') {
-        setSelectedChar(null);
-        setSelectedPosition(-1);
+        event.preventDefault(); // Prevent default to handle input manually
+        handleGuessChange(activeElement.dataset.char!, key);
+        // Only move to next cell after input is complete
+        getNextInput(activeElement).focus();
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
-        handleBackspace();
+        if (guesses[activeElement.dataset.char!]) {
+          handleGuessChange(activeElement.dataset.char!, '');
+        }
+        getPreviousInput(activeElement).focus();
       } else if (key === 'ARROWLEFT') {
-        moveCharacterPosition('previous');
+        getPreviousInput(activeElement).focus();
       } else if (key === 'ARROWRIGHT') {
-        moveCharacterPosition('next');
+        getNextInput(activeElement).focus();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedChar, selectedPosition, guesses]);
+  }, [guesses]);
 
   const handleGuessChange = (encryptedChar: string, guess: string) => {
     const upperGuess = guess.toUpperCase();
@@ -169,46 +132,24 @@ const Game: React.FC = () => {
     if (checkIfSolved(newGuesses)) {
       setIsSolved(true);
     }
-
-    return true; // Always accept the guess now
-  };
-
-  const handleInputClick = (char: string, position: number) => {
-    if (/[A-Z]/.test(char)) {
-      setSelectedChar(char);
-      setSelectedPosition(position);
-    }
-  };
-
-  // Add new function to handle direct input changes
-  const handleInputChange = (encryptedChar: string, value: string) => {
-    if (/^[A-Z]?$/.test(value)) {
-      const guessAccepted = handleGuessChange(encryptedChar, value);
-      if (value && guessAccepted) {
-        // Move to next character after typing in input field only if guess was accepted
-        setTimeout(() => moveCharacterPosition('next'), 0);
-      }
-    }
   };
 
   const handleKeyPress = (key: string) => {
-    if (selectedChar) {
-      const guessAccepted = handleGuessChange(selectedChar, key);
-      // Move to the next character after typing only if guess was accepted
-      if (guessAccepted) {
-        moveCharacterPosition('next');
-      }
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement?.classList.contains('guess-input')) {
+      handleGuessChange(activeElement.dataset.char!, key);
+      getNextInput(activeElement).focus();
     }
   };
 
   const handleBackspace = () => {
-    if (selectedChar && guesses[selectedChar]) {
-      const newGuesses = { ...guesses };
-      delete newGuesses[selectedChar];
-      setGuesses(newGuesses);
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement?.classList.contains('guess-input')) {
+      if (guesses[activeElement.dataset.char!]) {
+        handleGuessChange(activeElement.dataset.char!, '');
+      }
+      getPreviousInput(activeElement).focus();
     }
-    // Move to the previous character after deleting
-    moveCharacterPosition('previous');
   };
 
   const handleReset = () => {
@@ -256,7 +197,6 @@ const Game: React.FC = () => {
     setAutoCheckEnabled(!autoCheckEnabled);
   };
 
-  // Function to handle next verse button
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.text === currentVerse.text);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
@@ -269,12 +209,12 @@ const Game: React.FC = () => {
   };
 
   // Function to get CSS class for input based on auto-check state
-  const getInputClass = (char: string, isSelected: boolean, isSameLetter: boolean) => {
+  const getInputClass = (char: string) => {
     let baseClass = '';
     
-    if (isSelected) {
-      baseClass += 'selected';
-    } else if (isSameLetter) {
+    // Check if this character matches the currently focused character
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement?.dataset.char === char) {
       baseClass += 'same-letter';
     }
 
@@ -287,29 +227,6 @@ const Game: React.FC = () => {
     return baseClass.trim();
   };
 
-  // Add new useEffect to auto-focus the selected input
-  useEffect(() => {
-    if (selectedChar && selectedPosition >= 0) {
-      const refKey = `${selectedChar}-${selectedPosition}`;
-      const inputElement = inputRefs.current[refKey];
-      if (inputElement) {
-        // Use a small delay to ensure the DOM has updated
-        setTimeout(() => {
-          // Store current scroll position
-          const scrollY = window.scrollY;
-          
-          // Focus the input
-          inputElement.focus({ preventScroll: true });
-          
-          // Restore scroll position if it changed
-          if (window.scrollY !== scrollY) {
-            window.scrollTo(0, scrollY);
-          }
-        }, 10);
-      }
-    }
-  }, [selectedChar, selectedPosition]);
-
   // Add useEffect to manage body background when puzzle is solved
   useEffect(() => {
     if (isSolved) {
@@ -318,7 +235,6 @@ const Game: React.FC = () => {
       document.body.classList.remove('win-gradient');
     }
     
-    // Cleanup function to remove the class when component unmounts
     return () => {
       document.body.classList.remove('win-gradient');
     };
@@ -341,99 +257,38 @@ const Game: React.FC = () => {
           autoCheckEnabled={autoCheckEnabled}
         />
         
-        {/* Word Stats Display */}
         {wordStatsEnabled && <WordStats />}
         
-        <div className="verse-container" 
-          onClick={(e) => {
-            // Don't handle click if we're in a touch interaction
-            if (isTouching) return;
-            
-            // Get the container's bounding rectangle
-            const rect = e.currentTarget.getBoundingClientRect();
-            // Calculate if click is in right half
-            const isRightHalf = e.clientX > rect.left + rect.width / 2;
-            
-            if (isRightHalf) {
-              debouncedMoveNext();
-            } else {
-              debouncedMovePrevious();
-            }
-          }}
-          onTouchStart={(e) => {
-            // Only prevent default if we're not touching a letter cell
-            if (!(e.target as HTMLElement).closest('.char-container')) {
-              e.preventDefault();
-            }
-            
-            // If we're already in a touch interaction, ignore this touch
-            if (isTouching) return;
-            
-            setIsTouching(true);
-          }}
-          onTouchEnd={(e) => {
-            if (!isTouching) return;
-            
-            // Get the container's bounding rectangle
-            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-            // Use the last touch point
-            const touch = e.changedTouches[0];
-            // Calculate if touch ended in right half
-            const isRightHalf = touch.clientX > rect.left + rect.width / 2;
-            
-            if (isRightHalf) {
-              debouncedMoveNext();
-            } else {
-              debouncedMovePrevious();
-            }
-            setIsTouching(false);
-          }}
-          onTouchCancel={() => {
-            setIsTouching(false);
-          }}
-        >
+        <div className="verse-container">
           {(() => {
             let letterIndex = 0;
             return encryptedQuote.split(' ').map((word, wordIndex) => (
               <div key={wordIndex} className="word-container">
                 {word.split('').map((char, charIndex) => {
                   const isLetter = /[A-Z]/.test(char);
-                  const currentLetterIndex = isLetter ? letterIndex : -1;
                   if (isLetter) letterIndex++;
-                  
-                  // Check if this character should be highlighted
-                  const isSelected = selectedChar === char && selectedPosition === currentLetterIndex;
-                  const isSameLetter = selectedChar === char; // Highlight all instances of the same letter
                   
                   return (
                     <div
                       key={charIndex}
                       className="char-container"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (isLetter) {
-                          handleInputClick(char, currentLetterIndex);
-                        }
-                      }}
                     >
                       <input
-                        ref={(el) => {
-                          if (isLetter) {
-                            const refKey = `${char}-${currentLetterIndex}`;
-                            inputRefs.current[refKey] = el;
-                          }
-                        }}
                         type="text"
                         maxLength={1}
-                        className={`guess-input ${getInputClass(char, isSelected, isSameLetter)}`}
+                        className={`guess-input ${getInputClass(char)}`}
                         value={guesses[char] || ''}
-                        onChange={(e) => handleInputChange(char, e.target.value.toUpperCase())}
-                        onFocus={() => {
-                          if (isLetter) {
-                            setSelectedChar(char);
-                            setSelectedPosition(currentLetterIndex);
+                        onChange={(e) => {
+                          const value = e.target.value.toUpperCase();
+                          if (/^[A-Z]?$/.test(value)) {
+                            handleGuessChange(char, value);
+                            // Only move to next cell if we have input a character
+                            if (value) {
+                              getNextInput(e.target).focus();
+                            }
                           }
                         }}
+                        data-char={char}
                         disabled={!isLetter}
                       />
                       <div className="encrypted-char">{char}</div>

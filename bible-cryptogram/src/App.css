@@ -69,16 +69,7 @@ body.win-gradient {
   cursor: default;
 }
 
-
-/* TODO: See if we need both focus and selected. I think we might so taht we can trigger whetehr the keyboard is visible or nto on mobile */
 .guess-input:focus {
-  background-color: #3da542;
-  border-color: #3da542;
-  color: white;
-  outline: none;
-}
-
-.guess-input.selected {
   background-color: #3da542;
   border-color: #3da542;
   color: white;
@@ -90,7 +81,6 @@ body.win-gradient {
   border-color: #a7d379;
   color: #800080;
 }
-
 
 .guess-input.incorrect {
   background-color: #e6ccff;
