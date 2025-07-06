@@ -40,8 +40,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   const verseItems: DropdownItem[] = BIBLE_VERSES.map((verse, index) => ({
     type: 'button',
     content: `${verse.reference}`,
-    onClick: () => onVerseChange(verse),
-    className: verse.text === currentVerse.text ? 'active-verse' : ''
+    onClick: () => onVerseChange(verse)
   }));
 
   // Hamburger menu items
@@ -81,7 +80,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           <Dropdown
             trigger={
               <button className="cryptogram-button">
-                Verses <FontAwesomeIcon icon={faChevronDown} />
+                {currentVerse.reference} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
             items={verseItems}

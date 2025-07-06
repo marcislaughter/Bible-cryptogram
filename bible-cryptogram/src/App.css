@@ -269,8 +269,31 @@ body.win-gradient {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   min-width: 200px;
-  overflow: hidden;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   animation: slideDown 0.2s ease;
+  scrollbar-width: thin;
+  scrollbar-color: #800080 #333333;
+}
+
+.menu-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.menu-dropdown::-webkit-scrollbar-track {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.menu-dropdown::-webkit-scrollbar-thumb {
+  background: #800080;
+  border-radius: 4px;
+  border: 1px solid #333333;
+}
+
+.menu-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #9c1a9c;
 }
 
 .menu-item {
@@ -291,16 +314,6 @@ body.win-gradient {
 .menu-item:hover {
   background-color: #800080;
   color: #e6ccff;
-}
-
-.menu-item.active-verse {
-  background-color: #3da542;
-  color: white;
-  font-weight: bold;
-}
-
-.menu-item.active-verse:hover {
-  background-color: #2e7d32;
 }
 
 @keyframes slideDown {
