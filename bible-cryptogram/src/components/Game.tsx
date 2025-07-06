@@ -273,11 +273,7 @@ const Game: React.FC = () => {
     setAutoCheckEnabled(!autoCheckEnabled);
   };
 
-  const handleNextVerse = () => {
-    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.text === currentVerse.text);
-    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
-    setcurrentVerse(BIBLE_VERSES[nextIndex]);
-  };
+
 
   const handleVerseChange = (verse: BibleVerse) => {
     setcurrentVerse(verse);
@@ -331,7 +327,6 @@ const Game: React.FC = () => {
       <div className="cryptogram-container">
         <Controls
           onReset={handleReset}
-          onNextVerse={handleNextVerse}
           onHint={handleHint}
           onAutoCheck={handleAutoCheck}
           hintsRemaining={hintsRemaining}
@@ -402,12 +397,6 @@ const Game: React.FC = () => {
           <div className="solved-message">
             <h2>Congratulations! You solved it!</h2>
             <p className="reference">— {currentVerse.reference}</p>
-            <button 
-              onClick={handleNextVerse}
-              className="next-verse-btn"
-            >
-              Next Verse
-            </button>
           </div>
         )}
         

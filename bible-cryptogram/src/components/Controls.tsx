@@ -1,11 +1,10 @@
 import React from 'react';
 import './Controls.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLightbulb, faRotateLeft, faCheck, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faLightbulb, faRotateLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface ControlsProps {
   onReset: () => void;
-  onNextVerse: () => void;
   onHint: () => void;
   onAutoCheck: () => void;
   hintsRemaining: number;
@@ -14,7 +13,6 @@ interface ControlsProps {
 
 const Controls: React.FC<ControlsProps> = ({ 
   onReset, 
-  onNextVerse,
   onHint, 
   onAutoCheck, 
   hintsRemaining, 
@@ -36,7 +34,6 @@ const Controls: React.FC<ControlsProps> = ({
       >
         <FontAwesomeIcon icon={faLightbulb} /> Hint ({hintsRemaining})
       </button>
-      <button onClick={onNextVerse}><FontAwesomeIcon icon={faArrowRight} /> Next Verse</button>
     </div>
   );
 };
