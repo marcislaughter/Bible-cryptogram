@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Dropdown, { DropdownItem } from './Dropdown';
+import Dropdown, { type DropdownItem } from './Dropdown';
 import './Dropdown.css';
 
 interface GameHeaderProps {
