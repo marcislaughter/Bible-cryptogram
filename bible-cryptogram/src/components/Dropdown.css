@@ -86,6 +86,6 @@
 }
 
 .verse-dropdown .menu-dropdown {
-  left: 0;
+  left: auto;
   right: auto;
 } 
