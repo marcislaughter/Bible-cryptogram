@@ -37,7 +37,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   ];
 
   // Verse dropdown items
-  const verseItems: DropdownItem[] = BIBLE_VERSES.map((verse, index) => ({
+  const verseItems: DropdownItem[] = BIBLE_VERSES.map((verse) => ({
     type: 'button',
     content: `${verse.reference}`,
     onClick: () => onVerseChange(verse)
