@@ -65,7 +65,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   return (
     <div className="top-banner">
       <div className="banner-content">
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Dropdown
             trigger={
               <button className="cryptogram-button">

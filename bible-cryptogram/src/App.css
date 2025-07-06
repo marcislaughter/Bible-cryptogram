@@ -305,7 +305,7 @@ body.win-gradient {
 }
 
 .cryptogram-dropdown {
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .cryptogram-button {
@@ -314,7 +314,7 @@ body.win-gradient {
   color: #e6ccff;
   font-size: 18px;
   font-weight: bold;
-  padding: 8px 16px;
+  padding: 0px 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -345,7 +345,7 @@ body.win-gradient {
   border: none;
   color: #e6ccff;
   font-size: 20px;
-  padding: 8px;
+  padding: 0px;
   cursor: pointer;
   display: flex;
   align-items: center;
