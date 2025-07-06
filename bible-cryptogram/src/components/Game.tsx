@@ -279,6 +279,10 @@ const Game: React.FC = () => {
     setcurrentVerse(BIBLE_VERSES[nextIndex]);
   };
 
+  const handleVerseChange = (verse: BibleVerse) => {
+    setcurrentVerse(verse);
+  };
+
   // Function to check if a guess is correct
   const isGuessCorrect = (encryptedChar: string, guess: string) => {
     return cipher[guess] === encryptedChar;
@@ -320,6 +324,8 @@ const Game: React.FC = () => {
       <GameHeader 
         wordStatsEnabled={wordStatsEnabled}
         onToggleWordStats={() => setWordStatsEnabled(!wordStatsEnabled)}
+        currentVerse={currentVerse}
+        onVerseChange={handleVerseChange}
       />
 
       <div className="cryptogram-container">

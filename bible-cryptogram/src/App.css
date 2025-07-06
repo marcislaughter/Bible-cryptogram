@@ -293,6 +293,16 @@ body.win-gradient {
   color: #e6ccff;
 }
 
+.menu-item.active-verse {
+  background-color: #3da542;
+  color: white;
+  font-weight: bold;
+}
+
+.menu-item.active-verse:hover {
+  background-color: #2e7d32;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

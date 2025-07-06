@@ -3,14 +3,23 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Dropdown, { type DropdownItem } from './Dropdown';
+import { BIBLE_VERSES } from '../data/bibleVerses';
+import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
 interface GameHeaderProps {
   wordStatsEnabled: boolean;
   onToggleWordStats: () => void;
+  currentVerse: BibleVerse;
+  onVerseChange: (verse: BibleVerse) => void;
 }
 
-const GameHeader: React.FC<GameHeaderProps> = ({ wordStatsEnabled, onToggleWordStats }) => {
+const GameHeader: React.FC<GameHeaderProps> = ({ 
+  wordStatsEnabled, 
+  onToggleWordStats,
+  currentVerse,
+  onVerseChange
+}) => {
   // Cryptogram dropdown items
   const cryptogramItems: DropdownItem[] = [
     {
@@ -26,6 +35,14 @@ const GameHeader: React.FC<GameHeaderProps> = ({ wordStatsEnabled, onToggleWordS
       content: 'Coming soon - Reference Match'
     }
   ];
+
+  // Verse dropdown items
+  const verseItems: DropdownItem[] = BIBLE_VERSES.map((verse, index) => ({
+    type: 'button',
+    content: `${verse.reference}`,
+    onClick: () => onVerseChange(verse),
+    className: verse.text === currentVerse.text ? 'active-verse' : ''
+  }));
 
   // Hamburger menu items
   const hamburgerItems: DropdownItem[] = [
@@ -49,16 +66,29 @@ const GameHeader: React.FC<GameHeaderProps> = ({ wordStatsEnabled, onToggleWordS
   return (
     <div className="top-banner">
       <div className="banner-content">
-        <Dropdown
-          trigger={
-            <button className="cryptogram-button">
-              Cryptogram <FontAwesomeIcon icon={faChevronDown} />
-            </button>
-          }
-          items={cryptogramItems}
-          align="left"
-          className="cryptogram-dropdown"
-        />
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <Dropdown
+            trigger={
+              <button className="cryptogram-button">
+                Cryptogram <FontAwesomeIcon icon={faChevronDown} />
+              </button>
+            }
+            items={cryptogramItems}
+            align="left"
+            className="cryptogram-dropdown"
+          />
+          
+          <Dropdown
+            trigger={
+              <button className="cryptogram-button">
+                Verses <FontAwesomeIcon icon={faChevronDown} />
+              </button>
+            }
+            items={verseItems}
+            align="left"
+            className="verse-dropdown"
+          />
+        </div>
 
         <div className="banner-right">
           <Link to="/instructions" className="help-btn">
