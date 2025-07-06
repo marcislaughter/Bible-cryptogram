@@ -1,0 +1,9 @@
+.dropdown-left {
+  left: 0;
+  right: auto;
+}
+
+.dropdown-right {
+  right: 0;
+  left: auto;
+} 
