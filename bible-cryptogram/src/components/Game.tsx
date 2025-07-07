@@ -273,10 +273,24 @@ const Game: React.FC = () => {
     setAutoCheckEnabled(!autoCheckEnabled);
   };
 
-
-
   const handleVerseChange = (verse: BibleVerse) => {
     setcurrentVerse(verse);
+  };
+
+  // Function to go to the next verse
+  const handleNextVerse = () => {
+    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
+    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    setcurrentVerse(BIBLE_VERSES[nextIndex]);
+  };
+
+  // Function to go to a random verse
+  const handleRandomVerse = () => {
+    let randomVerse;
+    do {
+      randomVerse = BIBLE_VERSES[Math.floor(Math.random() * BIBLE_VERSES.length)];
+    } while (randomVerse.reference === currentVerse.reference && BIBLE_VERSES.length > 1);
+    setcurrentVerse(randomVerse);
   };
 
   // Function to check if a guess is correct
@@ -397,6 +411,14 @@ const Game: React.FC = () => {
           <div className="solved-message">
             <h2>Congratulations! You solved it!</h2>
             <p className="reference">— {currentVerse.reference}</p>
+            <div className="solved-buttons">
+              <button onClick={handleRandomVerse} className="next-verse-btn">
+                Random Verse
+              </button>
+              <button onClick={handleNextVerse} className="next-verse-btn">
+                Next Verse
+              </button>
+            </div>
           </div>
         )}
         
