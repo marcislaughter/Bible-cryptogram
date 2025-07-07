@@ -21,16 +21,16 @@ body.win-gradient {
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
   position: relative;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 .verse-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   row-gap: 8px;
-  padding: 20px;
+  padding: 10px;
   border: 2px solid #800080;
   border-radius: 10px;
   margin: 0 auto;
@@ -357,13 +357,35 @@ body.win-gradient {
   color: white;
 }
 
-
-
-/* All styles after this point have been moved to Instructions.css */
+/* Tablet sizing (1024px and below) */
+@media (max-width: 1024px) {
+  .guess-input {
+    width: 28px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .encrypted-char {
+    width: 28px;
+    height: 36px;
+    font-size: 0.75rem;
+  }
+  
+  .punctuation-mark {
+    width: 28px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
 
 /* Mobile-specific optimizations for keyboard handling */
 @media (max-width: 768px) {
   .guess-input {
+    /* Smaller size for mobile */
+    width: 24px;
+    height: 32px;
+    font-size: 0.9rem;
+    
     /* Prevent zoom on iOS when focusing inputs */
     font-size: 16px;
     
@@ -371,6 +393,18 @@ body.win-gradient {
     -webkit-text-fill-color: #800080;
     -webkit-appearance: none;
     appearance: none;
+  }
+  
+  .encrypted-char {
+    width: 24px;
+    height: 32px;
+    font-size: 0.7rem;
+  }
+  
+  .punctuation-mark {
+    width: 24px;
+    height: 32px;
+    font-size: 0.8rem;
   }
   
   .guess-input:focus {
@@ -443,6 +477,26 @@ body.win-gradient {
 
 /* Additional mobile optimizations for smaller screens */
 @media (max-width: 480px) {
+  .guess-input {
+    width: 14px;
+    height: 25px;
+    font-size: 1rem;
+    /* Keep 16px for iOS to prevent zoom */
+    font-size: 16px;
+  }
+  
+  .encrypted-char {
+    width: 18px;
+    height: 25px;
+    font-size: 0.8rem;
+  }
+  
+  .punctuation-mark {
+    width: 10px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+  
   .verse-container {
     gap: 10px;
     row-gap: 6px;
