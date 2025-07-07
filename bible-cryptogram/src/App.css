@@ -28,7 +28,7 @@ body.win-gradient {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   row-gap: 8px;
   padding: 10px;
   border: 2px solid #800080;
@@ -100,7 +100,7 @@ body.win-gradient {
 }
 
 .punctuation-mark {
-  width: 32px;
+  width: 10px;
   height: 40px;
   display: flex;
   justify-content: center;
