@@ -277,7 +277,7 @@ body.win-gradient {
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 20px;
+  padding: 0 10px;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -286,7 +286,7 @@ body.win-gradient {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .help-btn {
@@ -313,7 +313,6 @@ body.win-gradient {
   border: none;
   color: #e6ccff;
   font-size: 18px;
-  font-weight: bold;
   padding: 0px 5px;
   cursor: pointer;
   display: flex;
