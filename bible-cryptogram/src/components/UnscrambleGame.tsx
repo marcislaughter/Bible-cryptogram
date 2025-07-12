@@ -279,16 +279,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
             ))}
           </div>
         </div>
-
-        <div className="progress-indicator">
-          <span>Word {currentWordIndex + 1} of {originalWords.length}</span>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill"
-              style={{ width: `${((currentWordIndex + (guesses[currentWordIndex] ? 1 : 0)) / originalWords.length) * 100}%` }}
-            ></div>
-          </div>
-        </div>
         
         {isSolved && (
           <div className="solved-message">
