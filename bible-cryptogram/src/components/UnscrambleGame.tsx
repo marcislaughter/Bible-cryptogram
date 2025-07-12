@@ -116,6 +116,36 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     }
   };
 
+  const handleInputChange = (value: string) => {
+    if (isSolved || !value) return;
+    
+    const upperValue = value.toUpperCase();
+    
+    // Check if the input is the correct first letter
+    if (upperValue === originalWords[currentWordIndex]?.[0]) {
+      // Correct guess - move to next word
+      const newGuesses = [...guesses];
+      newGuesses[currentWordIndex] = originalWords[currentWordIndex];
+      setGuesses(newGuesses);
+      
+      // Move to next word or complete the puzzle
+      if (currentWordIndex < originalWords.length - 1) {
+        setCurrentWordIndex(currentWordIndex + 1);
+        setCurrentGuess('');
+      } else {
+        setIsSolved(true);
+      }
+    } else {
+      // Wrong guess, show feedback
+      setCurrentGuess(upperValue);
+      if (autoCheckEnabled) {
+        setTimeout(() => {
+          setCurrentGuess('');
+        }, 1000);
+      }
+    }
+  };
+
   const handleKeyPress = (key: string) => {
     if (isSolved) return;
     
@@ -255,16 +285,11 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                       <input
                         type="text"
                         value={currentGuess}
-                        onChange={(e) => setCurrentGuess(e.target.value.toUpperCase())}
+                        onChange={(e) => handleInputChange(e.target.value)}
                         className={`word-input ${autoCheckEnabled && currentGuess && currentGuess !== originalWords[currentWordIndex]?.[0] ? 'incorrect' : ''}`}
                         placeholder="Type first letter..."
                         maxLength={1}
                         autoFocus
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleGuessChange(currentGuess);
-                          }
-                        }}
                       />
                     </div>
                   ) : (
