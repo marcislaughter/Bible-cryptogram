@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
@@ -149,29 +148,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
         setHasInputError(false);
       }, 1000);
     }
-  };
-
-  const handleKeyPress = (key: string) => {
-    if (isSolved) return;
-    
-    if (key === originalWords[currentWordIndex]?.[0]) {
-      handleGuessChange(key);
-    } else if (autoCheckEnabled) {
-      setCurrentGuess(key);
-      setTimeout(() => {
-        setCurrentGuess('');
-      }, 1000);
-    }
-  };
-
-  const handleBackspace = () => {
-    if (currentWordIndex > 0 && guesses[currentWordIndex] === '') {
-      setCurrentWordIndex(currentWordIndex - 1);
-      const newGuesses = [...guesses];
-      newGuesses[currentWordIndex - 1] = '';
-      setGuesses(newGuesses);
-    }
-    setCurrentGuess('');
   };
 
   const handleReset = () => {
@@ -331,8 +307,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
             </div>
           </div>
         )}
-        
-        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={{}} />
         
         <div className="citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
