@@ -17,7 +17,12 @@ const createCipher = (): Record<string, string> => {
   return cipher;
 };
 
-const Game: React.FC = () => {
+interface CryptogramGameProps {
+  gameType?: import('./GameHeader').GameType;
+  onGameTypeChange?: (gameType: import('./GameHeader').GameType) => void;
+}
+
+const Game: React.FC<CryptogramGameProps> = ({ gameType = 'cryptogram', onGameTypeChange }) => {
   const [cipher, setCipher] = useState<Record<string, string>>({});
   const [encryptedVerse, setEncryptedVerse] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
@@ -336,6 +341,8 @@ const Game: React.FC = () => {
         onToggleWordStats={() => setWordStatsEnabled(!wordStatsEnabled)}
         currentVerse={currentVerse}
         onVerseChange={handleVerseChange}
+        gameType={gameType}
+        onGameTypeChange={onGameTypeChange}
       />
 
       <div className="cryptogram-container">

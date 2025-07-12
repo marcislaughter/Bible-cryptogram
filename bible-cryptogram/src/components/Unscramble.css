@@ -1,0 +1,345 @@
+.unscramble-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.game-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.game-title h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.game-title p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.unscramble-verse-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
+}
+
+.words-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.word-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.word-item.current-word {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.word-item.solved-word {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: #4caf50;
+  animation: solveAnimation 0.5s ease;
+}
+
+.word-item.hint-revealed {
+  background: rgba(255, 152, 0, 0.3);
+  border-color: #ff9800;
+}
+
+@keyframes solveAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.scrambled-word {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #e6ccff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  letter-spacing: 2px;
+}
+
+.word-input-container {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-input {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.word-input:focus {
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  background: white;
+}
+
+.word-input.incorrect {
+  border-color: #f44336;
+  background: rgba(244, 67, 54, 0.2);
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.solved-word-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4caf50;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  padding: 10px;
+  background: rgba(76, 175, 80, 0.2);
+  border-radius: 8px;
+  border: 2px solid #4caf50;
+}
+
+.word-placeholder {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+}
+
+.progress-indicator {
+  width: 100%;
+  max-width: 600px;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.progress-indicator span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  transition: width 0.5s ease;
+  border-radius: 8px;
+}
+
+.solved-message {
+  text-align: center;
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.solved-message h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.revealed-verse {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  line-height: 1.6;
+}
+
+.reference {
+  font-size: 1.3rem;
+  font-style: italic;
+  margin: 15px 0;
+  color: #e6ccff;
+}
+
+.solved-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.next-verse-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.next-verse-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.citation {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .unscramble-container {
+    padding: 15px;
+  }
+  
+  .game-title h2 {
+    font-size: 2rem;
+  }
+  
+  .game-title p {
+    font-size: 1rem;
+  }
+  
+  .words-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .word-item {
+    padding: 15px;
+  }
+  
+  .scrambled-word {
+    font-size: 1.5rem;
+  }
+  
+  .word-input {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  
+  .solved-word-display {
+    font-size: 1.3rem;
+  }
+  
+  .progress-indicator {
+    margin: 20px 0;
+  }
+  
+  .progress-indicator span {
+    font-size: 1rem;
+  }
+  
+  .solved-message {
+    padding: 20px;
+    margin: 30px 0;
+  }
+  
+  .solved-message h2 {
+    font-size: 1.8rem;
+  }
+  
+  .revealed-verse {
+    font-size: 1.2rem;
+  }
+  
+  .solved-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .next-verse-btn {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .words-grid {
+    max-width: 300px;
+  }
+  
+  .word-item {
+    padding: 12px;
+  }
+  
+  .scrambled-word {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+  }
+  
+  .word-input {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+} 

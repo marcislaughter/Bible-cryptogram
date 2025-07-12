@@ -7,24 +7,38 @@ import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
+export type GameType = 'cryptogram' | 'unscramble';
+
 interface GameHeaderProps {
   wordStatsEnabled: boolean;
   onToggleWordStats: () => void;
   currentVerse: BibleVerse;
   onVerseChange: (verse: BibleVerse) => void;
+  gameType?: GameType;
+  onGameTypeChange?: (gameType: GameType) => void;
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ 
   wordStatsEnabled, 
   onToggleWordStats,
   currentVerse,
-  onVerseChange
+  onVerseChange,
+  gameType = 'cryptogram',
+  onGameTypeChange
 }) => {
-  // Cryptogram dropdown items
-  const cryptogramItems: DropdownItem[] = [
+  // Game type dropdown items
+  const gameTypeItems: DropdownItem[] = [
     {
       type: 'button',
-      content: 'Coming soon - Unscramble'
+      content: 'Cryptogram',
+      onClick: () => onGameTypeChange?.('cryptogram'),
+      className: gameType === 'cryptogram' ? 'active-game' : ''
+    },
+    {
+      type: 'button',
+      content: 'Unscramble',
+      onClick: () => onGameTypeChange?.('unscramble'),
+      className: gameType === 'unscramble' ? 'active-game' : ''
     },
     {
       type: 'button',
@@ -69,10 +83,10 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           <Dropdown
             trigger={
               <button className="cryptogram-button">
-                Cryptogram <FontAwesomeIcon icon={faChevronDown} />
+                {gameType === 'cryptogram' ? 'Cryptogram' : 'Unscramble'} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
-            items={cryptogramItems}
+            items={gameTypeItems}
             align="left"
             className="cryptogram-dropdown"
           />

@@ -1,0 +1,311 @@
+import React, { useState, useEffect } from 'react';
+import Keyboard from './Keyboard';
+import Controls from './Controls';
+import WordStats from './WordStats';
+import GameHeader from './GameHeader';
+import { BIBLE_VERSES } from '../data/bibleVerses';
+import type { BibleVerse } from '../data/bibleVerses';
+import './Unscramble.css';
+
+// Utility function to scramble a word
+const scrambleWord = (word: string): string => {
+  const letters = word.split('');
+  for (let i = letters.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [letters[i], letters[j]] = [letters[j], letters[i]];
+  }
+  return letters.join('');
+};
+
+interface UnscrambleGameProps {
+  gameType?: import('./GameHeader').GameType;
+  onGameTypeChange?: (gameType: import('./GameHeader').GameType) => void;
+}
+
+const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ gameType = 'unscramble', onGameTypeChange }) => {
+  const [scrambledVerse, setScrambledVerse] = useState<string[]>([]);
+  const [originalWords, setOriginalWords] = useState<string[]>([]);
+  const [guesses, setGuesses] = useState<string[]>([]);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isSolved, setIsSolved] = useState(false);
+  const [hintsRemaining, setHintsRemaining] = useState(3);
+  const [revealedWords, setRevealedWords] = useState<number[]>([]);
+  const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
+  const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
+  const [currentVerse, setCurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
+  const [currentGuess, setCurrentGuess] = useState('');
+
+  // Check if the puzzle is solved
+  const checkIfSolved = (currentGuesses: string[]) => {
+    return currentGuesses.every((guess, index) => 
+      guess.toUpperCase() === originalWords[index]
+    );
+  };
+
+  const generateNewGame = () => {
+    // Parse the verse into words, handling punctuation
+    const words = currentVerse.text.split(' ').map(word => {
+      // Remove punctuation for scrambling but keep track of it
+      const cleanWord = word.replace(/[^A-Z]/g, '');
+      return cleanWord;
+    }).filter(word => word.length > 0);
+
+    // Store original words
+    setOriginalWords(words);
+
+    // Create scrambled versions
+    const scrambled = words.map(word => {
+      // Don't scramble single letters or very short words
+      if (word.length <= 2) {
+        return word;
+      }
+      let scrambledWord = scrambleWord(word);
+      // Ensure the scrambled word is different from the original
+      while (scrambledWord === word && word.length > 2) {
+        scrambledWord = scrambleWord(word);
+      }
+      return scrambledWord;
+    });
+
+    setScrambledVerse(scrambled);
+    setGuesses(new Array(words.length).fill(''));
+    setCurrentWordIndex(0);
+    setHintsRemaining(3);
+    setRevealedWords([]);
+    setIsSolved(false);
+    setCurrentGuess('');
+  };
+
+  useEffect(() => {
+    generateNewGame();
+  }, [currentVerse]);
+
+  const handleGuessChange = (guess: string) => {
+    const upperGuess = guess.toUpperCase();
+    
+    // Check if the guess is the correct first letter
+    if (upperGuess === originalWords[currentWordIndex]?.[0]) {
+      // Move to next word
+      const newGuesses = [...guesses];
+      newGuesses[currentWordIndex] = originalWords[currentWordIndex];
+      setGuesses(newGuesses);
+      
+      // Move to next word or complete the puzzle
+      if (currentWordIndex < originalWords.length - 1) {
+        setCurrentWordIndex(currentWordIndex + 1);
+        setCurrentGuess('');
+      } else {
+        setIsSolved(true);
+      }
+    } else {
+      // Wrong guess, show feedback if auto-check is enabled
+      setCurrentGuess(upperGuess);
+      setTimeout(() => {
+        if (autoCheckEnabled) {
+          setCurrentGuess('');
+        }
+      }, 1000);
+    }
+  };
+
+  const handleKeyPress = (key: string) => {
+    if (isSolved) return;
+    
+    if (key === originalWords[currentWordIndex]?.[0]) {
+      handleGuessChange(key);
+    } else if (autoCheckEnabled) {
+      setCurrentGuess(key);
+      setTimeout(() => {
+        setCurrentGuess('');
+      }, 1000);
+    }
+  };
+
+  const handleBackspace = () => {
+    if (currentWordIndex > 0 && guesses[currentWordIndex] === '') {
+      setCurrentWordIndex(currentWordIndex - 1);
+      const newGuesses = [...guesses];
+      newGuesses[currentWordIndex - 1] = '';
+      setGuesses(newGuesses);
+    }
+    setCurrentGuess('');
+  };
+
+  const handleReset = () => {
+    setGuesses(new Array(originalWords.length).fill(''));
+    setCurrentWordIndex(0);
+    setIsSolved(false);
+    setHintsRemaining(3);
+    setRevealedWords([]);
+    setAutoCheckEnabled(false);
+    setWordStatsEnabled(false);
+    setCurrentGuess('');
+    generateNewGame();
+  };
+
+  const handleHint = () => {
+    if (hintsRemaining <= 0 || isSolved) return;
+
+    // Reveal the current word
+    const newGuesses = [...guesses];
+    newGuesses[currentWordIndex] = originalWords[currentWordIndex];
+    setGuesses(newGuesses);
+    setRevealedWords([...revealedWords, currentWordIndex]);
+
+    // Move to next word
+    if (currentWordIndex < originalWords.length - 1) {
+      setCurrentWordIndex(currentWordIndex + 1);
+      setCurrentGuess('');
+    } else {
+      setIsSolved(true);
+    }
+
+    setHintsRemaining(prev => prev - 1);
+  };
+
+  const handleAutoCheck = () => {
+    setAutoCheckEnabled(!autoCheckEnabled);
+  };
+
+  const handleVerseChange = (verse: BibleVerse) => {
+    setCurrentVerse(verse);
+  };
+
+  const handleNextVerse = () => {
+    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
+    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    setCurrentVerse(BIBLE_VERSES[nextIndex]);
+  };
+
+  const handleRandomVerse = () => {
+    let randomVerse;
+    do {
+      randomVerse = BIBLE_VERSES[Math.floor(Math.random() * BIBLE_VERSES.length)];
+    } while (randomVerse.reference === currentVerse.reference && BIBLE_VERSES.length > 1);
+    setCurrentVerse(randomVerse);
+  };
+
+  // Add useEffect to manage body background when puzzle is solved
+  useEffect(() => {
+    if (isSolved) {
+      document.body.classList.add('win-gradient');
+    } else {
+      document.body.classList.remove('win-gradient');
+    }
+    
+    return () => {
+      document.body.classList.remove('win-gradient');
+    };
+  }, [isSolved]);
+
+  return (
+    <>
+      <GameHeader 
+        wordStatsEnabled={wordStatsEnabled}
+        onToggleWordStats={() => setWordStatsEnabled(!wordStatsEnabled)}
+        currentVerse={currentVerse}
+        onVerseChange={handleVerseChange}
+        gameType={gameType}
+        onGameTypeChange={onGameTypeChange}
+      />
+
+      <div className="unscramble-container">
+        <div className="game-title">
+          <h2>Unscramble the Words</h2>
+          <p>Type the first letter of each scrambled word to reveal it!</p>
+        </div>
+
+        <Controls
+          onReset={handleReset}
+          onHint={handleHint}
+          onAutoCheck={handleAutoCheck}
+          hintsRemaining={hintsRemaining}
+          autoCheckEnabled={autoCheckEnabled}
+        />
+        
+        {wordStatsEnabled && <WordStats />}
+        
+        <div className="unscramble-verse-container">
+          <div className="words-grid">
+            {scrambledVerse.map((scrambledWord, wordIndex) => (
+              <div
+                key={wordIndex}
+                className={`word-item ${
+                  wordIndex === currentWordIndex ? 'current-word' : ''
+                } ${
+                  guesses[wordIndex] ? 'solved-word' : ''
+                } ${
+                  revealedWords.includes(wordIndex) ? 'hint-revealed' : ''
+                }`}
+              >
+                <div className="scrambled-word">{scrambledWord}</div>
+                <div className="word-input-container">
+                  {guesses[wordIndex] ? (
+                    <div className="solved-word-display">{guesses[wordIndex]}</div>
+                  ) : wordIndex === currentWordIndex ? (
+                    <div className="current-input">
+                      <input
+                        type="text"
+                        value={currentGuess}
+                        onChange={(e) => setCurrentGuess(e.target.value.toUpperCase())}
+                        className={`word-input ${autoCheckEnabled && currentGuess && currentGuess !== originalWords[currentWordIndex]?.[0] ? 'incorrect' : ''}`}
+                        placeholder="Type first letter..."
+                        maxLength={1}
+                        autoFocus
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleGuessChange(currentGuess);
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="word-placeholder">?</div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="progress-indicator">
+          <span>Word {currentWordIndex + 1} of {originalWords.length}</span>
+          <div className="progress-bar">
+            <div 
+              className="progress-fill"
+              style={{ width: `${((currentWordIndex + (guesses[currentWordIndex] ? 1 : 0)) / originalWords.length) * 100}%` }}
+            ></div>
+          </div>
+        </div>
+        
+        {isSolved && (
+          <div className="solved-message">
+            <h2>Congratulations! You unscrambled it!</h2>
+            <div className="revealed-verse">
+              {originalWords.join(' ')}
+            </div>
+            <p className="reference">— {currentVerse.reference}</p>
+            <div className="solved-buttons">
+              <button onClick={handleRandomVerse} className="next-verse-btn">
+                Random Verse
+              </button>
+              <button onClick={handleNextVerse} className="next-verse-btn">
+                Next Verse
+              </button>
+            </div>
+          </div>
+        )}
+        
+        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={{}} />
+        
+        <div className="citation">
+          Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
+          Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
+          Used by permission. All rights reserved worldwide.
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default UnscrambleGame; 
