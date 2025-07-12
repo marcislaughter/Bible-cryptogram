@@ -261,6 +261,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
           onAutoCheck={handleAutoCheck}
           hintsRemaining={hintsRemaining}
           autoCheckEnabled={autoCheckEnabled}
+          showAutoCheck={false}
         />
         
         {wordStatsEnabled && <WordStats />}

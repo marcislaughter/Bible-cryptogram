@@ -9,6 +9,7 @@ interface ControlsProps {
   onAutoCheck: () => void;
   hintsRemaining: number;
   autoCheckEnabled: boolean;
+  showAutoCheck?: boolean;
 }
 
 const Controls: React.FC<ControlsProps> = ({ 
@@ -16,16 +17,19 @@ const Controls: React.FC<ControlsProps> = ({
   onHint, 
   onAutoCheck, 
   hintsRemaining, 
-  autoCheckEnabled
+  autoCheckEnabled,
+  showAutoCheck = true
 }) => {
   return (
     <div className="controls-container">
-      <button 
-        onClick={onAutoCheck}
-        className={`auto-check-btn ${autoCheckEnabled ? 'active' : ''}`}
-      >
-        <FontAwesomeIcon icon={faCheck} /> Auto Check
-      </button>
+      {showAutoCheck && (
+        <button 
+          onClick={onAutoCheck}
+          className={`auto-check-btn ${autoCheckEnabled ? 'active' : ''}`}
+        >
+          <FontAwesomeIcon icon={faCheck} /> Auto Check
+        </button>
+      )}
       <button onClick={onReset}><FontAwesomeIcon icon={faRotateLeft} /> Reset</button>
       <button 
         onClick={onHint} 
