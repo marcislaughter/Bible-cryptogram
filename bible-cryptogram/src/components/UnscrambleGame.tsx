@@ -255,11 +255,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
       />
 
       <div className="unscramble-container">
-        <div className="game-title">
-          <h2>Unscramble the Words</h2>
-          <p>Type the first letter of each scrambled word to reveal it!</p>
-        </div>
-
         <Controls
           onReset={handleReset}
           onHint={handleHint}
