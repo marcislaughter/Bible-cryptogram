@@ -20,9 +20,16 @@ const scrambleWord = (word: string): string => {
 interface UnscrambleGameProps {
   gameType?: import('./GameHeader').GameType;
   onGameTypeChange?: (gameType: import('./GameHeader').GameType) => void;
+  currentVerse?: BibleVerse;
+  onVerseChange?: (verse: BibleVerse) => void;
 }
 
-const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ gameType = 'unscramble', onGameTypeChange }) => {
+const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ 
+  gameType = 'unscramble', 
+  onGameTypeChange, 
+  currentVerse: propCurrentVerse, 
+  onVerseChange: propOnVerseChange 
+}) => {
   const [scrambledVerse, setScrambledVerse] = useState<string[]>([]);
   const [originalWords, setOriginalWords] = useState<string[]>([]);
   const [guesses, setGuesses] = useState<string[]>([]);
@@ -32,7 +39,8 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ gameType = 'unscramble'
   const [revealedWords, setRevealedWords] = useState<number[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
-  const [currentVerse, setCurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
+  const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
+  const onVerseChange = propOnVerseChange || (() => {});
   const [currentGuess, setCurrentGuess] = useState('');
 
   // Check if the puzzle is solved
@@ -168,13 +176,13 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ gameType = 'unscramble'
   };
 
   const handleVerseChange = (verse: BibleVerse) => {
-    setCurrentVerse(verse);
+    onVerseChange(verse);
   };
 
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
-    setCurrentVerse(BIBLE_VERSES[nextIndex]);
+    onVerseChange(BIBLE_VERSES[nextIndex]);
   };
 
   const handleRandomVerse = () => {
@@ -182,7 +190,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({ gameType = 'unscramble'
     do {
       randomVerse = BIBLE_VERSES[Math.floor(Math.random() * BIBLE_VERSES.length)];
     } while (randomVerse.reference === currentVerse.reference && BIBLE_VERSES.length > 1);
-    setCurrentVerse(randomVerse);
+    onVerseChange(randomVerse);
   };
 
   // Add useEffect to manage body background when puzzle is solved

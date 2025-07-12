@@ -6,14 +6,21 @@ import Instructions from './components/Instructions';
 import ScriptureMemorization from './components/ScriptureMemorization';
 import StatementOfFaith from './components/StatementOfFaith';
 import type { GameType } from './components/GameHeader';
+import { BIBLE_VERSES } from './data/bibleVerses';
+import type { BibleVerse } from './data/bibleVerses';
 import './App.css';
 
 // Game container component that manages game switching
 const GameContainer: React.FC = () => {
   const [gameType, setGameType] = useState<GameType>('cryptogram');
+  const [currentVerse, setCurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
 
   const handleGameTypeChange = (newGameType: GameType) => {
     setGameType(newGameType);
+  };
+
+  const handleVerseChange = (verse: BibleVerse) => {
+    setCurrentVerse(verse);
   };
 
   return (
@@ -21,13 +28,17 @@ const GameContainer: React.FC = () => {
       {gameType === 'cryptogram' && (
         <CryptogramGame 
           gameType={gameType} 
-          onGameTypeChange={handleGameTypeChange} 
+          onGameTypeChange={handleGameTypeChange}
+          currentVerse={currentVerse}
+          onVerseChange={handleVerseChange}
         />
       )}
       {gameType === 'unscramble' && (
         <UnscrambleGame 
           gameType={gameType} 
-          onGameTypeChange={handleGameTypeChange} 
+          onGameTypeChange={handleGameTypeChange}
+          currentVerse={currentVerse}
+          onVerseChange={handleVerseChange}
         />
       )}
     </>

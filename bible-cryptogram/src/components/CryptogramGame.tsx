@@ -20,9 +20,16 @@ const createCipher = (): Record<string, string> => {
 interface CryptogramGameProps {
   gameType?: import('./GameHeader').GameType;
   onGameTypeChange?: (gameType: import('./GameHeader').GameType) => void;
+  currentVerse?: BibleVerse;
+  onVerseChange?: (verse: BibleVerse) => void;
 }
 
-const Game: React.FC<CryptogramGameProps> = ({ gameType = 'cryptogram', onGameTypeChange }) => {
+const Game: React.FC<CryptogramGameProps> = ({ 
+  gameType = 'cryptogram', 
+  onGameTypeChange, 
+  currentVerse: propCurrentVerse, 
+  onVerseChange: propOnVerseChange 
+}) => {
   const [cipher, setCipher] = useState<Record<string, string>>({});
   const [encryptedVerse, setEncryptedVerse] = useState('');
   const [guesses, setGuesses] = useState<Record<string, string>>({});
@@ -31,7 +38,8 @@ const Game: React.FC<CryptogramGameProps> = ({ gameType = 'cryptogram', onGameTy
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
-  const [currentVerse, setcurrentVerse] = useState<BibleVerse>(BIBLE_VERSES[0]);
+  const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
+  const onVerseChange = propOnVerseChange || (() => {});
   const [focusedChar, setFocusedChar] = useState<string | null>(null);
 
   // Helper function to get the next input element
@@ -279,14 +287,14 @@ const Game: React.FC<CryptogramGameProps> = ({ gameType = 'cryptogram', onGameTy
   };
 
   const handleVerseChange = (verse: BibleVerse) => {
-    setcurrentVerse(verse);
+    onVerseChange(verse);
   };
 
   // Function to go to the next verse
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
-    setcurrentVerse(BIBLE_VERSES[nextIndex]);
+    onVerseChange(BIBLE_VERSES[nextIndex]);
   };
 
   // Function to go to a random verse
@@ -295,7 +303,7 @@ const Game: React.FC<CryptogramGameProps> = ({ gameType = 'cryptogram', onGameTy
     do {
       randomVerse = BIBLE_VERSES[Math.floor(Math.random() * BIBLE_VERSES.length)];
     } while (randomVerse.reference === currentVerse.reference && BIBLE_VERSES.length > 1);
-    setcurrentVerse(randomVerse);
+    onVerseChange(randomVerse);
   };
 
   // Function to check if a guess is correct
