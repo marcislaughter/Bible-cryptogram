@@ -42,6 +42,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [currentGuess, setCurrentGuess] = useState('');
+  const [hasInputError, setHasInputError] = useState(false);
 
   // Check if the puzzle is solved
   const checkIfSolved = (currentGuesses: string[]) => {
@@ -135,14 +136,18 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
       } else {
         setIsSolved(true);
       }
+      
+      // Clear any error state
+      setHasInputError(false);
     } else {
-      // Wrong guess, show feedback
-      setCurrentGuess(upperValue);
-      if (autoCheckEnabled) {
-        setTimeout(() => {
-          setCurrentGuess('');
-        }, 1000);
-      }
+      // Wrong guess - show red feedback and clear input
+      setHasInputError(true);
+      setCurrentGuess('');
+      
+      // Clear error state after 1 second
+      setTimeout(() => {
+        setHasInputError(false);
+      }, 1000);
     }
   };
 
@@ -178,6 +183,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     setAutoCheckEnabled(false);
     setWordStatsEnabled(false);
     setCurrentGuess('');
+    setHasInputError(false);
     generateNewGame();
   };
 
@@ -194,6 +200,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     if (currentWordIndex < originalWords.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1);
       setCurrentGuess('');
+      setHasInputError(false);
     } else {
       setIsSolved(true);
     }
@@ -286,7 +293,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                         type="text"
                         value={currentGuess}
                         onChange={(e) => handleInputChange(e.target.value)}
-                        className={`word-input ${autoCheckEnabled && currentGuess && currentGuess !== originalWords[currentWordIndex]?.[0] ? 'incorrect' : ''}`}
+                        className={`word-input ${hasInputError ? 'incorrect' : ''}`}
                         placeholder="Type first letter..."
                         maxLength={1}
                         autoFocus
