@@ -441,6 +441,9 @@ const Game: React.FC<CryptogramGameProps> = ({
         {isSolved && (
           <div className="solved-message">
             <h2>Congratulations! You solved it!</h2>
+            <div className="revealed-verse">
+              {currentVerse.text}
+            </div>
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
               <button onClick={handleRandomVerse} className="next-verse-btn">
