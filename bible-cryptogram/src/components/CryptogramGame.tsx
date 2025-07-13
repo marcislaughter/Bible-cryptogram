@@ -363,6 +363,17 @@ const Game: React.FC<CryptogramGameProps> = ({
   useEffect(() => {
     if (isSolved) {
       document.body.classList.add('win-gradient');
+      
+      // Scroll to completion message on mobile
+      setTimeout(() => {
+        const solvedMessage = document.querySelector('.solved-message');
+        if (solvedMessage) {
+          solvedMessage.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+        }
+      }, 100); // Small delay to ensure message is rendered
     } else {
       document.body.classList.remove('win-gradient');
     }
