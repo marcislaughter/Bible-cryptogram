@@ -7,6 +7,39 @@
   padding: 0 1rem;
 }
 
+.arrow-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.arrow-key {
+  flex: 1;
+  height: 2.5rem;
+  border: 1px solid #800080;
+  border-radius: 0.25rem;
+  background-color: #800080;
+  color: #e6ccff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-key:hover {
+  text-shadow: 0 0 1px #e6ccff, 0 0 2px #e6ccff, 0 0 3px #e6ccff;
+}
+
+.arrow-key:active {
+  transform: scale(0.95);
+}
+
 .keyboard-row {
   display: flex;
   justify-content: center;
@@ -93,6 +126,16 @@
     flex: 0 0 calc(15% - 0.1125rem);
     font-size: 0.875rem;
   }
+
+  .arrow-navigation {
+    gap: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .arrow-key {
+    height: 2rem;
+    font-size: 0.875rem;
+  }
 }
 
 /* Very small mobile screens - further reduce sizes */
@@ -115,6 +158,16 @@
 
   .keyboard-key.backspace {
     flex: 0 0 calc(15% - 0.0563rem);
+    font-size: 0.75rem;
+  }
+
+  .arrow-navigation {
+    gap: 0.125rem;
+    margin-bottom: 0.125rem;
+  }
+
+  .arrow-key {
+    height: 1.75rem;
     font-size: 0.75rem;
   }
 }

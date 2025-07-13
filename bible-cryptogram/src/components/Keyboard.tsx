@@ -1,13 +1,17 @@
 import React from 'react';
 import './Keyboard.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 interface KeyboardProps {
   onKeyPress: (key: string) => void;
   onBackspace: () => void;
+  onArrowLeft?: () => void;
+  onArrowRight?: () => void;
   guesses: Record<string, string>;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses }) => {
+const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, onArrowLeft, onArrowRight, guesses }) => {
   const rows = [
     'QWERTYUIOP',
     'ASDFGHJKL',
@@ -26,8 +30,40 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onBackspace, guesses })
     onBackspace();
   };
 
+  const handleArrowLeftClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onArrowLeft?.();
+  };
+
+  const handleArrowRightClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onArrowRight?.();
+  };
+
   return (
     <div className="keyboard">
+      {/* Arrow navigation buttons */}
+      {(onArrowLeft || onArrowRight) && (
+        <div className="arrow-navigation">
+          {onArrowLeft && (
+            <button 
+              onMouseDown={handleArrowLeftClick}
+              className="arrow-key left-arrow"
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+          )}
+          {onArrowRight && (
+            <button 
+              onMouseDown={handleArrowRightClick}
+              className="arrow-key right-arrow"
+            >
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          )}
+        </div>
+      )}
+      
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className={`keyboard-row keyboard-row-${rowIndex + 1}`}>
           {row.split('').map(key => (

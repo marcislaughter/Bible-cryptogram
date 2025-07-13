@@ -249,6 +249,20 @@ const Game: React.FC<CryptogramGameProps> = ({
     }
   };
 
+  const handleArrowLeft = () => {
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement?.classList.contains('guess-input')) {
+      getPreviousInput(activeElement).focus();
+    }
+  };
+
+  const handleArrowRight = () => {
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement?.classList.contains('guess-input')) {
+      getNextInput(activeElement).focus();
+    }
+  };
+
   const handleReset = () => {
     setGuesses({});
     setIsSolved(false);
@@ -456,7 +470,7 @@ const Game: React.FC<CryptogramGameProps> = ({
           </div>
         )}
         
-        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} guesses={guesses} />
+        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onArrowLeft={handleArrowLeft} onArrowRight={handleArrowRight} guesses={guesses} />
         
         <div className="citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
