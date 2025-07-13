@@ -11,6 +11,10 @@
   color: #a3a3a3;
 }
 
+body.win-gradient .unscramble-container {
+  background: transparent;
+}
+
 .unscramble-verse-container {
   display: flex;
   flex-wrap: wrap;
