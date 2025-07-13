@@ -43,12 +43,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
   const [currentGuess, setCurrentGuess] = useState('');
   const [hasInputError, setHasInputError] = useState(false);
 
-  // Check if the puzzle is solved
-  const checkIfSolved = (currentGuesses: string[]) => {
-    return currentGuesses.every((guess, index) => 
-      guess.toUpperCase() === originalWords[index]
-    );
-  };
+
 
   const generateNewGame = () => {
     // Parse the verse into words, handling punctuation
@@ -88,33 +83,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     generateNewGame();
   }, [currentVerse]);
 
-  const handleGuessChange = (guess: string) => {
-    const upperGuess = guess.toUpperCase();
-    
-    // Check if the guess is the correct first letter
-    if (upperGuess === originalWords[currentWordIndex]?.[0]) {
-      // Move to next word
-      const newGuesses = [...guesses];
-      newGuesses[currentWordIndex] = originalWords[currentWordIndex];
-      setGuesses(newGuesses);
-      
-      // Move to next word or complete the puzzle
-      if (currentWordIndex < originalWords.length - 1) {
-        setCurrentWordIndex(currentWordIndex + 1);
-        setCurrentGuess('');
-      } else {
-        setIsSolved(true);
-      }
-    } else {
-      // Wrong guess, show feedback if auto-check is enabled
-      setCurrentGuess(upperGuess);
-      setTimeout(() => {
-        if (autoCheckEnabled) {
-          setCurrentGuess('');
-        }
-      }, 1000);
-    }
-  };
+
 
   const handleInputChange = (value: string) => {
     if (isSolved || !value) return;
