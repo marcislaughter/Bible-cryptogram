@@ -176,14 +176,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     onVerseChange(BIBLE_VERSES[nextIndex]);
   };
 
-  const handleRandomVerse = () => {
-    let randomVerse;
-    do {
-      randomVerse = BIBLE_VERSES[Math.floor(Math.random() * BIBLE_VERSES.length)];
-    } while (randomVerse.reference === currentVerse.reference && BIBLE_VERSES.length > 1);
-    onVerseChange(randomVerse);
-  };
-
   // Add useEffect to manage body background when puzzle is solved
   useEffect(() => {
     if (isSolved) {
@@ -277,9 +269,6 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
             </div>
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
-              <button onClick={handleRandomVerse} className="next-verse-btn">
-                Random Verse
-              </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
