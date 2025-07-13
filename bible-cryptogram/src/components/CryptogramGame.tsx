@@ -41,6 +41,7 @@ const Game: React.FC<CryptogramGameProps> = ({
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [focusedChar, setFocusedChar] = useState<string | null>(null);
+  const [shouldAdvanceFocus, setShouldAdvanceFocus] = useState<HTMLInputElement | null>(null);
 
   // Helper function to get the next input element
   const getNextInput = (currentInput: HTMLInputElement) => {
@@ -103,6 +104,16 @@ const Game: React.FC<CryptogramGameProps> = ({
     }
   }, [encryptedVerse]); // Run whenever encryptedVerse changes
 
+  // Handle focus advancement after state updates
+  useEffect(() => {
+    if (shouldAdvanceFocus) {
+      const nextInput = getNextInput(shouldAdvanceFocus);
+      nextInput.focus();
+      setFocusedChar(nextInput.dataset.char!);
+      setShouldAdvanceFocus(null);
+    }
+  }, [guesses, shouldAdvanceFocus]);
+
   // Update keyboard event handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -114,8 +125,8 @@ const Game: React.FC<CryptogramGameProps> = ({
       if (/^[A-Z]$/.test(key)) {
         event.preventDefault(); // Prevent default to handle input manually
         handleGuessChange(activeElement.dataset.char!, key);
-        // Only move to next cell after input is complete
-        getNextInput(activeElement).focus();
+        // Signal focus advancement after state update
+        setShouldAdvanceFocus(activeElement);
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         if (guesses[activeElement.dataset.char!]) {
           handleGuessChange(activeElement.dataset.char!, '');
@@ -173,10 +184,8 @@ const Game: React.FC<CryptogramGameProps> = ({
       // Clear the input value to prevent display issues on mobile
       e.target.value = '';
       
-      // Move to next input
-      setTimeout(() => {
-        getNextInput(e.target).focus();
-      }, 0);
+      // Signal that we should advance focus after state update completes
+      setShouldAdvanceFocus(e.target);
     } else if (value === '' && currentGuess) {
       // Handle backspace/delete - only clear if there was a previous guess
       handleGuessChange(char, '');
@@ -213,11 +222,9 @@ const Game: React.FC<CryptogramGameProps> = ({
         // Replace current guess
         handleGuessChange(char, newChar);
         
-        // Clear input and move to next
+        // Clear input and signal focus advancement
         target.value = '';
-        setTimeout(() => {
-          getNextInput(target).focus();
-        }, 0);
+        setShouldAdvanceFocus(target);
       }
     }
   };
@@ -226,7 +233,7 @@ const Game: React.FC<CryptogramGameProps> = ({
     const activeElement = document.activeElement as HTMLInputElement;
     if (activeElement?.classList.contains('guess-input')) {
       handleGuessChange(activeElement.dataset.char!, key);
-      getNextInput(activeElement).focus();
+      setShouldAdvanceFocus(activeElement);
     }
   };
 
