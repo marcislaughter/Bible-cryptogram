@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Keyboard from './Keyboard';
 import Controls from './Controls';
 import WordStats from './WordStats';
@@ -43,20 +43,77 @@ const Game: React.FC<CryptogramGameProps> = ({
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [focusedChar, setFocusedChar] = useState<string | null>(null);
-  const [shouldAdvanceFocus, setShouldAdvanceFocus] = useState<HTMLInputElement | null>(null);
+  
+  // Use ref to track if we're currently advancing focus to prevent race conditions
+  const isAdvancingFocus = useRef(false);
+  
+  // Use ref to track the last input that was processed to prevent double processing
+  const lastProcessedInput = useRef<string>('');
+
+  // Helper function to get all input elements
+  const getAllInputs = () => {
+    return Array.from(document.querySelectorAll('.guess-input:not([disabled])')) as HTMLInputElement[];
+  };
 
   // Helper function to get the next input element
   const getNextInput = (currentInput: HTMLInputElement) => {
-    const allInputs = Array.from(document.querySelectorAll('.guess-input:not([disabled])'));
+    const allInputs = getAllInputs();
     const currentIndex = allInputs.indexOf(currentInput);
-    return allInputs[(currentIndex + 1) % allInputs.length] as HTMLInputElement;
+    return allInputs[(currentIndex + 1) % allInputs.length];
   };
 
   // Helper function to get the previous input element
   const getPreviousInput = (currentInput: HTMLInputElement) => {
-    const allInputs = Array.from(document.querySelectorAll('.guess-input:not([disabled])'));
+    const allInputs = getAllInputs();
     const currentIndex = allInputs.indexOf(currentInput);
-    return allInputs[currentIndex > 0 ? currentIndex - 1 : allInputs.length - 1] as HTMLInputElement;
+    return allInputs[currentIndex > 0 ? currentIndex - 1 : allInputs.length - 1];
+  };
+
+  // Robust focus advancement with race condition prevention
+  const advanceFocus = (currentInput: HTMLInputElement) => {
+    if (isAdvancingFocus.current) return;
+    
+    isAdvancingFocus.current = true;
+    
+    // Use immediate focus change instead of requestAnimationFrame
+    const nextInput = getNextInput(currentInput);
+    nextInput.focus();
+    setFocusedChar(nextInput.dataset.char!);
+    
+    // Reset the flag after a short delay
+    setTimeout(() => {
+      isAdvancingFocus.current = false;
+    }, 10);
+  };
+
+  // Move to previous input
+  const moveToPrevious = (currentInput: HTMLInputElement) => {
+    if (isAdvancingFocus.current) return;
+    
+    isAdvancingFocus.current = true;
+    
+    const previousInput = getPreviousInput(currentInput);
+    previousInput.focus();
+    setFocusedChar(previousInput.dataset.char!);
+    
+    setTimeout(() => {
+      isAdvancingFocus.current = false;
+    }, 10);
+  };
+
+  // Move to next input
+  const moveToNext = (currentInput: HTMLInputElement) => {
+    if (isAdvancingFocus.current) return;
+    
+    isAdvancingFocus.current = true;
+    
+    const nextInput = getNextInput(currentInput);
+    nextInput.focus();
+    setFocusedChar(nextInput.dataset.char!);
+    
+    setTimeout(() => {
+      isAdvancingFocus.current = false;
+    }, 10);
   };
 
   // Check if the puzzle is solved
@@ -87,57 +144,58 @@ const Game: React.FC<CryptogramGameProps> = ({
     setHintsRemaining(3);
     setRevealedLetters([]);
     setIsSolved(false);
+    lastProcessedInput.current = '';
   };
 
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
 
-  // Add effect to handle focusing after state updates
+  // Focus first input when game starts
   useEffect(() => {
-    if (encryptedVerse) {  // Only try to focus if we have a quote
-      requestAnimationFrame(() => {
-        const firstInput = document.querySelector('.guess-input:not([disabled])') as HTMLInputElement;
+    if (encryptedVerse) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const firstInput = getAllInputs()[0];
         if (firstInput) {
           firstInput.focus();
           setFocusedChar(firstInput.dataset.char!);
         }
-      });
+      }, 50);
     }
-  }, [encryptedVerse]); // Run whenever encryptedVerse changes
+  }, [encryptedVerse]);
 
-  // Handle focus advancement after state updates
-  useEffect(() => {
-    if (shouldAdvanceFocus) {
-      const nextInput = getNextInput(shouldAdvanceFocus);
-      nextInput.focus();
-      setFocusedChar(nextInput.dataset.char!);
-      setShouldAdvanceFocus(null);
-    }
-  }, [guesses, shouldAdvanceFocus]);
-
-  // Update keyboard event handler
+  // Keyboard event handler with improved race condition handling
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const activeElement = document.activeElement as HTMLInputElement;
-      if (!activeElement?.classList.contains('guess-input')) return;
+      if (!activeElement?.classList.contains('guess-input') || isAdvancingFocus.current) return;
 
       const key = event.key.toUpperCase();
+      const char = activeElement.dataset.char!;
       
       if (/^[A-Z]$/.test(key)) {
-        event.preventDefault(); // Prevent default to handle input manually
-        handleGuessChange(activeElement.dataset.char!, key);
-        // Signal focus advancement after state update
-        setShouldAdvanceFocus(activeElement);
+        event.preventDefault();
+        
+        // Prevent double processing of the same input
+        const inputKey = `${char}-${key}-${Date.now()}`;
+        if (lastProcessedInput.current === inputKey) return;
+        lastProcessedInput.current = inputKey;
+        
+        handleGuessChange(char, key);
+        advanceFocus(activeElement);
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
-        if (guesses[activeElement.dataset.char!]) {
-          handleGuessChange(activeElement.dataset.char!, '');
+        event.preventDefault();
+        if (guesses[char]) {
+          handleGuessChange(char, '');
         }
-        getPreviousInput(activeElement).focus();
+        moveToPrevious(activeElement);
       } else if (key === 'ARROWLEFT') {
-        getPreviousInput(activeElement).focus();
+        event.preventDefault();
+        moveToPrevious(activeElement);
       } else if (key === 'ARROWRIGHT') {
-        getNextInput(activeElement).focus();
+        event.preventDefault();
+        moveToNext(activeElement);
       }
     };
 
@@ -168,6 +226,8 @@ const Game: React.FC<CryptogramGameProps> = ({
 
   // Enhanced input change handler for mobile compatibility
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, char: string) => {
+    if (isAdvancingFocus.current) return;
+    
     const value = e.target.value.toUpperCase();
     const currentGuess = guesses[char] || '';
     
@@ -186,35 +246,18 @@ const Game: React.FC<CryptogramGameProps> = ({
       // Clear the input value to prevent display issues on mobile
       e.target.value = '';
       
-      // Signal that we should advance focus after state update completes
-      setShouldAdvanceFocus(e.target);
+      // Advance focus for mobile
+      advanceFocus(e.target);
     } else if (value === '' && currentGuess) {
       // Handle backspace/delete - only clear if there was a previous guess
       handleGuessChange(char, '');
     }
   };
 
-  // Enhanced focus handler for mobile
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>, char: string) => {
-    setFocusedChar(char);
-    
-    // Force the input to be empty when focused to prevent mobile keyboard issues
-    // This ensures the mobile keyboard can properly detect new input
-    e.target.value = '';
-    
-    // Select all text to ensure next input replaces current content
-    setTimeout(() => {
-      e.target.select();
-    }, 0);
-  };
-
-  // Enhanced blur handler
-  const handleInputBlur = () => {
-    setFocusedChar(null);
-  };
-
   // Additional input handler for mobile keyboard compatibility
   const handleInputEvent = (e: React.FormEvent<HTMLInputElement>, char: string) => {
+    if (isAdvancingFocus.current) return;
+    
     const target = e.target as HTMLInputElement;
     const value = target.value.toUpperCase();
     
@@ -224,42 +267,61 @@ const Game: React.FC<CryptogramGameProps> = ({
         // Replace current guess
         handleGuessChange(char, newChar);
         
-        // Clear input and signal focus advancement
+        // Clear input and advance focus
         target.value = '';
-        setShouldAdvanceFocus(target);
+        advanceFocus(target);
       }
     }
   };
 
+  // Focus handler
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>, char: string) => {
+    if (!isAdvancingFocus.current) {
+      setFocusedChar(char);
+    }
+    
+    // Mobile keyboard compatibility
+    e.target.value = '';
+    setTimeout(() => {
+      e.target.select();
+    }, 0);
+  };
+
+  // Blur handler
+  const handleInputBlur = () => {
+    // Keep focus highlighting until another input is focused
+  };
+
+  // On-screen keyboard handlers
   const handleKeyPress = (key: string) => {
     const activeElement = document.activeElement as HTMLInputElement;
-    if (activeElement?.classList.contains('guess-input')) {
+    if (activeElement?.classList.contains('guess-input') && !isAdvancingFocus.current) {
       handleGuessChange(activeElement.dataset.char!, key);
-      setShouldAdvanceFocus(activeElement);
+      advanceFocus(activeElement);
     }
   };
 
   const handleBackspace = () => {
     const activeElement = document.activeElement as HTMLInputElement;
-    if (activeElement?.classList.contains('guess-input')) {
+    if (activeElement?.classList.contains('guess-input') && !isAdvancingFocus.current) {
       if (guesses[activeElement.dataset.char!]) {
         handleGuessChange(activeElement.dataset.char!, '');
       }
-      getPreviousInput(activeElement).focus();
+      moveToPrevious(activeElement);
     }
   };
 
   const handleArrowLeft = () => {
     const activeElement = document.activeElement as HTMLInputElement;
-    if (activeElement?.classList.contains('guess-input')) {
-      getPreviousInput(activeElement).focus();
+    if (activeElement?.classList.contains('guess-input') && !isAdvancingFocus.current) {
+      moveToPrevious(activeElement);
     }
   };
 
   const handleArrowRight = () => {
     const activeElement = document.activeElement as HTMLInputElement;
-    if (activeElement?.classList.contains('guess-input')) {
-      getNextInput(activeElement).focus();
+    if (activeElement?.classList.contains('guess-input') && !isAdvancingFocus.current) {
+      moveToNext(activeElement);
     }
   };
 
@@ -270,7 +332,9 @@ const Game: React.FC<CryptogramGameProps> = ({
     setRevealedLetters([]);
     setAutoCheckEnabled(false);
     setWordStatsEnabled(false);
-    generateNewGame(); // This will trigger the focus effect
+    isAdvancingFocus.current = false;
+    lastProcessedInput.current = '';
+    generateNewGame();
   };
 
   const handleHint = () => {
