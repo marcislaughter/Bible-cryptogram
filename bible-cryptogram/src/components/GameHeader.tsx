@@ -31,14 +31,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     {
       type: 'button',
       content: 'Cryptogram',
-      onClick: () => onGameTypeChange?.('cryptogram'),
-      className: gameType === 'cryptogram' ? 'active-game' : ''
+      onClick: () => onGameTypeChange?.('cryptogram')
     },
     {
       type: 'button',
       content: 'Unscramble',
-      onClick: () => onGameTypeChange?.('unscramble'),
-      className: gameType === 'unscramble' ? 'active-game' : ''
+      onClick: () => onGameTypeChange?.('unscramble')
     },
     {
       type: 'button',

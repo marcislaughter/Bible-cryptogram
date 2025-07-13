@@ -90,12 +90,4 @@
   right: auto;
 }
 
-.menu-item.active-game {
-  background-color: #800080;
-  color: #e6ccff;
-  font-weight: bold;
-}
-
-.menu-item.active-game:hover {
-  background-color: #9c1a9c;
-} 
+ 
