@@ -5,6 +5,8 @@ import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 // Utility function to create a substitution cipher
 const createCipher = (): Record<string, string> => {
@@ -297,6 +299,13 @@ const Game: React.FC<CryptogramGameProps> = ({
     onVerseChange(verse);
   };
 
+  // Function to get the next verse reference
+  const getNextVerseReference = () => {
+    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
+    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    return BIBLE_VERSES[nextIndex].reference;
+  };
+
   // Function to go to the next verse
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
@@ -438,7 +447,7 @@ const Game: React.FC<CryptogramGameProps> = ({
                 Random Verse
               </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
-                Next Verse
+                {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
           </div>

@@ -4,6 +4,8 @@ import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './Unscramble.css';
 
 // Utility function to scramble a word
@@ -161,6 +163,13 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     onVerseChange(verse);
   };
 
+  // Function to get the next verse reference
+  const getNextVerseReference = () => {
+    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
+    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    return BIBLE_VERSES[nextIndex].reference;
+  };
+
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
@@ -261,7 +270,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                 Random Verse
               </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
-                Next Verse
+                {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
           </div>
