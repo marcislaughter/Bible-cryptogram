@@ -44,8 +44,9 @@
 }
 
 .word-item.current-word {
-  border-color: #3da542;
-  box-shadow: 0 0 10px rgba(61, 165, 66, 0.3);
+  border-color: #800080;
+  box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
+  border-width: 5px;
 }
 
 .word-item.solved-word {

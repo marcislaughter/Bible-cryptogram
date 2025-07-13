@@ -266,7 +266,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                         value={currentGuess}
                         onChange={(e) => handleInputChange(e.target.value)}
                         className={`word-input ${hasInputError ? 'incorrect' : ''}`}
-                        placeholder="Type first letter..."
+                        placeholder="|"
                         maxLength={1}
                         autoFocus
                       />
