@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ScriptureMemorization: React.FC = () => {
   return (
@@ -39,7 +40,7 @@ const ScriptureMemorization: React.FC = () => {
         </div>
 
         <div className="back-to-game">
-          <a href="#/" className="back-btn">← Back to Game</a>
+          <Link to="/" className="back-btn">← Back to Game</Link>
         </div>
       </div>
     </div>

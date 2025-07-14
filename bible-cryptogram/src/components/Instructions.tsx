@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Instructions.css';
 
 const Instructions: React.FC = () => {
   return (
     <div className="instructions-page">
-      <a href="#/" className="top-back-btn">← Back to Game</a>
+      <Link to="/" className="top-back-btn">← Back to Game</Link>
       
       <div className="instructions-container">
         <h1>How to Play Cryptogram</h1>
@@ -53,7 +54,7 @@ const Instructions: React.FC = () => {
         </div>
 
         <div className="back-to-game">
-          <a href="#/" className="back-btn">← Back to Game</a>
+          <Link to="/" className="back-btn">← Back to Game</Link>
         </div>
       </div>
     </div>

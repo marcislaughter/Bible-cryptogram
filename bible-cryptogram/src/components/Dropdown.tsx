@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 
 export interface DropdownItem {
@@ -60,14 +61,14 @@ const Dropdown: React.FC<DropdownProps> = ({
           {items.map((item, index) => {
             if (item.type === 'link' && item.href) {
               return (
-                <a
+                <Link
                   key={index}
-                  href={item.href}
+                  to={item.href}
                   className={`menu-item ${item.className || ''}`}
                   onClick={() => handleItemClick(item)}
                 >
                   {item.content}
-                </a>
+                </Link>
               );
             } else {
               return (
