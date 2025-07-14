@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import CryptogramGame from './components/CryptogramGame';
 import UnscrambleGame from './components/UnscrambleGame';
 import Instructions from './components/Instructions';
+import UnscrambleInstructions from './components/UnscrambleInstructions';
 import ScriptureMemorization from './components/ScriptureMemorization';
 import StatementOfFaith from './components/StatementOfFaith';
 import type { GameType } from './components/GameHeader';
@@ -51,6 +52,7 @@ function App() {
       <Routes>
         <Route path="/" element={<GameContainer />} />
         <Route path="/instructions" element={<Instructions />} />
+        <Route path="/unscramble-instructions" element={<UnscrambleInstructions />} />
         <Route path="/memorization" element={<ScriptureMemorization />} />
         <Route path="/faith" element={<StatementOfFaith />} />
       </Routes>

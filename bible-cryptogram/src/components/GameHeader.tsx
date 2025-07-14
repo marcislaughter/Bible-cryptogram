@@ -100,7 +100,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
         </div>
 
         <div className="banner-right">
-          <Link to="/instructions" className="help-btn">
+          <Link to={gameType === 'cryptogram' ? '/instructions' : '/unscramble-instructions'} className="help-btn">
             <FontAwesomeIcon icon={faQuestion} />
           </Link>
           <Dropdown
