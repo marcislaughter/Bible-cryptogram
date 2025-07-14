@@ -281,6 +281,82 @@ export const BIBLE_VERSES: BibleVerse[] = [
   {
     text: "AND WHEN I COME I WILL GIVE FURTHER DIRECTIONS.",
     reference: "1 Cor 11:34b"
+  },
+  {
+    text: "GOD GRANT ME THE SERENITY TO ACCEPT THE THINGS I CANNOT CHANGE; COURAGE TO CHANGE THE THINGS I CAN; AND WISDOM TO KNOW THE DIFFERENCE.",
+    reference: "Serenity Prayer 1"
+  },
+  {
+    text: "LIVING ONE DAY AT A TIME; ENJOYING ONE MOMENT AT A TIME; ACCEPTING HARDSHIPS AS THE PATHWAY TO PEACE; TAKING, AS HE DID, THIS SINFUL WORLD AS IT IS, NOT AS I WOULD HAVE IT; TRUSTING THAT HE WILL MAKE ALL THINGS RIGHT IF I SURRENDER TO HIS WILL;",
+    reference: "Serenity Prayer 2"
+  },
+  {
+    text: "THAT I MAY BE REASONABLY HAPPY IN THIS LIFE AND SUPREMELY HAPPY WITH HIM FOREVER IN THE NEXT. AMEN.",
+    reference: "Serenity Prayer 3"
+  },
+  {
+    text: "I ARISE TODAY THROUGH A MIGHTY STRENGTH, THE INVOCATION OF THE TRINITY, THROUGH BELIEF IN THE THREENESS, THROUGH CONFESSION OF THE ONENESS OF THE CREATOR OF CREATION.",
+    reference: "St. Pat. Breastplate 1"
+  },
+  {
+    text: "I ARISE TODAY THROUGH THE STRENGTH OF CHRIST'S BIRTH WITH HIS BAPTISM, THROUGH THE STRENGTH OF HIS CRUCIFIXION WITH HIS BURIAL, THROUGH THE STRENGTH OF HIS RESURRECTION WITH HIS ASCENSION, THROUGH THE STRENGTH OF HIS DESCENT FOR THE JUDGMENT OF DOOM.",
+    reference: "St. Pat. Breastplate 2"
+  },
+  {
+    text: "I ARISE TODAY THROUGH THE STRENGTH OF THE LOVE OF CHERUBIM, IN THE OBEDIENCE OF ANGELS, IN THE SERVICE OF ARCHANGELS, IN THE HOPE OF RESURRECTION TO MEET WITH REWARD, IN THE PRAYERS OF PATRIARCHS, IN THE PREDICTIONS OF PROPHETS, IN THE PREACHING OF APOSTLES, IN THE FAITH OF CONFESSORS, IN THE INNOCENCE OF HOLY VIRGINS, IN THE DEEDS OF RIGHTEOUS MEN.",
+    reference: "St. Pat. Breastplate 3"
+  },
+  {
+    text: "I ARISE TODAY, THROUGH THE STRENGTH OF HEAVEN, THE LIGHT OF THE SUN, THE RADIANCE OF THE MOON, THE SPLENDOR OF FIRE, THE SPEED OF LIGHTNING, THE SWIFTNESS OF WIND, THE DEPTH OF THE SEA, THE STABILITY OF THE EARTH, THE FIRMNESS OF ROCK.",
+    reference: "St. Pat. Breastplate 4"
+  },
+  {
+    text: "I ARISE TODAY, THROUGH GOD'S STRENGTH TO PILOT ME, GOD'S MIGHT TO UPHOLD ME, GOD'S WISDOM TO GUIDE ME, GOD'S EYE TO LOOK BEFORE ME, GOD'S EAR TO HEAR ME, GOD'S WORD TO SPEAK FOR ME, GOD'S HAND TO GUARD ME, GOD'S SHIELD TO PROTECT ME, GOD'S HOST TO SAVE ME FROM SNARES OF DEVILS, FROM TEMPTATION OF VICES, FROM EVERYONE WHO SHALL WISH ME ILL, AFAR AND NEAR.",
+    reference: "St. Pat. Breastplate 5"
+  },
+  {
+    text: "I SUMMON TODAY ALL THESE POWERS BETWEEN ME AND THOSE EVILS, AGAINST EVERY CRUEL AND MERCILESS POWER THAT MAY OPPOSE MY BODY AND SOUL, AGAINST INCANTATIONS OF FALSE PROPHETS, AGAINST BLACK LAWS OF PAGANDOM, AGAINST FALSE LAWS OF HERETICS, AGAINST CRAFT OF IDOLATRY, AGAINST SPELLS OF WITCHES AND SMITHS AND WIZARDS, AGAINST EVERY KNOWLEDGE THAT CORRUPTS MAN'S BODY AND SOUL; CHRIST TO SHIELD ME TODAY AGAINST POISON, AGAINST BURNING, AGAINST DROWNING, AGAINST WOUNDING, SO THAT THERE MAY COME TO ME AN ABUNDANCE OF REWARD.",
+    reference: "St. Pat. Breastplate 6"
+  },
+  {
+    text: "CHRIST WITH ME, CHRIST BEFORE ME, CHRIST BEHIND ME, CHRIST IN ME, CHRIST BENEATH ME, CHRIST ABOVE ME, CHRIST ON MY RIGHT, CHRIST ON MY LEFT, CHRIST WHEN I LIE DOWN, CHRIST WHEN I SIT DOWN, CHRIST WHEN I ARISE, CHRIST IN THE HEART OF EVERY MAN WHO THINKS OF ME, CHRIST IN THE MOUTH OF EVERYONE WHO SPEAKS OF ME, CHRIST IN EVERY EYE THAT SEES ME, CHRIST IN EVERY EAR THAT HEARS ME.",
+    reference: "St. Pat. Breastplate 7"
+  },
+  {
+    text: "LORD, MAKE ME AN INSTRUMENT OF YOUR PEACE. WHERE THERE IS HATRED, LET ME BRING LOVE. WHERE THERE IS OFFENCE, LET ME BRING PARDON. WHERE THERE IS DISCORD, LET ME BRING UNION. WHERE THERE IS ERROR, LET ME BRING TRUTH. WHERE THERE IS DOUBT, LET ME BRING FAITH. WHERE THERE IS DESPAIR, LET ME BRING HOPE. WHERE THERE IS DARKNESS, LET ME BRING YOUR LIGHT. WHERE THERE IS SADNESS, LET ME BRING JOY.",
+    reference: "Prayer of St. Francis 1"
+  },
+  {
+    text: "O LORD, GRANT THAT I MAY NOT SO MUCH SEEK TO BE CONSOLED AS TO CONSOLE, TO BE UNDERSTOOD AS TO UNDERSTAND, TO BE LOVED AS TO LOVE, FOR IT IS IN GIVING THAT ONE RECEIVES, IT IS IN SELF-FORGETTING THAT ONE FINDS, IT IS IN FORGIVING THAT ONE IS FORGIVEN, IT IS IN DYING THAT ONE AWAKENS TO ETERNAL LIFE.",
+    reference: "Prayer of St. Francis 2"
+  },
+  {
+    text: "ALMIGHTY AND MOST MERCIFUL FATHER, WE HAVE ERRED AND STRAYED FROM THY WAYS LIKE LOST SHEEP,",
+    reference: "Confession Prayer 1"
+  },
+  {
+    text: "WE HAVE FOLLOWED TOO MUCH THE DEVICES AND DESIRES OF OUR OWN HEARTS, WE HAVE OFFENDED AGAINST THY HOLY LAWS,",
+    reference: "Confession Prayer 2"
+  },
+  {
+    text: "WE HAVE LEFT UNDONE THOSE THINGS WHICH WE OUGHT TO HAVE DONE, AND WE HAVE DONE THOSE THINGS WHICH WE OUGHT NOT TO HAVE DONE,",
+    reference: "Confession Prayer 3"
+  },
+  {
+    text: "AND THERE IS NO HEALTH IN US. BUT THOU, O LORD, HAVE MERCY UPON US MISERABLE OFFENDERS;",
+    reference: "Confession Prayer 4"
+  },
+  {
+    text: "SPARE THOU THEM, O GOD, WHICH CONFESS THEIR FAULTS. RESTORE THOU THEM THAT ARE PENITENT,",
+    reference: "Confession Prayer 5"
+  },
+  {
+    text: "ACCORDING TO THY PROMISES DECLARED UNTO MANKIND IN CHRIST JESU OUR LORD. AND GRANT, O MOST MERCIFUL FATHER, FOR HIS SAKE,",
+    reference: "Confession Prayer 6"
+  },
+  {
+    text: "THAT WE MAY HEREAFTER LIVE A GODLY, RIGHTEOUS, AND SOBER LIFE, TO THE GLORY OF THY HOLY NAME. AMEN.",
+    reference: "Confession Prayer 7"
   }
 ];
 
@@ -289,16 +365,38 @@ export const organizeVersesByChapter = (): ChapterGroup[] => {
   const chapters = new Map<string, BibleVerse[]>();
   
   BIBLE_VERSES.forEach(verse => {
-    // Extract chapter from reference (e.g., "1 Cor 10:14" -> "1 Cor 10")
-    const chapterMatch = verse.reference.match(/^(.*?\d+):/);
-    if (chapterMatch) {
-      const chapterRef = chapterMatch[1];
-      
-      if (!chapters.has(chapterRef)) {
-        chapters.set(chapterRef, []);
-      }
-      chapters.get(chapterRef)!.push(verse);
+    let chapterRef: string;
+    
+    // Handle Bible verses with colon format (e.g., "1 Cor 10:14" -> "1 Cor 10")
+    const bibleChapterMatch = verse.reference.match(/^(.*?\d+):/);
+    if (bibleChapterMatch) {
+      chapterRef = bibleChapterMatch[1];
+    } 
+    // Handle Serenity Prayer verses (e.g., "Serenity Prayer 1" -> "Serenity Prayer")
+    else if (verse.reference.startsWith('Serenity Prayer')) {
+      chapterRef = 'Serenity Prayer';
     }
+    // Handle St. Patrick's Breastplate verses (e.g., "St. Pat. Breastplate 1" -> "St. Pat. Breastplate")
+    else if (verse.reference.startsWith('St. Pat. Breastplate')) {
+      chapterRef = 'St. Pat. Breastplate';
+    }
+    // Handle Prayer of St. Francis verses (e.g., "Prayer of St. Francis 1" -> "Prayer of St. Francis")
+    else if (verse.reference.startsWith('Prayer of St. Francis')) {
+      chapterRef = 'Prayer of St. Francis';
+    }
+    // Handle Confession Prayer verses (e.g., "Confession Prayer 1" -> "Confession Prayer")
+    else if (verse.reference.startsWith('Confession Prayer')) {
+      chapterRef = 'Confession Prayer';
+    }
+    // Handle any other special cases by using the full reference
+    else {
+      chapterRef = verse.reference;
+    }
+    
+    if (!chapters.has(chapterRef)) {
+      chapters.set(chapterRef, []);
+    }
+    chapters.get(chapterRef)!.push(verse);
   });
   
   // Convert map to array in original order
