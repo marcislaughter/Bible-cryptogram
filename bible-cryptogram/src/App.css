@@ -97,6 +97,7 @@ body.win-gradient {
   font-size: 0.8rem;
   font-weight: bold;
   color: #a3a3a3;
+  user-select: none;
 }
 
 .punctuation-mark {
@@ -111,6 +112,7 @@ body.win-gradient {
   background: transparent;
   border: none;
   position: relative;
+  user-select: none;
 }
 
 .punctuation-mark.comma {
@@ -521,9 +523,9 @@ body.win-gradient {
 }
 
 .guess-input:focus {
-  /* Re-enable text selection when focused */
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
+  /* Keep text selection disabled even when focused */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

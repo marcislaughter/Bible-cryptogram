@@ -87,7 +87,7 @@
 }
 
 .keyboard-key.guessed {
-  background-color: black;
+  background-color: #121212;
   color: #a3a3a3;
   border-color: #a3a3a3;
 }

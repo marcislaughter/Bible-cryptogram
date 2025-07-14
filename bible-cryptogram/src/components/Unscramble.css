@@ -82,6 +82,7 @@ body.win-gradient .unscramble-container {
   margin-bottom: 15px;
   color: #a3a3a3;
   letter-spacing: 1px;
+  user-select: none;
 }
 
 .word-input-container {
@@ -105,6 +106,7 @@ body.win-gradient .unscramble-container {
   transition: all 0.2s ease;
   font-weight: bold;
   border-radius: 3px;
+  user-select: none;
 }
 
 .word-input:focus {
@@ -112,6 +114,7 @@ body.win-gradient .unscramble-container {
   border-color: #3da542;
   color: white;
   outline: none;
+  user-select: none;
 }
 
 .word-input.incorrect {
@@ -139,12 +142,14 @@ body.win-gradient .unscramble-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .word-placeholder {
   font-size: 1.5rem;
   color: #a3a3a3;
   font-weight: bold;
+  user-select: none;
 }
 
 .progress-indicator {
