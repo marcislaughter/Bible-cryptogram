@@ -301,13 +301,12 @@ export const organizeVersesByChapter = (): ChapterGroup[] => {
     }
   });
   
-  // Convert map to array and sort
+  // Convert map to array in original order
   return Array.from(chapters.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
     .map(([chapterRef, verses]) => ({
       chapterTitle: chapterRef,
       chapterReference: chapterRef,
-      verses: verses.sort((a, b) => a.reference.localeCompare(b.reference))
+      verses: verses // Keep verses in original order
     }));
 };
 
