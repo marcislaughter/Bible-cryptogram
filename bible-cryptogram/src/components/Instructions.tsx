@@ -4,6 +4,8 @@ import './Instructions.css';
 const Instructions: React.FC = () => {
   return (
     <div className="instructions-page">
+      <a href="#/" className="top-back-btn">← Back to Game</a>
+      
       <div className="instructions-container">
         <h1>How to Play Cryptogram</h1>
         

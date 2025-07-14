@@ -1,13 +1,13 @@
 /* Instructions Panel Styles */
 .instructions-panel {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
   border: 2px solid #a3a3a3;
   border-radius: 15px;
   padding: 25px;
   margin: 20px 0;
   max-width: 1600px;
   width: 90%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .instructions-panel h2 {
@@ -15,11 +15,11 @@
   text-align: center;
   margin-bottom: 20px;
   font-size: 1.8rem;
-  text-shadow: 1px 1px 2px rgba(128, 0, 128, 0.2);
+  text-shadow: 1px 1px 2px rgba(128, 0, 128, 0.3);
 }
 
 .instructions-content h3 {
-  color: #a3a3a3;
+  color: #800080;
   margin: 20px 0 10px 0;
   font-size: 1.3rem;
   border-bottom: 2px solid #a3a3a3;
@@ -29,7 +29,7 @@
 .instructions-content p {
   line-height: 1.6;
   margin-bottom: 15px;
-  color: #333;
+  color: #e0e0e0;
 }
 
 .instructions-content ul {
@@ -39,7 +39,7 @@
 
 .instructions-content li {
   margin-bottom: 8px;
-  color: #333;
+  color: #e0e0e0;
 }
 
 .instructions-content strong {
@@ -50,7 +50,7 @@
 /* Instructions Page Styles */
 .instructions-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
   padding: 20px;
   font-family: 'Courier New', Courier, monospace;
 }
@@ -58,22 +58,23 @@
 .instructions-container {
   max-width: 1600px;
   margin: 0 auto;
-  background: white;
+  background: #2c2c2c;
+  border: 1px solid #444;
   border-radius: 15px;
   padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .instructions-container h1 {
-  color: #a3a3a3;
+  color: #800080;
   text-align: center;
   margin-bottom: 30px;
   font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(163, 163, 163, 0.3);
+  text-shadow: 2px 2px 4px rgba(128, 0, 128, 0.3);
 }
 
 .instructions-content h2 {
-  color: #a3a3a3;
+  color: #800080;
   margin: 30px 0 15px 0;
   font-size: 1.5rem;
   border-bottom: 2px solid #a3a3a3;
@@ -83,7 +84,7 @@
 .instructions-content p {
   line-height: 1.6;
   margin-bottom: 20px;
-  color: #333;
+  color: #e0e0e0;
   font-size: 1.1rem;
 }
 
@@ -94,7 +95,7 @@
 
 .instructions-content li {
   margin-bottom: 10px;
-  color: #333;
+  color: #e0e0e0;
   font-size: 1.1rem;
 }
 
@@ -111,19 +112,52 @@
 }
 
 .back-btn {
-  background: linear-gradient(135deg, #800080 0%, #a3a3a3 100%);
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
-  text-decoration: none;
-  padding: 15px 30px;
+  border: 2px solid #a3a3a3;
   border-radius: 25px;
-  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Courier New', Courier, monospace;
+  backdrop-filter: blur(5px);
+  text-decoration: none;
   display: inline-block;
 }
 
 .back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+/* Top-left back button */
+.top-back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid #a3a3a3;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  backdrop-filter: blur(5px);
+  text-decoration: none;
+  display: inline-block;
+  z-index: 1000;
+}
+
+.top-back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: white;
