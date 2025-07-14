@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Instructions.css';
+import './InstructionsSofWhyMemorize.css';
 
 const Instructions: React.FC = () => {
   return (
@@ -28,7 +28,7 @@ const Instructions: React.FC = () => {
             <li>One letter words are either I or A</li>
             <li>A three letter word appearing multiple times with common first and third letters is likely "the"</li>
             <li>A three letter word after a comma with common first and second letters is likely "and"</li>
-            <li>Toggle the stats tab to see more common word facts"</li>
+            <li>Toggle the stats tab to see more common word facts</li>
           </ul>
 
           <h2>How to Play</h2>
