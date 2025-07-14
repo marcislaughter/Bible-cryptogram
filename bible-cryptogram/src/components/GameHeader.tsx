@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Dropdown, { type DropdownItem } from './Dropdown';
-import { BIBLE_VERSES } from '../data/bibleVerses';
+import HierarchicalDropdown from './HierarchicalDropdown';
+import { BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
@@ -48,12 +49,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     }
   ];
 
-  // Verse dropdown items
-  const verseItems: DropdownItem[] = BIBLE_VERSES.map((verse) => ({
-    type: 'button',
-    content: `${verse.reference}`,
-    onClick: () => onVerseChange(verse)
-  }));
+  // Verse dropdown is now handled by HierarchicalDropdown component
 
   // Hamburger menu items
   const hamburgerItems: DropdownItem[] = [
@@ -89,13 +85,15 @@ const GameHeader: React.FC<GameHeaderProps> = ({
             className="cryptogram-dropdown"
           />
           
-          <Dropdown
+          <HierarchicalDropdown
             trigger={
               <button className="cryptogram-button">
                 {currentVerse.reference} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
-            items={verseItems}
+            chapters={BIBLE_CHAPTERS}
+            currentVerse={currentVerse}
+            onVerseChange={onVerseChange}
             align="left"
             className="verse-dropdown"
           />

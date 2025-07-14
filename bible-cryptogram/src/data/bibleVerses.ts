@@ -3,6 +3,12 @@ export interface BibleVerse {
   reference: string;
 }
 
+export interface ChapterGroup {
+  chapterTitle: string;
+  chapterReference: string; // e.g., "1 Cor 10"
+  verses: BibleVerse[];
+}
+
 export const BIBLE_VERSES: BibleVerse[] = [
   {
     text: "THEREFORE, MY DEAR FRIENDS, FLEE FROM IDOLATRY.",
@@ -276,4 +282,34 @@ export const BIBLE_VERSES: BibleVerse[] = [
     text: "AND WHEN I COME I WILL GIVE FURTHER DIRECTIONS.",
     reference: "1 Cor 11:34b"
   }
-]; 
+];
+
+// Helper function to organize verses by chapter
+export const organizeVersesByChapter = (): ChapterGroup[] => {
+  const chapters = new Map<string, BibleVerse[]>();
+  
+  BIBLE_VERSES.forEach(verse => {
+    // Extract chapter from reference (e.g., "1 Cor 10:14" -> "1 Cor 10")
+    const chapterMatch = verse.reference.match(/^(.*?\d+):/);
+    if (chapterMatch) {
+      const chapterRef = chapterMatch[1];
+      
+      if (!chapters.has(chapterRef)) {
+        chapters.set(chapterRef, []);
+      }
+      chapters.get(chapterRef)!.push(verse);
+    }
+  });
+  
+  // Convert map to array and sort
+  return Array.from(chapters.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([chapterRef, verses]) => ({
+      chapterTitle: chapterRef,
+      chapterReference: chapterRef,
+      verses: verses.sort((a, b) => a.reference.localeCompare(b.reference))
+    }));
+};
+
+// Export organized chapters
+export const BIBLE_CHAPTERS = organizeVersesByChapter(); 
