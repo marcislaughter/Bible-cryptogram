@@ -17,8 +17,8 @@ const ScriptureMemorization: React.FC = () => {
 
           <h2>My Story</h2>
           <p>I memorized a lot of scripture as a child and teenager through AWANA, Bible Quizzing, and the National Bible Bee. However, at that time, it never fully clicked for me why Scripture memorization was important, other than for the fun of the competition and the praise I received for memorizing verses.</p>
-          
-          <p>Since that day I have re-incorporated scripture memory into my daily routine, and find if I know a passage well enough that I can run through it in my mind without exerting significant mental effort, then I am able to more easily step outside of my analytical brain and into the presence of the Lord when I hear these scriptures either read out loud in a church setting, or during my own personal devotional time.</p>    
+          <p>One day in my mid-twenties, my church hosted a scripture reading event where we read through significant portions of scripture out loud. Although I did not come in entirely enthusiastic, something about the relaxing atmosphere and the familiarity of the passages I had previously memorized caused me to step outside of my analytical brain and focus on the message and emotions the passage was truly portraying. </p> 
+          <p>Since that day I have re-incorporated scripture memory into my daily routine, and find if I know a passage well enough that I can run through it in my mind without exerting significant mental effort, then I am able to more easily step outside of my analytical brain and into the presence of the Lord when I hear these scriptures either read out loud in a church setting, or during my own personal devotional time. Hearing these familiar scriptures will then produce the fruits of the Holy Spirit (Gal 5:22-23) in my life.</p>    
           <p>I have created this app to help both myself and others to engage in scripture memory in an easy and fun way. I began with a cryptogram game, and am working to add additional translations, games, user stats, and other features.</p>    
    
           <h2>Other helpful links</h2>
