@@ -44,6 +44,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
   const onVerseChange = propOnVerseChange || (() => {});
   const [currentGuess, setCurrentGuess] = useState('');
   const [hasInputError, setHasInputError] = useState(false);
+  const [wordsWithIncorrectGuesses, setWordsWithIncorrectGuesses] = useState<number[]>([]);
 
 
 
@@ -79,6 +80,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     setRevealedWords([]);
     setIsSolved(false);
     setCurrentGuess('');
+    setWordsWithIncorrectGuesses([]);
   };
 
   useEffect(() => {
@@ -114,6 +116,11 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
       setHasInputError(true);
       setCurrentGuess('');
       
+      // Track this word as having an incorrect guess
+      if (!wordsWithIncorrectGuesses.includes(currentWordIndex)) {
+        setWordsWithIncorrectGuesses(prev => [...prev, currentWordIndex]);
+      }
+      
       // Clear error state after 1 second
       setTimeout(() => {
         setHasInputError(false);
@@ -131,6 +138,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     setWordStatsEnabled(false);
     setCurrentGuess('');
     setHasInputError(false);
+    setWordsWithIncorrectGuesses([]);
     generateNewGame();
   };
 
@@ -179,7 +187,11 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
   // Add useEffect to manage body background when puzzle is solved
   useEffect(() => {
     if (isSolved) {
-      document.body.classList.add('win-gradient');
+      // Only show win gradient for perfect scores (100%)
+      const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
+      if (score === 100) {
+        document.body.classList.add('win-gradient');
+      }
       
       // Scroll to completion message on mobile
       setTimeout(() => {
@@ -198,7 +210,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     return () => {
       document.body.classList.remove('win-gradient');
     };
-  }, [isSolved]);
+  }, [isSolved, originalWords.length, revealedWords.length, wordsWithIncorrectGuesses.length]);
 
   return (
     <>
@@ -263,7 +275,23 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
         
         {isSolved && (
           <div className="solved-message">
-            <h2>Congratulations! You unscrambled it!</h2>
+            {(() => {
+              const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
+              if (score === 100) {
+                return <h2>Perfect! You unscrambled it!</h2>;
+              } else if (score >= 80) {
+                return <h2>Almost there! Great job!</h2>;
+              } else if (score >= 60) {
+                return <h2>Nice try! Keep it up!</h2>;
+              } else {
+                return <h2>Good effort! Try again for a better score!</h2>;
+              }
+            })()}
+            <div className="score-display">
+              <p className="score-text">
+                Score: {Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100)}%
+              </p>
+            </div>
             <div className="revealed-verse">
               {originalWords.join(' ')}
             </div>
