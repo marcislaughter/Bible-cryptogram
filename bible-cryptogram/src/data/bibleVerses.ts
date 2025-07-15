@@ -11,114 +11,6 @@ export interface ChapterGroup {
 
 export const BIBLE_VERSES: BibleVerse[] = [
   {
-    text: "THEREFORE, MY DEAR FRIENDS, FLEE FROM IDOLATRY.",
-    reference: "1 Cor 10:14"
-  },
-  {
-    text: "I SPEAK TO SENSIBLE PEOPLE; JUDGE FOR YOURSELVES WHAT I SAY.",
-    reference: "1 Cor 10:15"
-  },
-  {
-    text: "IS NOT THE CUP OF THANKSGIVING FOR WHICH WE GIVE THANKS A PARTICIPATION IN THE BLOOD OF CHRIST?",
-    reference: "1 Cor 10:16a"
-  },
-  {
-    text: "AND IS NOT THE BREAD THAT WE BREAK A PARTICIPATION IN THE BODY OF CHRIST?",
-    reference: "1 Cor 10:16b"
-  },
-  {
-    text: "BECAUSE THERE IS ONE LOAF, WE, WHO ARE MANY, ARE ONE BODY, FOR WE ALL SHARE THE ONE LOAF.",
-    reference: "1 Cor 10:17"
-  },
-  {
-    text: "CONSIDER THE PEOPLE OF ISRAEL: DO NOT THOSE WHO EAT THE SACRIFICES PARTICIPATE IN THE ALTAR?",
-    reference: "1 Cor 10:18"
-  },
-  {
-    text: "DO I MEAN THEN THAT FOOD SACRIFICED TO AN IDOL IS ANYTHING, OR THAT AN IDOL IS ANYTHING?",
-    reference: "1 Cor 10:19"
-  },
-  {
-    text: "NO, BUT THE SACRIFICES OF PAGANS ARE OFFERED TO DEMONS, NOT TO GOD,",
-    reference: "1 Cor 10:20a"
-  },
-  {
-    text: "AND I DO NOT WANT YOU TO BE PARTICIPANTS WITH DEMONS.",
-    reference: "1 Cor 10:20b"
-  },
-  {
-    text: "YOU CANNOT DRINK THE CUP OF THE LORD AND THE CUP OF DEMONS TOO;",
-    reference: "1 Cor 10:21a"
-  },
-  {
-    text: "YOU CANNOT HAVE A PART IN BOTH THE LORD'S TABLE AND THE TABLE OF DEMONS.",
-    reference: "1 Cor 10:21b"
-  },
-  {
-    text: "ARE WE TRYING TO AROUSE THE LORD'S JEALOUSY? ARE WE STRONGER THAN HE?",
-    reference: "1 Cor 10:22"
-  },
-  {
-    text: '"I HAVE THE RIGHT TO DO ANYTHING" YOU SAY—BUT NOT EVERYTHING IS BENEFICIAL.',
-    reference: "1 Cor 10:23a"
-  },
-  {
-    text: "'I HAVE THE RIGHT TO DO ANYTHING'—BUT NOT EVERYTHING IS CONSTRUCTIVE.",
-    reference: "1 Cor 10:23b"
-  },
-  {
-    text: "NO ONE SHOULD SEEK THEIR OWN GOOD, BUT THE GOOD OF OTHERS.",
-    reference: "1 Cor 10:24"
-  },
-  {
-    text: "EAT ANYTHING SOLD IN THE MEAT MARKET WITHOUT RAISING QUESTIONS OF CONSCIENCE,",
-    reference: "1 Cor 10:25"
-  },
-  {
-    text: "FOR, 'THE EARTH IS THE LORD'S, AND EVERYTHING IN IT.'",
-    reference: "1 Cor 10:26"
-  },
-  {
-    text: "IF AN UNBELIEVER INVITES YOU TO A MEAL AND YOU WANT TO GO, EAT WHATEVER IS PUT BEFORE YOU WITHOUT RAISING QUESTIONS OF CONSCIENCE.",
-    reference: "1 Cor 10:27"
-  },
-  {
-    text: "BUT IF SOMEONE SAYS TO YOU, 'THIS HAS BEEN OFFERED IN SACRIFICE,' THEN DO NOT EAT IT,",
-    reference: "1 Cor 10:28a"
-  },
-  {
-    text: "BOTH FOR THE SAKE OF THE ONE WHO TOLD YOU AND FOR THE SAKE OF CONSCIENCE.",
-    reference: "1 Cor 10:28b"
-  },
-  {
-    text: "I AM REFERRING TO THE OTHER PERSON'S CONSCIENCE, NOT YOURS.",
-    reference: "1 Cor 10:29a"
-  },
-  {
-    text: "FOR WHY IS MY FREEDOM BEING JUDGED BY ANOTHER'S CONSCIENCE?",
-    reference: "1 Cor 10:29b"
-  },
-  {
-    text: "IF I TAKE PART IN THE MEAL WITH THANKFULNESS, WHY AM I DENOUNCED BECAUSE OF SOMETHING I THANK GOD FOR?",
-    reference: "1 Cor 10:30"
-  },
-  {
-    text: "SO WHETHER YOU EAT OR DRINK OR WHATEVER YOU DO, DO IT ALL FOR THE GLORY OF GOD.",
-    reference: "1 Cor 10:31"
-  },
-  {
-    text: "DO NOT CAUSE ANYONE TO STUMBLE, WHETHER JEWS, GREEKS OR THE CHURCH OF GOD—",
-    reference: "1 Cor 10:32"
-  },
-  {
-    text: "EVEN AS I TRY TO PLEASE EVERYONE IN EVERY WAY.",
-    reference: "1 Cor 10:33a"
-  },
-  {
-    text: "FOR I AM NOT SEEKING MY OWN GOOD BUT THE GOOD OF MANY, SO THAT THEY MAY BE SAVED.",
-    reference: "1 Cor 10:33b"
-  },
-  {
     text: "FOLLOW MY EXAMPLE, AS I FOLLOW THE EXAMPLE OF CHRIST.",
     reference: "1 Cor 11:1"
   },
@@ -283,6 +175,82 @@ export const BIBLE_VERSES: BibleVerse[] = [
     reference: "1 Cor 11:34b"
   },
   {
+    text: "THE LORD IS MY SHEPHERD, I LACK NOTHING.",
+    reference: "Psalm 23:1"
+  },
+  {
+    text: "HE MAKES ME LIE DOWN IN GREEN PASTURES, HE LEADS ME BESIDE QUIET WATERS,",
+    reference: "Psalm 23:2"
+  },
+  {
+    text: "HE REFRESHES MY SOUL. HE GUIDES ME ALONG THE RIGHT PATHS FOR HIS NAME'S SAKE.",
+    reference: "Psalm 23:3"
+  },
+  {
+    text: "EVEN THOUGH I WALK THROUGH THE DARKEST VALLEY, I WILL FEAR NO EVIL, FOR YOU ARE WITH ME; YOUR ROD AND YOUR STAFF, THEY COMFORT ME.",
+    reference: "Psalm 23:4"
+  },
+  {
+    text: "YOU PREPARE A TABLE BEFORE ME IN THE PRESENCE OF MY ENEMIES. YOU ANOINT MY HEAD WITH OIL; MY CUP OVERFLOWS.",
+    reference: "Psalm 23:5"
+  },
+  {
+    text: "SURELY YOUR GOODNESS AND LOVE WILL FOLLOW ME ALL THE DAYS OF MY LIFE, AND I WILL DWELL IN THE HOUSE OF THE LORD FOREVER.",
+    reference: "Psalm 23:6"
+  },
+  {
+    text: "IF I SPEAK IN THE TONGUES OF MEN OR OF ANGELS, BUT DO NOT HAVE LOVE, I AM ONLY A RESOUNDING GONG OR A CLANGING CYMBAL.",
+    reference: "1 Cor 13:1"
+  },
+  {
+    text: "IF I HAVE THE GIFT OF PROPHECY AND CAN FATHOM ALL MYSTERIES AND ALL KNOWLEDGE, AND IF I HAVE A FAITH THAT CAN MOVE MOUNTAINS, BUT DO NOT HAVE LOVE, I AM NOTHING.",
+    reference: "1 Cor 13:2"
+  },
+  {
+    text: "IF I GIVE ALL I POSSESS TO THE POOR AND GIVE OVER MY BODY TO HARDSHIP THAT I MAY BOAST, BUT DO NOT HAVE LOVE, I GAIN NOTHING.",
+    reference: "1 Cor 13:3"
+  },
+  {
+    text: "LOVE IS PATIENT, LOVE IS KIND. IT DOES NOT ENVY, IT DOES NOT BOAST, IT IS NOT PROUD.",
+    reference: "1 Cor 13:4"
+  },
+  {
+    text: "IT DOES NOT DISHONOR OTHERS, IT IS NOT SELF-SEEKING, IT IS NOT EASILY ANGERED, IT KEEPS NO RECORD OF WRONGS.",
+    reference: "1 Cor 13:5"
+  },
+  {
+    text: "LOVE DOES NOT DELIGHT IN EVIL BUT REJOICES WITH THE TRUTH.",
+    reference: "1 Cor 13:6"
+  },
+  {
+    text: "IT ALWAYS PROTECTS, ALWAYS TRUSTS, ALWAYS HOPES, ALWAYS PERSEVERES.",
+    reference: "1 Cor 13:7"
+  },
+  {
+    text: "LOVE NEVER FAILS. BUT WHERE THERE ARE PROPHECIES, THEY WILL CEASE; WHERE THERE ARE TONGUES, THEY WILL BE STILLED; WHERE THERE IS KNOWLEDGE, IT WILL PASS AWAY.",
+    reference: "1 Cor 13:8"
+  },
+  {
+    text: "FOR WE KNOW IN PART AND WE PROPHESY IN PART,",
+    reference: "1 Cor 13:9"
+  },
+  {
+    text: "BUT WHEN COMPLETENESS COMES, WHAT IS IN PART DISAPPEARS.",
+    reference: "1 Cor 13:10"
+  },
+  {
+    text: "WHEN I WAS A CHILD, I TALKED LIKE A CHILD, I THOUGHT LIKE A CHILD, I REASONED LIKE A CHILD. WHEN I BECAME A MAN, I PUT THE WAYS OF CHILDHOOD BEHIND ME.",
+    reference: "1 Cor 13:11"
+  },
+  {
+    text: "FOR NOW WE SEE ONLY A REFLECTION AS IN A MIRROR; THEN WE SHALL SEE FACE TO FACE. NOW I KNOW IN PART; THEN I SHALL KNOW FULLY, EVEN AS I AM FULLY KNOWN.",
+    reference: "1 Cor 13:12"
+  },
+  {
+    text: "AND NOW THESE THREE REMAIN: FAITH, HOPE AND LOVE. BUT THE GREATEST OF THESE IS LOVE.",
+    reference: "1 Cor 13:13"
+  },
+  {
     text: "GOD GRANT ME THE SERENITY TO ACCEPT THE THINGS I CANNOT CHANGE; COURAGE TO CHANGE THE THINGS I CAN; AND WISDOM TO KNOW THE DIFFERENCE.",
     reference: "Serenity Prayer 1"
   },
@@ -367,7 +335,7 @@ export const organizeVersesByChapter = (): ChapterGroup[] => {
   BIBLE_VERSES.forEach(verse => {
     let chapterRef: string;
     
-    // Handle Bible verses with colon format (e.g., "1 Cor 10:14" -> "1 Cor 10")
+    // Handle Bible verses with colon format (e.g., "1 Cor 11:1" -> "1 Cor 11")
     const bibleChapterMatch = verse.reference.match(/^(.*?\d+):/);
     if (bibleChapterMatch) {
       chapterRef = bibleChapterMatch[1];
