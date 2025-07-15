@@ -4,7 +4,7 @@ import CryptogramGame from './components/CryptogramGame';
 import UnscrambleGame from './components/UnscrambleGame';
 import Instructions from './components/Instructions';
 import UnscrambleInstructions from './components/UnscrambleInstructions';
-import ScriptureMemorization from './components/ScriptureMemorization';
+import WhyMemorize from './components/WhyMemorize';
 import StatementOfFaith from './components/StatementOfFaith';
 import type { GameType } from './components/GameHeader';
 import { BIBLE_VERSES } from './data/bibleVerses';
@@ -53,7 +53,7 @@ function App() {
         <Route path="/" element={<GameContainer />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/unscramble-instructions" element={<UnscrambleInstructions />} />
-        <Route path="/memorization" element={<ScriptureMemorization />} />
+        <Route path="/memorization" element={<WhyMemorize />} />
         <Route path="/faith" element={<StatementOfFaith />} />
       </Routes>
     </Router>

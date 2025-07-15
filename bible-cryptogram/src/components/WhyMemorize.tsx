@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './InstructionsSofWhyMemorize.css';
 
-const ScriptureMemorization: React.FC = () => {
+const WhyMemorize: React.FC = () => {
   return (
     <div className="instructions-page">
       <Link to="/" className="top-back-btn">← Back to Game</Link>
@@ -47,4 +47,4 @@ const ScriptureMemorization: React.FC = () => {
   );
 };
 
-export default ScriptureMemorization; 
+export default WhyMemorize; 
