@@ -176,27 +176,27 @@ export const BIBLE_VERSES: BibleVerse[] = [
   },
   {
     text: "THE LORD IS MY SHEPHERD, I LACK NOTHING.",
-    reference: "Psalm 23:1"
+    reference: "Ps 23:1"
   },
   {
     text: "HE MAKES ME LIE DOWN IN GREEN PASTURES, HE LEADS ME BESIDE QUIET WATERS,",
-    reference: "Psalm 23:2"
+    reference: "Ps 23:2"
   },
   {
     text: "HE REFRESHES MY SOUL. HE GUIDES ME ALONG THE RIGHT PATHS FOR HIS NAME'S SAKE.",
-    reference: "Psalm 23:3"
+    reference: "Ps 23:3"
   },
   {
     text: "EVEN THOUGH I WALK THROUGH THE DARKEST VALLEY, I WILL FEAR NO EVIL, FOR YOU ARE WITH ME; YOUR ROD AND YOUR STAFF, THEY COMFORT ME.",
-    reference: "Psalm 23:4"
+    reference: "Ps 23:4"
   },
   {
     text: "YOU PREPARE A TABLE BEFORE ME IN THE PRESENCE OF MY ENEMIES. YOU ANOINT MY HEAD WITH OIL; MY CUP OVERFLOWS.",
-    reference: "Psalm 23:5"
+    reference: "Ps 23:5"
   },
   {
     text: "SURELY YOUR GOODNESS AND LOVE WILL FOLLOW ME ALL THE DAYS OF MY LIFE, AND I WILL DWELL IN THE HOUSE OF THE LORD FOREVER.",
-    reference: "Psalm 23:6"
+    reference: "Ps 23:6"
   },
   {
     text: "IF I SPEAK IN THE TONGUES OF MEN OR OF ANGELS, BUT DO NOT HAVE LOVE, I AM ONLY A RESOUNDING GONG OR A CLANGING CYMBAL.",
