@@ -178,26 +178,7 @@ body.win-gradient {
   opacity: 0.9;
 }
 
-.next-verse-btn {
-  margin-top: 15px;
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid white;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
-  backdrop-filter: blur(5px);
-}
 
-.next-verse-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
 
 @keyframes fadeIn {
   from {

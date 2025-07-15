@@ -5,7 +5,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './Unscramble.css';
 
 // Utility function to scramble a word
@@ -184,6 +184,10 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     onVerseChange(BIBLE_VERSES[nextIndex]);
   };
 
+  const handleRepeatVerse = () => {
+    handleReset();
+  };
+
   // Add useEffect to manage body background when puzzle is solved
   useEffect(() => {
     if (isSolved) {
@@ -297,6 +301,9 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
             </div>
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
+              <button onClick={handleRepeatVerse} className="repeat-verse-btn">
+                <FontAwesomeIcon icon={faArrowLeft} /> {currentVerse.reference}
+              </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>

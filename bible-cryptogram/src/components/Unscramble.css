@@ -219,9 +219,11 @@ body.win-gradient .unscramble-container {
   gap: 15px;
   justify-content: center;
   margin-top: 20px;
+  align-items: stretch;
 }
 
-.next-verse-btn {
+.next-verse-btn,
+.repeat-verse-btn {
   padding: 12px 24px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -233,9 +235,15 @@ body.win-gradient .unscramble-container {
   transition: all 0.3s ease;
   font-family: 'Courier New', Courier, monospace;
   backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
 }
 
-.next-verse-btn:hover {
+.next-verse-btn:hover,
+.repeat-verse-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -292,11 +300,13 @@ body.win-gradient .unscramble-container {
   }
   
   .solved-buttons {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
+    flex-wrap: wrap;
   }
   
-  .next-verse-btn {
+  .next-verse-btn,
+  .repeat-verse-btn {
     font-size: 1rem;
     padding: 10px 20px;
   }
@@ -320,5 +330,12 @@ body.win-gradient .unscramble-container {
     width: 30px;
     height: 30px;
     font-size: 0.9rem;
+  }
+  
+  .next-verse-btn,
+  .repeat-verse-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    min-height: 40px;
   }
 } 
