@@ -304,7 +304,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
           </div>
         )}
         
-        <div className="citation">
+        <div className={`citation ${isSolved && Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100) === 100 ? 'dark-text' : ''}`}>
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
           Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
           Used by permission. All rights reserved worldwide.

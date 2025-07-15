@@ -255,6 +255,10 @@ body.win-gradient .unscramble-container {
   max-width: 600px;
 }
 
+.citation.dark-text {
+  color: #2a2a2a;
+}
+
 @media screen and (max-width: 768px) {
   .unscramble-container {
     padding: 0 15px;
