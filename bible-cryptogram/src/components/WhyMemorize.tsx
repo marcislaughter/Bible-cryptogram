@@ -24,9 +24,9 @@ const WhyMemorize: React.FC = () => {
           <h2>Other helpful links</h2>
           <p>Below are some helpful links to other scripture memorization resources:</p>
           <ul>
-            <li><strong>Additional commentary on why scripture memory is important</strong>: <a href="https://scripturememory.com/why" target="_blank" rel="noopener noreferrer">https://scripturememory.com/why</a></li>
-            <li><strong>Create a printable grid of first letters in your passage</strong>: <a href="https://scripturememory.com/verselocker/grid/" target="_blank" rel="noopener noreferrer">https://scripturememory.com/verselocker/grid/</a></li>
-            <li><strong>Create scripture flashcards (ESV and KJV only)</strong>: <a href="https://www.mcscott.org/index.html" target="_blank" rel="noopener noreferrer">https://www.mcscott.org/index.html</a></li>
+            <li><a href="https://scripturememory.com/why" target="_blank" rel="noopener noreferrer"><strong>Additional commentary on why scripture memory is important</strong></a></li>
+            <li><a href="https://scripturememory.com/verselocker/grid/" target="_blank" rel="noopener noreferrer"><strong>Create a printable grid of first letters in your passage</strong></a></li>
+            <li><a href="https://www.mcscott.org/index.html" target="_blank" rel="noopener noreferrer"><strong>Create scripture flashcards (ESV and KJV only)</strong></a></li>
           </ul>
 
           <h2>Tips for Scripture Memory</h2>

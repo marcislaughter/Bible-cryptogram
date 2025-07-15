@@ -160,4 +160,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: white;
   text-decoration: none;
+}
+
+/* Link styles for better readability */
+.instructions-content a {
+  color: #66b3ff;
+  text-decoration: underline;
+  text-decoration-color: #800080;
+  transition: color 0.3s ease;
+}
+
+.instructions-content a:hover {
+  color: #4da6ff;
+  text-decoration: none;
+}
+
+.instructions-content a:visited {
+  color: #b399ff;
 } 
