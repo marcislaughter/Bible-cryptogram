@@ -63,11 +63,11 @@ const GameHeader: React.FC<GameHeaderProps> = ({
       content: 'Statement of Faith',
       href: '/faith'
     },
-    {
-      type: 'button',
+    ...(gameType === 'cryptogram' ? [{
+      type: 'button' as const,
       content: wordStatsEnabled ? 'Unpin Word Stats' : 'Pin Word Stats',
       onClick: onToggleWordStats
-    }
+    }] : [])
   ];
 
   return (
