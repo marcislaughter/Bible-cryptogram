@@ -328,38 +328,39 @@ export const BIBLE_VERSES: BibleVerse[] = [
   }
 ];
 
+/**
+ * Generic function to extract chapter/collection name from any verse reference.
+ * This function uses pattern matching to work with any future chapters you add.
+ * 
+ * Patterns supported:
+ * - Bible format: "Book Chapter:Verse" -> "Book Chapter" (e.g., "1 Cor 11:1" -> "1 Cor 11")
+ * - Numbered collections: "Collection Name Number" -> "Collection Name" (e.g., "Prayer Name 1" -> "Prayer Name")
+ * - Single references: Uses the full reference as the chapter
+ */
+export const getChapterFromReference = (reference: string): string => {
+  // Pattern 1: Bible verses with colon format (e.g., "1 Cor 11:1" -> "1 Cor 11")
+  const bibleChapterMatch = reference.match(/^(.*?\d+):/);
+  if (bibleChapterMatch) {
+    return bibleChapterMatch[1];
+  }
+  
+  // Pattern 2: Numbered collections (e.g., "Prayer Name 1" -> "Prayer Name")
+  // This matches any reference that ends with a space followed by a number
+  const numberedCollectionMatch = reference.match(/^(.+)\s+\d+[a-z]?$/);
+  if (numberedCollectionMatch) {
+    return numberedCollectionMatch[1];
+  }
+  
+  // Pattern 3: Single references or unknown formats - use the full reference
+  return reference;
+};
+
 // Helper function to organize verses by chapter
 export const organizeVersesByChapter = (): ChapterGroup[] => {
   const chapters = new Map<string, BibleVerse[]>();
   
   BIBLE_VERSES.forEach(verse => {
-    let chapterRef: string;
-    
-    // Handle Bible verses with colon format (e.g., "1 Cor 11:1" -> "1 Cor 11")
-    const bibleChapterMatch = verse.reference.match(/^(.*?\d+):/);
-    if (bibleChapterMatch) {
-      chapterRef = bibleChapterMatch[1];
-    } 
-    // Handle Serenity Prayer verses (e.g., "Serenity Prayer 1" -> "Serenity Prayer")
-    else if (verse.reference.startsWith('Serenity Prayer')) {
-      chapterRef = 'Serenity Prayer';
-    }
-    // Handle St. Patrick's Breastplate verses (e.g., "St. Pat. Breastplate 1" -> "St. Pat. Breastplate")
-    else if (verse.reference.startsWith('St. Pat. Breastplate')) {
-      chapterRef = 'St. Pat. Breastplate';
-    }
-    // Handle Prayer of St. Francis verses (e.g., "Prayer of St. Francis 1" -> "Prayer of St. Francis")
-    else if (verse.reference.startsWith('Prayer of St. Francis')) {
-      chapterRef = 'Prayer of St. Francis';
-    }
-    // Handle Confession Prayer verses (e.g., "Confession Prayer 1" -> "Confession Prayer")
-    else if (verse.reference.startsWith('Confession Prayer')) {
-      chapterRef = 'Confession Prayer';
-    }
-    // Handle any other special cases by using the full reference
-    else {
-      chapterRef = verse.reference;
-    }
+    const chapterRef = getChapterFromReference(verse.reference);
     
     if (!chapters.has(chapterRef)) {
       chapters.set(chapterRef, []);

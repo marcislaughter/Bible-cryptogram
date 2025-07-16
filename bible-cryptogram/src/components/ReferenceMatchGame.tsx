@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Controls from './Controls';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
-import { BIBLE_VERSES } from '../data/bibleVerses';
+import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -18,13 +18,26 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-// Utility function to get random verses
+// Utility function to get random verses from the same chapter
 const getRandomVerses = (count: number, currentVerse: BibleVerse): BibleVerse[] => {
+  // Get the chapter of the current verse
+  const currentChapter = getChapterFromReference(currentVerse.reference);
+  
+  // Filter verses to only include those from the same chapter
+  const chapterVerses = BIBLE_VERSES.filter(v => 
+    getChapterFromReference(v.reference) === currentChapter
+  );
+  
+  // If the chapter has fewer than the requested count, use all verses from the chapter
+  if (chapterVerses.length <= count) {
+    return shuffleArray(chapterVerses);
+  }
+  
   // Always include the current verse
   const verses = [currentVerse];
   
-  // Get other random verses
-  const otherVerses = BIBLE_VERSES.filter(v => v.reference !== currentVerse.reference);
+  // Get other random verses from the same chapter
+  const otherVerses = chapterVerses.filter(v => v.reference !== currentVerse.reference);
   const shuffledOthers = shuffleArray(otherVerses);
   
   return verses.concat(shuffledOthers.slice(0, count - 1));
