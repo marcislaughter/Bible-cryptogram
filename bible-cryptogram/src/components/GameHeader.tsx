@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import Dropdown, { type DropdownItem } from './Dropdown';
 import HierarchicalDropdown from './HierarchicalDropdown';
 import { BIBLE_CHAPTERS } from '../data/bibleVerses';
@@ -101,7 +102,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
 
         <div className="banner-right">
           <Link to={gameType === 'cryptogram' ? '/instructions' : '/unscramble-instructions'} className="help-btn">
-            <FontAwesomeIcon icon={faQuestion} />
+            <FontAwesomeIcon icon={faCircleQuestion} />
           </Link>
           <Dropdown
             trigger={
