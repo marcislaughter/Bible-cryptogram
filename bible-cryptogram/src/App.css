@@ -202,6 +202,11 @@ body.win-gradient {
   font-family: Arial, sans-serif;
 }
 
+/* Ensure citation remains black when win message is displayed */
+body.win-gradient .citation {
+  color: #000000;
+}
+
 /* words stats */
 
 .word-stats {
