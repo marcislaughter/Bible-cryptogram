@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import CryptogramGame from './components/CryptogramGame';
 import UnscrambleGame from './components/UnscrambleGame';
+import ReferenceMatchGame from './components/ReferenceMatchGame';
 import Instructions from './components/Instructions';
 import UnscrambleInstructions from './components/UnscrambleInstructions';
+import ReferenceMatchInstructions from './components/ReferenceMatchInstructions';
 import WhyMemorize from './components/WhyMemorize';
 import StatementOfFaith from './components/StatementOfFaith';
 import type { GameType } from './components/GameHeader';
@@ -42,6 +44,14 @@ const GameContainer: React.FC = () => {
           onVerseChange={handleVerseChange}
         />
       )}
+      {gameType === 'reference-match' && (
+        <ReferenceMatchGame 
+          gameType={gameType} 
+          onGameTypeChange={handleGameTypeChange}
+          currentVerse={currentVerse}
+          onVerseChange={handleVerseChange}
+        />
+      )}
     </>
   );
 };
@@ -53,6 +63,7 @@ function App() {
         <Route path="/" element={<GameContainer />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/unscramble-instructions" element={<UnscrambleInstructions />} />
+        <Route path="/reference-match-instructions" element={<ReferenceMatchInstructions />} />
         <Route path="/memorization" element={<WhyMemorize />} />
         <Route path="/faith" element={<StatementOfFaith />} />
       </Routes>

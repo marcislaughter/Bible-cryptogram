@@ -9,7 +9,7 @@ import { BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
-export type GameType = 'cryptogram' | 'unscramble';
+export type GameType = 'cryptogram' | 'unscramble' | 'reference-match';
 
 interface GameHeaderProps {
   wordStatsEnabled: boolean;
@@ -46,7 +46,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     },
     {
       type: 'button',
-      content: 'Coming soon - Reference Match'
+      content: 'Reference Match',
+      onClick: () => onGameTypeChange?.('reference-match')
     }
   ];
 
@@ -78,7 +79,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           <Dropdown
             trigger={
               <button className="cryptogram-button">
-                {gameType === 'cryptogram' ? 'Cryptogram' : 'Unscramble'} <FontAwesomeIcon icon={faChevronDown} />
+                {gameType === 'cryptogram' ? 'Cryptogram' : gameType === 'unscramble' ? 'Unscramble' : 'Reference Match'} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
             items={gameTypeItems}
@@ -101,7 +102,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
         </div>
 
         <div className="banner-right">
-          <Link to={gameType === 'cryptogram' ? '/instructions' : '/unscramble-instructions'} className="help-btn">
+          <Link to={gameType === 'cryptogram' ? '/instructions' : gameType === 'unscramble' ? '/unscramble-instructions' : '/reference-match-instructions'} className="help-btn">
             <FontAwesomeIcon icon={faCircleQuestion} />
           </Link>
           <Dropdown
