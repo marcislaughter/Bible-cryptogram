@@ -215,12 +215,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     onVerseChange(verse);
   };
 
-  // Function to get the next verse reference
-  const getNextVerseReference = () => {
-    const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
-    const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
-    return BIBLE_VERSES[nextIndex].reference;
-  };
+
 
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
