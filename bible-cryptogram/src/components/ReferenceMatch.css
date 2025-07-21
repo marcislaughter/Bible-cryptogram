@@ -126,14 +126,6 @@ body.win-gradient .reference-match-container {
   max-height: calc(1.4em * 4);
 }
 
-.match-card.selected .verse-content {
-  color: white;
-}
-
-.match-card.matched .verse-content {
-  color: white;
-}
-
 .reference-content {
   font-size: 1.2rem;
   font-weight: bold;
@@ -143,15 +135,13 @@ body.win-gradient .reference-match-container {
   text-overflow: ellipsis;
 }
 
-.match-card.selected .reference-content {
-  color: white;
-}
-
+/* Consolidated color for selected and matched states */
+.match-card.selected .verse-content,
+.match-card.matched .verse-content,
+.match-card.selected .reference-content,
 .match-card.matched .reference-content {
   color: white;
 }
-
-
 
 .solved-message {
   text-align: center;
@@ -250,8 +240,6 @@ body.win-gradient .reference-match-container {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
