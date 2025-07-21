@@ -263,18 +263,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           ))}
         </div>
         
-        <div className="game-progress">
-          <div className="progress-text">
-            Matched: {matchedPairs.length} / 5
-          </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${(matchedPairs.length / 5) * 100}%` }}
-            />
-          </div>
-        </div>
-        
         {isSolved && (
           <div className="solved-message">
             {(() => {
@@ -312,10 +300,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             </div>
           </div>
         )}
-        
-        <div className="citation">
-          Match Bible verses with their references to strengthen your Scripture knowledge and memorization.
-        </div>
       </div>
     </>
   );
