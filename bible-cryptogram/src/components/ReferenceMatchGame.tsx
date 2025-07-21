@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Controls from './Controls';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
@@ -69,9 +68,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const [selectedCards, setSelectedCards] = useState<MatchCard[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
   const [isSolved, setIsSolved] = useState(false);
-  const [hintsRemaining, setHintsRemaining] = useState(3);
-  const [revealedPairs, setRevealedPairs] = useState<string[]>([]);
-  const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [incorrectAttempts, setIncorrectAttempts] = useState(0);
   const [gameVerses, setGameVerses] = useState<BibleVerse[]>([]);
@@ -114,8 +110,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setSelectedCards([]);
     setMatchedPairs([]);
     setIsSolved(false);
-    setHintsRemaining(3);
-    setRevealedPairs([]);
     setIncorrectAttempts(0);
   };
 
@@ -180,49 +174,12 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setSelectedCards([]);
     setMatchedPairs([]);
     setIsSolved(false);
-    setHintsRemaining(3);
-    setRevealedPairs([]);
-    setAutoCheckEnabled(false);
     setWordStatsEnabled(false);
     setIncorrectAttempts(0);
     generateNewGame();
   };
 
-  const handleHint = () => {
-    if (hintsRemaining <= 0 || isSolved) return;
 
-    // Find an unmatched pair and reveal it
-    const unmatchedVerseIds = gameVerses
-      .map(v => v.reference)
-      .filter(ref => !matchedPairs.includes(ref) && !revealedPairs.includes(ref));
-    
-    if (unmatchedVerseIds.length > 0) {
-      const targetVerseId = unmatchedVerseIds[0];
-      
-      setCards(prevCards =>
-        prevCards.map(card =>
-          card.verseId === targetVerseId
-            ? { ...card, isMatched: true }
-            : card
-        )
-      );
-      
-      setMatchedPairs(prev => [...prev, targetVerseId]);
-      setRevealedPairs(prev => [...prev, targetVerseId]);
-      setSelectedCards([]);
-      
-      // Check if game is complete
-      if (matchedPairs.length + 1 === 5) {
-        setIsSolved(true);
-      }
-    }
-
-    setHintsRemaining(prev => prev - 1);
-  };
-
-  const handleAutoCheck = () => {
-    setAutoCheckEnabled(!autoCheckEnabled);
-  };
 
   const handleVerseChange = (verse: BibleVerse) => {
     onVerseChange(verse);
@@ -276,14 +233,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       />
 
       <div className="reference-match-container">
-        <Controls
-          onReset={handleReset}
-          onHint={handleHint}
-          onAutoCheck={handleAutoCheck}
-          hintsRemaining={hintsRemaining}
-          autoCheckEnabled={autoCheckEnabled}
-          showAutoCheck={false}
-        />
+
         
         {wordStatsEnabled && <WordStats />}
         
@@ -300,8 +250,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 card.isSelected ? 'selected' : ''
               } ${
                 card.isMatched ? 'matched' : ''
-              } ${
-                revealedPairs.includes(card.verseId) ? 'hint-revealed' : ''
               }`}
               onClick={() => handleCardClick(card)}
             >
@@ -335,7 +283,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         {isSolved && (
           <div className="solved-message">
             {(() => {
-              const score = Math.round(((5 - revealedPairs.length - incorrectAttempts) / 5) * 100);
+              const score = Math.round(((5 - incorrectAttempts) / 5) * 100);
               if (score === 100) {
                 return <h2>Perfect! You matched all verses!</h2>;
               } else if (score >= 80) {
@@ -348,7 +296,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             })()}
             <div className="score-display">
               <p className="score-text">
-                Score: {Math.round(((5 - revealedPairs.length - incorrectAttempts) / 5) * 100)}%
+                Score: {Math.round(((5 - incorrectAttempts) / 5) * 100)}%
               </p>
             </div>
             <div className="matches-summary">
