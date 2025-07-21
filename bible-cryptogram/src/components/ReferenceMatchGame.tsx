@@ -237,11 +237,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         
         {wordStatsEnabled && <WordStats />}
         
-        <div className="game-instructions">
-          <h2>Match Verses with References</h2>
-          <p>Click cards to match Bible verses with their correct references. Match all 5 pairs to win!</p>
-        </div>
-        
         <div className="cards-grid">
           {cards.map((card) => (
             <div
