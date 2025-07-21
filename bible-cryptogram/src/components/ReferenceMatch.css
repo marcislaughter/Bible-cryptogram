@@ -41,6 +41,7 @@ body.win-gradient .reference-match-container {
   width: 100%;
   margin: 30px 0;
   padding: 0 20px;
+  align-items: center;
 }
 
 .match-card {
@@ -48,8 +49,6 @@ body.win-gradient .reference-match-container {
   border: 3px solid #800080;
   border-radius: 12px;
   padding: 20px;
-  min-height: 120px;
-  max-height: 140px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -68,10 +67,12 @@ body.win-gradient .reference-match-container {
 
 .match-card.verse {
   background: linear-gradient(135deg, #e6ccff 0%, #d4c2f0 100%);
+  height: 140px;
 }
 
 .match-card.reference {
   background: linear-gradient(135deg, #f0e6ff 0%, #e6ccff 100%);
+  height: 140px;
 }
 
 .match-card.selected {
@@ -248,12 +249,16 @@ body.win-gradient .reference-match-container {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 15px;
     padding: 0 10px;
+    align-items: center;
   }
   
   .match-card {
     padding: 15px;
-    min-height: 100px;
-    max-height: 120px;
+  }
+  
+  .match-card.verse,
+  .match-card.reference {
+    height: 140px;
   }
   
   .verse-content {
@@ -292,12 +297,16 @@ body.win-gradient .reference-match-container {
   .cards-grid {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    align-items: center;
   }
   
   .match-card {
     padding: 12px;
-    min-height: 80px;
-    max-height: 100px;
+  }
+  
+  .match-card.verse,
+  .match-card.reference {
+    height: 140px;
   }
   
   .verse-content {
