@@ -49,6 +49,7 @@ body.win-gradient .reference-match-container {
   border-radius: 12px;
   padding: 20px;
   min-height: 120px;
+  max-height: 140px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -56,6 +57,7 @@ body.win-gradient .reference-match-container {
   justify-content: center;
   position: relative;
   user-select: none;
+  overflow: hidden;
 }
 
 .match-card:hover {
@@ -116,6 +118,12 @@ body.win-gradient .reference-match-container {
   line-height: 1.4;
   color: #800080;
   font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.4em * 4);
 }
 
 .match-card.selected .verse-content {
@@ -130,6 +138,9 @@ body.win-gradient .reference-match-container {
   font-size: 1.2rem;
   font-weight: bold;
   color: #800080;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .match-card.selected .reference-content {
@@ -293,10 +304,13 @@ body.win-gradient .reference-match-container {
   .match-card {
     padding: 15px;
     min-height: 100px;
+    max-height: 120px;
   }
   
   .verse-content {
     font-size: 0.9rem;
+    -webkit-line-clamp: 3;
+    max-height: calc(1.4em * 3);
   }
   
   .reference-content {
@@ -333,10 +347,13 @@ body.win-gradient .reference-match-container {
   .match-card {
     padding: 12px;
     min-height: 80px;
+    max-height: 100px;
   }
   
   .verse-content {
     font-size: 0.8rem;
+    -webkit-line-clamp: 2;
+    max-height: calc(1.4em * 2);
   }
   
   .reference-content {
