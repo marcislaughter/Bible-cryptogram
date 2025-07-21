@@ -120,6 +120,7 @@ body.win-gradient .reference-match-container {
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -258,6 +259,7 @@ body.win-gradient .reference-match-container {
   .verse-content {
     font-size: 0.9rem;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     max-height: calc(1.4em * 3);
   }
   
@@ -301,6 +303,7 @@ body.win-gradient .reference-match-container {
   .verse-content {
     font-size: 0.8rem;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     max-height: calc(1.4em * 2);
   }
   
