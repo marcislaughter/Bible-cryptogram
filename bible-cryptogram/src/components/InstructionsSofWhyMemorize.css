@@ -177,4 +177,137 @@
 
 .instructions-content a:visited {
   color: #b399ff;
+}
+
+/* Color Wheel Styles */
+.color-wheel-container {
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+  border: 2px solid #a3a3a3;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 30px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.color-wheel-container h2 {
+  color: #800080;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  text-shadow: 1px 1px 2px rgba(128, 0, 128, 0.3);
+}
+
+.color-wheel {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.color-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #a3a3a3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.color-circle:hover {
+  transform: scale(1.1);
+  border-color: #800080;
+  box-shadow: 0 6px 15px rgba(128, 0, 128, 0.4);
+}
+
+.color-number {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.color-name {
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+/* Special cases for better number visibility */
+.color-segment:nth-child(1) .color-number, /* yellow */
+.color-segment:nth-child(2) .color-number, /* light green */
+.color-segment:nth-child(4) .color-number, /* light blue */
+.color-segment:nth-child(6) .color-number, /* light purple */
+.color-segment:nth-child(7) .color-number, /* light pink */
+.color-segment:nth-child(10) .color-number /* silver */ {
+  color: #000000;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Mobile responsiveness for color wheel */
+@media (max-width: 768px) {
+  .color-wheel {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .color-circle {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .color-number {
+    font-size: 1.4rem;
+  }
+  
+  .color-name {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .color-wheel {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+  
+  .color-circle {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .color-number {
+    font-size: 1.2rem;
+  }
+  
+  .color-name {
+    font-size: 0.8rem;
+  }
+  
+  .color-wheel-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .color-wheel-container {
+    padding: 15px;
+    margin: 20px 0;
+  }
 } 

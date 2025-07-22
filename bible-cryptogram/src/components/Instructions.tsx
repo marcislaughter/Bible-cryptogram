@@ -2,6 +2,40 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './InstructionsSofWhyMemorize.css';
 
+const ColorWheel: React.FC = () => {
+  const colors = [
+    { id: 1, name: 'yellow', color: '#FFFF00' },
+    { id: 2, name: 'lime', color: '#00FF00' },
+    { id: 3, name: 'forest green', color: '#228B22' },
+    { id: 4, name: 'cyan', color: '#00FFFF' },
+    { id: 5, name: 'dark blue', color: '#00008B' },
+    { id: 6, name: 'purple', color: '#9370DB' },
+    { id: 7, name: 'hot pink', color: '#FF69B4' },
+    { id: 8, name: 'red', color: '#DC143C' },
+    { id: 9, name: 'brown', color: '#8B4513' },
+    { id: 10, name: 'silver', color: '#C0C0C0' }
+  ];
+
+  return (
+    <div className="color-wheel-container">
+      <h2>Color Wheel Reference</h2>
+      <div className="color-wheel">
+        {colors.map((item) => (
+          <div key={item.id} className="color-segment">
+            <div 
+              className="color-circle"
+              style={{ backgroundColor: item.color }}
+            >
+              <span className="color-number">{item.id}</span>
+            </div>
+            <span className="color-name">{item.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Instructions: React.FC = () => {
   return (
     <div className="instructions-page">
@@ -9,6 +43,8 @@ const Instructions: React.FC = () => {
       
       <div className="instructions-container">
         <h1>How to Play Cryptogram</h1>
+        
+        <ColorWheel />
         
         <div className="instructions-content">
           <h2>Objective</h2>
