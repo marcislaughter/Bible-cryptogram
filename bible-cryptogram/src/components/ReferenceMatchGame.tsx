@@ -75,8 +75,8 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const onVerseChange = propOnVerseChange || (() => {});
 
   const generateNewGame = () => {
-    // Get 5 random verses including the current one
-    const selectedVerses = getRandomVerses(5, currentVerse);
+    // Get 6 random verses including the current one
+    const selectedVerses = getRandomVerses(6, currentVerse);
     setGameVerses(selectedVerses);
     
     // Create cards for verses and references
@@ -148,7 +148,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           setSelectedCards([]);
           
           // Check if game is complete
-          if (matchedPairs.length + 1 === 5) {
+          if (matchedPairs.length + 1 === 6) {
             setIsSolved(true);
           }
         }, 1000);
@@ -266,7 +266,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         {isSolved && (
           <div className="solved-message">
             {(() => {
-              const score = Math.round(((5 - incorrectAttempts) / 5) * 100);
+              const score = Math.round(((6 - incorrectAttempts) / 6) * 100);
               if (score === 100) {
                 return <h2>Perfect! You matched all verses!</h2>;
               } else if (score >= 80) {
@@ -279,7 +279,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             })()}
             <div className="score-display">
               <p className="score-text">
-                Score: {Math.round(((5 - incorrectAttempts) / 5) * 100)}%
+                Score: {Math.round(((6 - incorrectAttempts) / 6) * 100)}%
               </p>
             </div>
             <div className="matches-summary">
