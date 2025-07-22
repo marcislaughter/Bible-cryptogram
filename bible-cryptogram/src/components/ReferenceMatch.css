@@ -303,6 +303,11 @@ body.win-gradient .reference-match-container {
 }
 
 @media (max-width: 500px) {
+  .reference-match-container {
+    margin-top: 10px;
+    padding: 0;
+  }
+  
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
