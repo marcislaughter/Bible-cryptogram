@@ -15,24 +15,6 @@ body.win-gradient .reference-match-container {
   background: transparent;
 }
 
-.game-instructions {
-  margin: 20px 0;
-  text-align: center;
-  max-width: 90%;
-}
-
-.game-instructions h2 {
-  color: #800080;
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-}
-
-.game-instructions p {
-  color: #e6ccff;
-  font-size: 1.1rem;
-  margin: 0;
-}
-
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -65,14 +47,17 @@ body.win-gradient .reference-match-container {
   border-color: #9c1a9c;
 }
 
+.match-card.verse,
+.match-card.reference {
+  height: 140px;
+}
+
 .match-card.verse {
   background: linear-gradient(135deg, #e6ccff 0%, #d4c2f0 100%);
-  height: 140px;
 }
 
 .match-card.reference {
   background: linear-gradient(135deg, #f0e6ff 0%, #e6ccff 100%);
-  height: 140px;
 }
 
 .match-card.selected {
@@ -89,12 +74,6 @@ body.win-gradient .reference-match-container {
   border-color: #3da542;
   cursor: default;
   animation: matchAnimation 0.6s ease;
-}
-
-.match-card.hint-revealed {
-  background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
-  color: white;
-  border-color: #ff9800;
 }
 
 @keyframes matchAnimation {
@@ -249,28 +228,18 @@ body.win-gradient .reference-match-container {
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     padding: 0 10px;
-    align-items: center;
   }
   
   .match-card {
     padding: 5px;
   }
   
-  .match-card.verse,
-  .match-card.reference {
-    height: 140px;
-  }
-  
   .verse-content {
     font-size: 0.9rem;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    max-height: calc(1.4em * 5);
   }
   
   .reference-content {
     font-size: 1.1rem;
-    font-weight: bold;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
@@ -312,43 +281,17 @@ body.win-gradient .reference-match-container {
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
     padding: 0;
-    align-items: center;
   }
   
   .match-card {
     padding: 3px;
   }
   
-  .match-card.verse,
-  .match-card.reference {
-    height: 140px;
-  }
-  
   .verse-content {
     font-size: 0.8rem;
-    -webkit-line-clamp: 5;
-    line-clamp: 5;
-    max-height: calc(1.4em * 5);
   }
   
   .reference-content {
-    font-size: 1rem;
-    font-weight: bold;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.3;
-  }
-  
-  .game-instructions h2 {
-    font-size: 1.3rem;
-  }
-  
-  .game-instructions p {
     font-size: 1rem;
   }
   
@@ -360,22 +303,22 @@ body.win-gradient .reference-match-container {
     font-size: 1.4rem;
   }
 
-  /* Remove hover effects and shadows on mobile */
+  /* Remove hover effects on mobile */
   .match-card:hover {
     transform: none;
     box-shadow: none;
-    border-color: #800080; /* Reset to default */
+    border-color: #800080;
   }
   
   .match-card.selected {
-    transform: none;
-    box-shadow: none;
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
   }
   
   .next-verse-btn:hover,
   .repeat-verse-btn:hover {
     transform: none;
     box-shadow: none;
-    background: rgba(255, 255, 255, 0.2); /* Keep original background */
+    background: rgba(255, 255, 255, 0.2);
   }
 } 
