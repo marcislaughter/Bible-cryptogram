@@ -291,6 +291,7 @@ body.win-gradient .reference-match-container {
     height: 100vh;
     width: 100vw;
     max-width: none;
+    background: #e6ccff;
   }
   
   .match-card {
@@ -298,10 +299,12 @@ body.win-gradient .reference-match-container {
     border-radius: 0;
     height: 100%;
     width: 100%;
-    border-width: 1px;
+    border-width: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
   }
 
   .match-card.verse,
@@ -347,11 +350,11 @@ body.win-gradient .reference-match-container {
     transform: none;
     box-shadow: none;
     border-color: #ffffff;
-    border-width: 2px;
+    border-width: 3px;
   }
   
   .match-card.matched {
-    border-width: 1px;
+    border-width: 2px;
   }
   
   .next-verse-btn:hover,
