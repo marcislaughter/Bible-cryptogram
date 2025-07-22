@@ -273,10 +273,10 @@ body.win-gradient .reference-match-container {
 
 @media (max-width: 500px) {
   .reference-match-container {
-    margin-top: 20px;
+    margin-top: 50px;
     padding: 0;
-    min-height: calc(100vh - 20px);
-    height: calc(100vh - 20px);
+    min-height: calc(100vh - 50px);
+    height: calc(100vh - 50px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -288,7 +288,7 @@ body.win-gradient .reference-match-container {
     gap: 0;
     padding: 0;
     margin: 0;
-    height: calc(100vh - 20px);
+    height: calc(100vh - 50px);
     width: 100vw;
     max-width: none;
     background: #e6ccff;
@@ -321,7 +321,8 @@ body.win-gradient .reference-match-container {
   }
   
   .reference-content {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
     line-height: 1.2;
   }
   
