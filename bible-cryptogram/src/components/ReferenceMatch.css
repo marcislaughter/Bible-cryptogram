@@ -306,6 +306,7 @@ body.win-gradient .reference-match-container {
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
+    padding: 0;
     align-items: center;
   }
   
@@ -352,5 +353,24 @@ body.win-gradient .reference-match-container {
   
   .solved-message h2 {
     font-size: 1.4rem;
+  }
+
+  /* Remove hover effects and shadows on mobile */
+  .match-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #800080; /* Reset to default */
+  }
+  
+  .match-card.selected {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .next-verse-btn:hover,
+  .repeat-verse-btn:hover {
+    transform: none;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.2); /* Keep original background */
   }
 } 
