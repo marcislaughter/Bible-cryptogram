@@ -69,9 +69,9 @@ body.win-gradient .reference-match-container {
 }
 
 .match-card.matched {
-  background: linear-gradient(135deg, #3da542 0%, #4db84f 100%);
-  color: white;
-  border-color: #3da542;
+  background: #121212;
+  color: #121212;
+  border-color: #121212;
   cursor: default;
   animation: matchAnimation 0.6s ease;
 }
@@ -118,10 +118,13 @@ body.win-gradient .reference-match-container {
 
 /* Consolidated color for selected and matched states */
 .match-card.selected .verse-content,
-.match-card.matched .verse-content,
-.match-card.selected .reference-content,
-.match-card.matched .reference-content {
+.match-card.selected .reference-content {
   color: white;
+}
+
+.match-card.matched .verse-content,
+.match-card.matched .reference-content {
+  color: #121212;
 }
 
 .solved-message {
@@ -291,7 +294,7 @@ body.win-gradient .reference-match-container {
     height: calc(100vh - 50px);
     width: 100vw;
     max-width: none;
-    background: #2a2a2a;
+    background: #121212;
   }
   
   .match-card {
@@ -305,13 +308,13 @@ body.win-gradient .reference-match-container {
     justify-content: center;
     box-sizing: border-box;
     margin: 0;
-    background: #2a2a2a;
+    background: #121212;
   }
 
   .match-card.verse,
   .match-card.reference {
     height: 100%;
-    background: #2a2a2a;
+    background: #121212;
   }
   
   .verse-content {
@@ -365,15 +368,15 @@ body.win-gradient .reference-match-container {
   }
   
   .match-card.matched {
-    background: #3da542;
-    border-color: #3da542;
+    background: #121212;
+    border-color: #121212;
     border-width: 2px;
     animation: none;
   }
   
   .match-card.matched .verse-content,
   .match-card.matched .reference-content {
-    color: white;
+    color: #121212;
   }
   
   .next-verse-btn:hover,
