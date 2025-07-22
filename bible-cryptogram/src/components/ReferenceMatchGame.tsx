@@ -169,7 +169,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           if (matchedPairs.length + 1 === 6) {
             setIsSolved(true);
           }
-        }, 1000);
+        }, 500);
       } else {
         // No match
         setIncorrectAttempts(prev => prev + 1);
@@ -183,7 +183,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             )
           );
           setSelectedCards([]);
-        }, 1500);
+        }, 800);
       }
     }
   };

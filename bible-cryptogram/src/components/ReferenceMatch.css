@@ -73,18 +73,44 @@ body.win-gradient .reference-match-container {
   color: #121212;
   border-color: #121212;
   cursor: default;
-  animation: matchAnimation 0.6s ease;
+  animation: matchAnimation 0.5s ease-in-out;
+}
+
+.match-card.matched .verse-content,
+.match-card.matched .reference-content {
+  animation: textFadeAnimation 0.5s ease-in-out;
 }
 
 @keyframes matchAnimation {
   0% {
     transform: scale(1);
+    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    border-color: #ffffff;
+    color: white;
   }
-  50% {
-    transform: scale(1.1);
+  70% {
+    transform: scale(0.3);
+    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    border-color: #ffffff;
+    color: white;
   }
   100% {
-    transform: scale(1);
+    transform: scale(0);
+    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    border-color: #ffffff;
+    color: white;
+  }
+}
+
+@keyframes textFadeAnimation {
+  0% {
+    color: white;
+  }
+  70% {
+    color: white;
+  }
+  100% {
+    color: white;
   }
 }
 
@@ -372,7 +398,12 @@ body.win-gradient .reference-match-container {
     background: #121212;
     border-color: #121212;
     border-width: 2px;
-    animation: none;
+    animation: matchAnimation 0.5s ease-in-out;
+  }
+  
+  .match-card.matched .verse-content,
+  .match-card.matched .reference-content {
+    animation: textFadeAnimation 0.5s ease-in-out;
   }
   
   .match-card.matched .verse-content,
