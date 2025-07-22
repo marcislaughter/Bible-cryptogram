@@ -273,34 +273,67 @@ body.win-gradient .reference-match-container {
 
 @media (max-width: 500px) {
   .reference-match-container {
-    margin-top: 10px;
+    margin-top: 0;
     padding: 0;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
   
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     gap: 0;
     padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    max-width: none;
   }
   
   .match-card {
-    padding: 3px;
+    padding: 2px;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .match-card.verse,
+  .match-card.reference {
+    height: 100%;
   }
   
   .verse-content {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    max-height: calc(1.2em * 4);
   }
   
   .reference-content {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
   }
   
   .solved-message {
-    padding: 20px;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    z-index: 1000;
   }
   
   .solved-message h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   /* Remove hover effects on mobile */
@@ -311,8 +344,14 @@ body.win-gradient .reference-match-container {
   }
   
   .match-card.selected {
-    transform: scale(1.02);
-    box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
+    transform: none;
+    box-shadow: none;
+    border-color: #ffffff;
+    border-width: 2px;
+  }
+  
+  .match-card.matched {
+    border-width: 1px;
   }
   
   .next-verse-btn:hover,
