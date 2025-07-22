@@ -48,7 +48,7 @@ body.win-gradient .reference-match-container {
   background: #e6ccff;
   border: 3px solid #800080;
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -120,12 +120,12 @@ body.win-gradient .reference-match-container {
   color: #800080;
   font-weight: 500;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: calc(1.4em * 4);
+  max-height: calc(1.4em * 5);
 }
 
 .reference-content {
@@ -253,7 +253,7 @@ body.win-gradient .reference-match-container {
   }
   
   .match-card {
-    padding: 15px;
+    padding: 5px;
   }
   
   .match-card.verse,
@@ -263,9 +263,9 @@ body.win-gradient .reference-match-container {
   
   .verse-content {
     font-size: 0.9rem;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    max-height: calc(1.4em * 3);
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    max-height: calc(1.4em * 5);
   }
   
   .reference-content {
@@ -305,12 +305,12 @@ body.win-gradient .reference-match-container {
 @media (max-width: 500px) {
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 0;
     align-items: center;
   }
   
   .match-card {
-    padding: 12px;
+    padding: 3px;
   }
   
   .match-card.verse,
@@ -320,9 +320,9 @@ body.win-gradient .reference-match-container {
   
   .verse-content {
     font-size: 0.8rem;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    max-height: calc(1.4em * 2);
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    max-height: calc(1.4em * 5);
   }
   
   .reference-content {
