@@ -283,6 +283,7 @@ body.win-gradient .reference-match-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding-bottom: 10px;
   }
   
   .cards-grid {
@@ -291,7 +292,7 @@ body.win-gradient .reference-match-container {
     gap: 0;
     padding: 0;
     margin: 0;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 60px);
     width: 100vw;
     max-width: none;
     background: #121212;
