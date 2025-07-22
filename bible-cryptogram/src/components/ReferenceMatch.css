@@ -270,6 +270,15 @@ body.win-gradient .reference-match-container {
   
   .reference-content {
     font-size: 1.1rem;
+    font-weight: bold;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
   }
   
   .solved-buttons {
@@ -318,6 +327,15 @@ body.win-gradient .reference-match-container {
   
   .reference-content {
     font-size: 1rem;
+    font-weight: bold;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
   }
   
   .game-instructions h2 {
