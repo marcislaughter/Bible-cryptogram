@@ -11,7 +11,7 @@
   color: #a3a3a3;
 }
 
-body.win-gradient .reference-match-container {
+body.win-gradient .reference-match-container {top m
   background: transparent;
 }
 
@@ -273,10 +273,10 @@ body.win-gradient .reference-match-container {
 
 @media (max-width: 500px) {
   .reference-match-container {
-    margin-top: 0;
+    margin-top: 20px;
     padding: 0;
-    min-height: 100vh;
-    height: 100vh;
+    min-height: calc(100vh - 20px);
+    height: calc(100vh - 20px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -288,7 +288,7 @@ body.win-gradient .reference-match-container {
     gap: 0;
     padding: 0;
     margin: 0;
-    height: 100vh;
+    height: calc(100vh - 20px);
     width: 100vw;
     max-width: none;
     background: #e6ccff;
