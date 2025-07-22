@@ -11,7 +11,7 @@
   color: #a3a3a3;
 }
 
-body.win-gradient .reference-match-container {top m
+body.win-gradient .reference-match-container {
   background: transparent;
 }
 
@@ -313,15 +313,15 @@ body.win-gradient .reference-match-container {top m
   }
   
   .verse-content {
-    font-size: 0.7rem;
+    font-size: 1rem;
     line-height: 1.2;
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-    max-height: calc(1.2em * 4);
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
+    max-height: calc(1.2em * 7);
   }
   
   .reference-content {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.2;
   }
   
