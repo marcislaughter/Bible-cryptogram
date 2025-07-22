@@ -118,10 +118,28 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   }, [currentVerse]);
 
   const handleCardClick = (clickedCard: MatchCard) => {
-    if (clickedCard.isMatched || clickedCard.isSelected || selectedCards.length >= 2) {
+    if (clickedCard.isMatched) {
       return;
     }
 
+    // If the card is already selected, deselect it
+    if (clickedCard.isSelected) {
+      const newCards = cards.map(card =>
+        card.id === clickedCard.id ? { ...card, isSelected: false } : card
+      );
+      setCards(newCards);
+      
+      // Remove from selectedCards array
+      setSelectedCards(prev => prev.filter(card => card.id !== clickedCard.id));
+      return;
+    }
+
+    // If we already have 2 cards selected, don't allow selecting more
+    if (selectedCards.length >= 2) {
+      return;
+    }
+
+    // Select the card
     const newCards = cards.map(card =>
       card.id === clickedCard.id ? { ...card, isSelected: true } : card
     );
@@ -191,6 +209,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
     onVerseChange(BIBLE_VERSES[nextIndex]);
+    
+    // Scroll to top of page
+    window.scrollTo(0, 0);
   };
 
   const handleRepeatVerse = () => {
