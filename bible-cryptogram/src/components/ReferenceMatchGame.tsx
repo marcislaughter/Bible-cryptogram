@@ -14,6 +14,11 @@ import img1cor_11_2 from '../assets/1cor_11_2_realistic.jpg';
 import img1cor_11_3 from '../assets/1cor_11_3_realistic.jpg';
 import img1cor_11_4 from '../assets/1cor_11_4_realistic.jpg';
 import img1cor_11_5 from '../assets/1cor_11_5_realistic.jpg';
+import img1cor_11_6 from '../assets/1cor_11_6.jpg';
+import img1cor_11_7 from '../assets/1cor_11_7.jpg';
+import img1cor_11_8 from '../assets/1cor_11_8.jpg';
+import img1cor_11_9 from '../assets/1cor_11_9.jpg';
+import img1cor_11_10 from '../assets/1cor_11_10.jpg';
 
 // Centralized image mapping - easily extendable
 // To add new images: 1) Import above, 2) Add to this mapping
@@ -23,6 +28,11 @@ const IMAGE_MAP: Record<string, string> = {
   '1cor_11_3': img1cor_11_3,
   '1cor_11_4': img1cor_11_4,
   '1cor_11_5': img1cor_11_5,
+  '1cor_11_6': img1cor_11_6,
+  '1cor_11_7': img1cor_11_7,
+  '1cor_11_8': img1cor_11_8,
+  '1cor_11_9': img1cor_11_9,
+  '1cor_11_10': img1cor_11_10,
   // Easy to add more:
   // '1cor_12_1': img1cor_12_1,
   // '1cor_13_4': img1cor_13_4,
