@@ -41,10 +41,19 @@ body.win-gradient .reference-match-container {
   overflow: hidden;
 }
 
+.match-card.verse {
+  border: 3px solid #a3a3a3;
+}
+
 .match-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(128, 0, 128, 0.3);
   border-color: #9c1a9c;
+}
+
+.match-card.verse:hover {
+  box-shadow: 0 6px 20px rgba(163, 163, 163, 0.3);
+  border-color: #8a8a8a;
 }
 
 .match-card.verse,
@@ -74,9 +83,9 @@ body.win-gradient .reference-match-container {
 .match-card.verse.selected {
   background: #121212;
   border: 4px solid #ffffff;
-  color: #e6ccff;
+  color: #a3a3a3;
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
+  box-shadow: 0 8px 25px rgba(163, 163, 163, 0.4);
 }
 
 .match-card.reference.selected {
@@ -143,7 +152,7 @@ body.win-gradient .reference-match-container {
 .verse-content {
   font-size: 1rem;
   line-height: 1.4;
-  color: #e6ccff;
+  color: #a3a3a3;
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 5;
@@ -378,7 +387,7 @@ body.win-gradient .reference-match-container {
     -webkit-line-clamp: 7;
     line-clamp: 7;
     max-height: calc(1.2em * 7);
-    color: #e6ccff;
+    color: #a3a3a3;
   }
   
   .reference-content {
@@ -409,12 +418,20 @@ body.win-gradient .reference-match-container {
     border-color: #800080;
   }
   
+  .match-card.verse:hover {
+    border-color: #a3a3a3;
+  }
+  
   .match-card.selected {
     transform: none;
     box-shadow: none;
     border-color: #ffffff;
     border-width: 3px;
     background: #800080;
+  }
+  
+  .match-card.verse.selected {
+    background: #121212;
   }
 
   .match-card.selected .verse-content,
