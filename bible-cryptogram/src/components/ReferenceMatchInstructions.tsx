@@ -4,16 +4,16 @@ import './InstructionsSofWhyMemorize.css';
 
 const ColorWheel: React.FC = () => {
   const colors = [
-    { id: 1, name: 'yellow', color: '#FFFF00' },
-    { id: 2, name: 'lime', color: '#00FF00' },
-    { id: 3, name: 'forest green', color: '#228B22' },
-    { id: 4, name: 'cyan', color: '#00FFFF' },
-    { id: 5, name: 'dark blue', color: '#00008B' },
-    { id: 6, name: 'purple', color: '#9370DB' },
-    { id: 7, name: 'hot pink', color: '#FF69B4' },
-    { id: 8, name: 'red', color: '#DC143C' },
-    { id: 9, name: 'brown', color: '#8B4513' },
-    { id: 10, name: 'silver', color: '#C0C0C0' }
+    { id: 1, name: 'dark blue', color: '#00008B', textColor: '#FFFFFF' },
+    { id: 2, name: 'red', color: '#8B0000', textColor: '#FFFFFF' },
+    { id: 3, name: 'green', color: '#228B22', textColor: '#FFFFFF' },
+    { id: 4, name: 'orange', color: '#FF8C00', textColor: '#000000' },
+    { id: 5, name: 'purple', color: '#9370DB', textColor: '#FFFFFF' },
+    { id: 6, name: 'cyan', color: '#00FFFF', textColor: '#000000' },
+    { id: 7, name: 'brown', color: '#8B4513', textColor: '#FFFFFF' },
+    { id: 8, name: 'lime', color: '#00FF00', textColor: '#000000' },
+    { id: 9, name: 'yellow', color: '#FFFF00', textColor: '#000000' },
+    { id: 10, name: 'pink', color: '#FF69B4', textColor: '#000000' }
   ];
 
   return (
@@ -26,7 +26,7 @@ const ColorWheel: React.FC = () => {
               className="color-circle"
               style={{ backgroundColor: item.color }}
             >
-              <span className="color-number">{item.id}</span>
+              <span className="color-number" style={{ color: item.textColor }}>{item.id}</span>
             </div>
             <span className="color-name">{item.name}</span>
           </div>
