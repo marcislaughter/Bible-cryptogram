@@ -53,7 +53,7 @@ body.win-gradient .reference-match-container {
 }
 
 .match-card.verse {
-  background: linear-gradient(135deg, #e6ccff 0%, #d4c2f0 100%);
+  background: #121212;
 }
 
 .match-card.reference {
@@ -66,7 +66,25 @@ body.win-gradient .reference-match-container {
 .match-card.selected {
   background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
   color: white;
-  border-color: #ffffff;
+  border: 4px solid #ffffff;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
+}
+
+.match-card.verse.selected {
+  background: #121212;
+  border: 4px solid #ffffff;
+  color: #e6ccff;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
+}
+
+.match-card.reference.selected {
+  background: url('../assets/1cor_11_1_realistic.jpg') center/cover;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 139, 0.3);
+  border: 4px solid #ffffff;
+  color: white;
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
 }
@@ -125,7 +143,7 @@ body.win-gradient .reference-match-container {
 .verse-content {
   font-size: 1rem;
   line-height: 1.4;
-  color: #800080;
+  color: #e6ccff;
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 5;
