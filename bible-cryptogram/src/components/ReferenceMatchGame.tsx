@@ -63,12 +63,37 @@ const COLOR_WHEEL: Record<number, { color: string; name: string }> = {
   10: { color: '#FF69B4', name: 'pink' }
 };
 
-// Function to get image and color for 1 Cor 11:2-5 references
+// Function to get image and color for any verse reference based on ending digit
 const getReferenceStyle = (reference: string) => {
-  const match = reference.match(/1\s*Cor(?:inthians)?\s*11:([2-5])/i);
-  if (match) {
-    const verseNumber = parseInt(match[1]);
-    const color = COLOR_WHEEL[verseNumber];
+  // Extract verse number from any Bible reference (e.g., "John 3:16" -> 16, "Psalm 23:1" -> 1)
+  const verseMatch = reference.match(/:(\d+)(?:-\d+)?$/);
+  if (!verseMatch) {
+    // Fallback if no verse number found
+    return {
+      backgroundImage: 'none', // Override the default CSS background image
+      backgroundColor: 'rgba(0, 0, 139, 0.3)',
+      borderColor: '#00008B'
+    };
+  }
+  
+  const verseNumber = parseInt(verseMatch[1]);
+  const lastDigit = verseNumber % 10; // Get last digit (0-9)
+  const colorKey = lastDigit === 0 ? 10 : lastDigit; // Map 0 to 10 for color wheel
+  const color = COLOR_WHEEL[colorKey];
+  
+  if (!color) {
+    // Fallback if color not found
+    return {
+      backgroundImage: 'none', // Override the default CSS background image
+      backgroundColor: 'rgba(0, 0, 139, 0.3)',
+      borderColor: '#00008B'
+    };
+  }
+  
+  // Check if this is exactly 1 Cor 11:1, 11:2, 11:3, 11:4, or 11:5 (exact match only)
+  const cor11ExactMatch = reference.match(/1\s*Cor(?:inthians)?\s*11:([1-5])$/i);
+  if (cor11ExactMatch) {
+    const cor11Verse = parseInt(cor11ExactMatch[1]);
     const imageMap: Record<number, string> = {
       1: img1Cor111,
       2: img1Cor112,
@@ -77,20 +102,20 @@ const getReferenceStyle = (reference: string) => {
       5: img1Cor115
     };
     
-    if (color && imageMap[verseNumber]) {
+    if (imageMap[cor11Verse]) {
       return {
-        backgroundImage: `url(${imageMap[verseNumber]})`,
-        backgroundColor: `${color.color}30`, // Add 30 for opacity
+        backgroundImage: `url(${imageMap[cor11Verse]})`,
+        backgroundColor: `${color.color}80`, // Add 80 for 50% opacity
         borderColor: color.color
       };
     }
   }
   
-  // Default style for other references
+  // For all other references, use 30% transparent color background (no image)
   return {
-    backgroundImage: `url(${img1Cor111})`,
-    backgroundColor: 'rgba(0, 0, 139, 0.3)',
-    borderColor: '#00008B'
+    backgroundImage: 'none', // Override the default CSS background image
+    backgroundColor: `${color.color}30`, // 30% opacity like the image cards
+    borderColor: color.color
   };
 };
 
