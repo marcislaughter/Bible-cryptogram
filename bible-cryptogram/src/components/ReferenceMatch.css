@@ -316,7 +316,7 @@ body.win-gradient .reference-match-container {
   }
   
   .cards-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 32% 32% 32%;
     grid-template-rows: repeat(4, 1fr);
     gap: 0;
     padding: 0;
