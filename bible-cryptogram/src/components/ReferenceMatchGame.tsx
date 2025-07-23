@@ -7,12 +7,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './ReferenceMatch.css';
 
-// Import the images
-import img1Cor111 from '../assets/1cor_11_1_realistic.jpg';
-import img1Cor112 from '../assets/1cor_11_2_realistic.jpg';
-import img1Cor113 from '../assets/1cor_11_3_realistic.jpg';
-import img1Cor114 from '../assets/1cor_11_4_realistic.jpg';
-import img1Cor115 from '../assets/1cor_11_5_realistic.jpg';
+// Import all 1 Corinthians images - add more as you create them
+// Currently using existing file names, will rename to 1cor_chapter_verse.jpg pattern later
+import img1cor_11_1 from '../assets/1cor_11_1_realistic.jpg';
+import img1cor_11_2 from '../assets/1cor_11_2_realistic.jpg';
+import img1cor_11_3 from '../assets/1cor_11_3_realistic.jpg';
+import img1cor_11_4 from '../assets/1cor_11_4_realistic.jpg';
+import img1cor_11_5 from '../assets/1cor_11_5_realistic.jpg';
+
+// Centralized image mapping - easily extendable
+// To add new images: 1) Import above, 2) Add to this mapping
+const IMAGE_MAP: Record<string, string> = {
+  '1cor_11_1': img1cor_11_1,
+  '1cor_11_2': img1cor_11_2,
+  '1cor_11_3': img1cor_11_3,
+  '1cor_11_4': img1cor_11_4,
+  '1cor_11_5': img1cor_11_5,
+  // Easy to add more:
+  // '1cor_12_1': img1cor_12_1,
+  // '1cor_13_4': img1cor_13_4,
+  // etc.
+};
+
+console.log('Available image keys:', Object.keys(IMAGE_MAP)); // Debug
+
+// Function to get image key from reference
+const getReferenceImageKey = (reference: string): string | null => {
+  // Match various 1 Corinthians formats: "1 Corinthians 11:2", "1 Cor 11:2", "1cor11:2", etc.
+  const match = reference.match(/1\s*Cor(?:inthians)?\s*(\d+):(\d+)/i);
+  if (!match) return null;
+  
+  const [, chapter, verse] = match;
+  console.log('Found 1 Cor reference:', reference, '-> key:', `1cor_${chapter}_${verse}`); // Debug
+  return `1cor_${chapter}_${verse}`;
+};
 
 // Utility function to shuffle array
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -90,22 +118,16 @@ const getReferenceStyle = (reference: string) => {
     };
   }
   
-  // Check if this is exactly 1 Cor 11:1, 11:2, 11:3, 11:4, or 11:5 (exact match only)
-  const cor11ExactMatch = reference.match(/1\s*Cor(?:inthians)?\s*11:([1-5])$/i);
-  if (cor11ExactMatch) {
-    const cor11Verse = parseInt(cor11ExactMatch[1]);
-    const imageMap: Record<number, string> = {
-      1: img1Cor111,
-      2: img1Cor112,
-      3: img1Cor113,
-      4: img1Cor114,
-      5: img1Cor115
-    };
-    
-    if (imageMap[cor11Verse]) {
+  // Check if this is a 1 Corinthians reference and if we have an image for it
+  const imageKey = getReferenceImageKey(reference);
+  if (imageKey) {
+    console.log('Image key:', imageKey, 'Available:', !!IMAGE_MAP[imageKey]); // Debug
+    if (IMAGE_MAP[imageKey]) {
+      // We have an image for this 1 Corinthians reference
+      console.log('Using image for:', reference); // Debug
       return {
-        backgroundImage: `url(${imageMap[cor11Verse]})`,
-        backgroundColor: `${color.color}80`, // Add 80 for 50% opacity
+        backgroundImage: `url(${IMAGE_MAP[imageKey]})`,
+        backgroundColor: `${color.color}80`, // 50% opacity for images
         borderColor: color.color
       };
     }
@@ -114,7 +136,7 @@ const getReferenceStyle = (reference: string) => {
   // For all other references, use 30% transparent color background (no image)
   return {
     backgroundImage: 'none', // Override the default CSS background image
-    backgroundColor: `${color.color}30`, // 30% opacity like the image cards
+    backgroundColor: `${color.color}30`, // 30% opacity
     borderColor: color.color
   };
 };
