@@ -7,6 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './ReferenceMatch.css';
 
+// Import the images
+import img1Cor111 from '../assets/1cor_11_1_realistic.jpg';
+import img1Cor112 from '../assets/1cor_11_2_realistic.jpg';
+import img1Cor113 from '../assets/1cor_11_3_realistic.jpg';
+import img1Cor114 from '../assets/1cor_11_4_realistic.jpg';
+import img1Cor115 from '../assets/1cor_11_5_realistic.jpg';
+
 // Utility function to shuffle array
 const shuffleArray = <T,>(array: T[]): T[] => {
   const shuffled = [...array];
@@ -40,6 +47,51 @@ const getRandomVerses = (count: number, currentVerse: BibleVerse): BibleVerse[] 
   const shuffledOthers = shuffleArray(otherVerses);
   
   return verses.concat(shuffledOthers.slice(0, count - 1));
+};
+
+// Color wheel mapping for verse numbers
+const COLOR_WHEEL: Record<number, { color: string; name: string }> = {
+  1: { color: '#00008B', name: 'dark blue' },
+  2: { color: '#8B0000', name: 'red' },
+  3: { color: '#228B22', name: 'green' },
+  4: { color: '#FF8C00', name: 'orange' },
+  5: { color: '#9370DB', name: 'purple' },
+  6: { color: '#00FFFF', name: 'cyan' },
+  7: { color: '#8B4513', name: 'brown' },
+  8: { color: '#00FF00', name: 'lime' },
+  9: { color: '#FFFF00', name: 'yellow' },
+  10: { color: '#FF69B4', name: 'pink' }
+};
+
+// Function to get image and color for 1 Cor 11:2-5 references
+const getReferenceStyle = (reference: string) => {
+  const match = reference.match(/1\s*Cor(?:inthians)?\s*11:([2-5])/i);
+  if (match) {
+    const verseNumber = parseInt(match[1]);
+    const color = COLOR_WHEEL[verseNumber];
+    const imageMap: Record<number, string> = {
+      1: img1Cor111,
+      2: img1Cor112,
+      3: img1Cor113,
+      4: img1Cor114,
+      5: img1Cor115
+    };
+    
+    if (color && imageMap[verseNumber]) {
+      return {
+        backgroundImage: `url(${imageMap[verseNumber]})`,
+        backgroundColor: `${color.color}30`, // Add 30 for opacity
+        borderColor: color.color
+      };
+    }
+  }
+  
+  // Default style for other references
+  return {
+    backgroundImage: `url(${img1Cor111})`,
+    backgroundColor: 'rgba(0, 0, 139, 0.3)',
+    borderColor: '#00008B'
+  };
 };
 
 interface MatchCard {
@@ -259,29 +311,42 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         {wordStatsEnabled && <WordStats />}
         
         <div className="cards-grid">
-          {cards.map((card) => (
-            <div
-              key={card.id}
-              className={`match-card ${card.type} ${
-                card.isSelected ? 'selected' : ''
-              } ${
-                card.isMatched ? 'matched' : ''
-              }`}
-              onClick={() => handleCardClick(card)}
-            >
-              <div className="card-content">
-                {card.type === 'verse' ? (
-                  <div className="verse-content">
-                    {card.content}
-                  </div>
-                ) : (
-                  <div className="reference-content">
-                    {card.content}
-                  </div>
-                )}
+          {cards.map((card) => {
+            const referenceStyle = card.type === 'reference' && !card.isMatched ? getReferenceStyle(card.content) : null;
+            
+            return (
+              <div
+                key={card.id}
+                className={`match-card ${card.type} ${
+                  card.isSelected ? 'selected' : ''
+                } ${
+                  card.isMatched ? 'matched' : ''
+                }`}
+                style={referenceStyle ? {
+                  backgroundImage: referenceStyle.backgroundImage,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundBlendMode: 'overlay',
+                  backgroundColor: referenceStyle.backgroundColor,
+                  // Don't override border color when selected - let CSS handle the white border
+                  ...(card.isSelected ? {} : { borderColor: referenceStyle.borderColor })
+                } : {}}
+                onClick={() => handleCardClick(card)}
+              >
+                <div className="card-content">
+                  {card.type === 'verse' ? (
+                    <div className="verse-content">
+                      {card.content}
+                    </div>
+                  ) : (
+                    <div className="reference-content">
+                      {card.content}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
         {isSolved && (
