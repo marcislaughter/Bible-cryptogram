@@ -394,7 +394,7 @@ body.win-gradient .reference-match-container {
     border-radius: 6px;
     height: 100%;
     width: 100%;
-    border-width: 2px;
+    border-width: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -502,7 +502,7 @@ body.win-gradient .reference-match-container {
   .match-card.matched {
     background: #121212;
     border-color: #121212;
-    border-width: 2px;
+    border-width: 3px;
     animation: matchAnimation 0.5s ease-in-out;
   }
   
