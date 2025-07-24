@@ -379,13 +379,12 @@ body.win-gradient .reference-match-container {
   }
   
   .cards-grid {
-    grid-template-columns: 32% 32% 32%;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 0;
     padding: 0;
     margin: 0;
     height: calc(100vh - 60px);
-    width: 100vw;
     max-width: none;
     background: #121212;
   }
