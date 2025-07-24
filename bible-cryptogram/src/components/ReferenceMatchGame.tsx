@@ -207,6 +207,25 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
 
+  // Function to detect mobile devices
+  const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768 && 'ontouchstart' in window);
+  };
+
+  // Function to scroll down slightly on mobile to hide browser navigation
+  const hideMobileBrowserNavigation = () => {
+    if (isMobileDevice()) {
+      // Small delay to ensure the page is rendered
+      setTimeout(() => {
+        window.scrollTo({
+          top: 1,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  };
+
   const generateNewGame = () => {
     // Get 6 random verses including the current one
     const selectedVerses = getRandomVerses(6, currentVerse);
@@ -245,11 +264,19 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setIsSolved(false);
     setIncorrectAttempts(0);
     setFeedbackCards([]);
+    
+    // Hide mobile browser navigation after generating new game
+    hideMobileBrowserNavigation();
   };
 
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
+
+  // Hide mobile browser navigation on component mount
+  useEffect(() => {
+    hideMobileBrowserNavigation();
+  }, []);
 
   const handleCardClick = (clickedCard: MatchCard) => {
     if (clickedCard.isMatched) {
