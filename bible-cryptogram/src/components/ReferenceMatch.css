@@ -98,6 +98,42 @@ body.win-gradient .reference-match-container {
   box-shadow: 0 8px 25px rgba(128, 0, 128, 0.4);
 }
 
+.match-card.correct {
+  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
+  border: 4px solid #ffffff !important;
+  color: white !important;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(61, 165, 66, 0.6);
+  animation: pulseGreen 0.3s ease-in-out;
+}
+
+.match-card.incorrect {
+  background: linear-gradient(135deg, #8B0000 0%, #CD5C5C 100%) !important;
+  border: 4px solid #ffffff !important;
+  color: white !important;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(139, 0, 0, 0.6);
+  animation: shakeRed 0.5s ease-in-out;
+}
+
+.match-card.correct .verse-content,
+.match-card.correct .reference-content,
+.match-card.incorrect .verse-content,
+.match-card.incorrect .reference-content {
+  color: white !important;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { transform: translateY(-3px) scale(1.05); }
+  50% { transform: translateY(-3px) scale(1.1); }
+}
+
+@keyframes shakeRed {
+  0%, 100% { transform: translateY(-3px) scale(1.05) translateX(0); }
+  25% { transform: translateY(-3px) scale(1.05) translateX(-5px); }
+  75% { transform: translateY(-3px) scale(1.05) translateX(5px); }
+}
+
 .match-card.matched {
   background: #121212;
   color: #121212;
@@ -114,19 +150,19 @@ body.win-gradient .reference-match-container {
 @keyframes matchAnimation {
   0% {
     transform: scale(1);
-    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
     border-color: #ffffff;
     color: white;
   }
   70% {
     transform: scale(0.3);
-    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
     border-color: #ffffff;
     color: white;
   }
   100% {
     transform: scale(0);
-    background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
+    background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
     border-color: #ffffff;
     color: white;
   }
@@ -437,6 +473,31 @@ body.win-gradient .reference-match-container {
   .match-card.selected .verse-content,
   .match-card.selected .reference-content {
     color: white;
+  }
+  
+  .match-card.correct {
+    background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
+    border: 4px solid #ffffff !important;
+    color: white !important;
+    transform: none;
+    box-shadow: none;
+    animation: pulseGreen 0.3s ease-in-out;
+  }
+  
+  .match-card.incorrect {
+    background: linear-gradient(135deg, #8B0000 0%, #CD5C5C 100%) !important;
+    border: 4px solid #ffffff !important;
+    color: white !important;
+    transform: none;
+    box-shadow: none;
+    animation: shakeRed 0.5s ease-in-out;
+  }
+  
+  .match-card.correct .verse-content,
+  .match-card.correct .reference-content,
+  .match-card.incorrect .verse-content,
+  .match-card.incorrect .reference-content {
+    color: white !important;
   }
   
   .match-card.matched {

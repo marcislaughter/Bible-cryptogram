@@ -178,6 +178,11 @@ interface MatchCard {
   isMatched: boolean;
 }
 
+interface FeedbackCard {
+  id: string;
+  type: 'correct' | 'incorrect';
+}
+
 interface ReferenceMatchGameProps {
   gameType?: import('./GameHeader').GameType;
   onGameTypeChange?: (gameType: import('./GameHeader').GameType) => void;
@@ -198,6 +203,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const [incorrectAttempts, setIncorrectAttempts] = useState(0);
   const [gameVerses, setGameVerses] = useState<BibleVerse[]>([]);
+  const [feedbackCards, setFeedbackCards] = useState<FeedbackCard[]>([]);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
 
@@ -238,6 +244,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setMatchedPairs([]);
     setIsSolved(false);
     setIncorrectAttempts(0);
+    setFeedbackCards([]);
   };
 
   useEffect(() => {
@@ -279,8 +286,18 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     if (newSelectedCards.length === 2) {
       const [card1, card2] = newSelectedCards;
       
-      if (card1.verseId === card2.verseId && card1.type !== card2.type) {
-        // Match found!
+      // Show immediate visual feedback
+      const isMatch = card1.verseId === card2.verseId && card1.type !== card2.type;
+      const feedbackType = isMatch ? 'correct' : 'incorrect';
+      
+      // Set feedback for both cards
+      setFeedbackCards([
+        { id: card1.id, type: feedbackType },
+        { id: card2.id, type: feedbackType }
+      ]);
+      
+      if (isMatch) {
+        // Match found - show green feedback, then mark as matched
         setTimeout(() => {
           setCards(prevCards =>
             prevCards.map(card =>
@@ -291,14 +308,15 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           );
           setMatchedPairs(prev => [...prev, card1.verseId]);
           setSelectedCards([]);
+          setFeedbackCards([]);
           
           // Check if game is complete
           if (matchedPairs.length + 1 === 6) {
             setIsSolved(true);
           }
-        }, 500);
+        }, 800); // Show green feedback for 800ms
       } else {
-        // No match
+        // No match - show red feedback, then revert
         setIncorrectAttempts(prev => prev + 1);
         
         setTimeout(() => {
@@ -310,7 +328,8 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             )
           );
           setSelectedCards([]);
-        }, 800);
+          setFeedbackCards([]);
+        }, 1000); // Show red feedback for 1000ms
       }
     }
   };
@@ -321,6 +340,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setIsSolved(false);
     setWordStatsEnabled(false);
     setIncorrectAttempts(0);
+    setFeedbackCards([]);
     generateNewGame();
   };
 
@@ -388,6 +408,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         <div className="cards-grid">
           {cards.map((card) => {
             const referenceStyle = card.type === 'reference' && !card.isMatched ? getReferenceStyle(card.content) : null;
+            const feedbackCard = feedbackCards.find(f => f.id === card.id);
             
             return (
               <div
@@ -396,6 +417,8 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                   card.isSelected ? 'selected' : ''
                 } ${
                   card.isMatched ? 'matched' : ''
+                } ${
+                  feedbackCard ? feedbackCard.type : ''
                 }`}
                 style={referenceStyle ? {
                   backgroundImage: referenceStyle.backgroundImage,
