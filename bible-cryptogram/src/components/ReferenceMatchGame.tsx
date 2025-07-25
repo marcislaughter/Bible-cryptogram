@@ -119,16 +119,19 @@ const COLOR_WHEEL: Record<number, { color: string; name: string }> = {
   10: { color: '#FF69B4', name: 'pink' }
 };
 
-// Function to get image and color for any verse reference based on ending digit
-const getReferenceStyle = (reference: string) => {
+// Function to get styling info for any verse reference based on ending digit
+const getReferenceStyleInfo = (reference: string) => {
   // Extract verse number from any Bible reference (e.g., "John 3:16" -> 16, "Psalm 23:1" -> 1)
   const verseMatch = reference.match(/:(\d+)(?:-\d+)?$/);
   if (!verseMatch) {
     // Fallback if no verse number found
     return {
-      backgroundImage: 'none', // Override the default CSS background image
-      backgroundColor: 'rgba(0, 0, 139, 0.3)',
-      borderColor: '#00008B'
+      hasImage: false,
+      cssClass: 'no-image',
+      cssVariables: {
+        '--reference-bg-color': 'rgba(0, 0, 139, 0.3)',
+        '--reference-border-color': '#00008B'
+      }
     };
   }
   
@@ -140,9 +143,12 @@ const getReferenceStyle = (reference: string) => {
   if (!color) {
     // Fallback if color not found
     return {
-      backgroundImage: 'none', // Override the default CSS background image
-      backgroundColor: 'rgba(0, 0, 139, 0.3)',
-      borderColor: '#00008B'
+      hasImage: false,
+      cssClass: 'no-image',
+      cssVariables: {
+        '--reference-bg-color': 'rgba(0, 0, 139, 0.3)',
+        '--reference-border-color': '#00008B'
+      }
     };
   }
   
@@ -154,18 +160,25 @@ const getReferenceStyle = (reference: string) => {
       // We have an image for this 1 Corinthians reference
       console.log('Using image for:', reference); // Debug
       return {
-        backgroundImage: `url(${IMAGE_MAP[imageKey]})`,
-        backgroundColor: `${color.color}80`, // 50% opacity for images
-        borderColor: color.color
+        hasImage: true,
+        cssClass: 'has-image',
+        cssVariables: {
+          '--reference-bg-image': `url(${IMAGE_MAP[imageKey]})`,
+          '--reference-bg-color': `${color.color}80`, // 50% opacity for images
+          '--reference-border-color': color.color
+        }
       };
     }
   }
   
   // For all other references, use 30% transparent color background (no image)
   return {
-    backgroundImage: 'none', // Override the default CSS background image
-    backgroundColor: `${color.color}30`, // 30% opacity
-    borderColor: color.color
+    hasImage: false,
+    cssClass: 'no-image',
+    cssVariables: {
+      '--reference-bg-color': `${color.color}30`, // 30% opacity
+      '--reference-border-color': color.color
+    }
   };
 };
 
@@ -434,7 +447,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         
         <div className="cards-grid">
           {cards.map((card) => {
-            const referenceStyle = card.type === 'reference' && !card.isMatched ? getReferenceStyle(card.content) : null;
+            const referenceStyleInfo = card.type === 'reference' && !card.isMatched ? getReferenceStyleInfo(card.content) : null;
             const feedbackCard = feedbackCards.find(f => f.id === card.id);
             
             return (
@@ -446,16 +459,10 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                   card.isMatched ? 'matched' : ''
                 } ${
                   feedbackCard ? feedbackCard.type : ''
+                } ${
+                  referenceStyleInfo ? referenceStyleInfo.cssClass : ''
                 }`}
-                style={referenceStyle ? {
-                  backgroundImage: referenceStyle.backgroundImage,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundBlendMode: 'overlay',
-                  backgroundColor: referenceStyle.backgroundColor,
-                  // Don't override border color when selected - let CSS handle the white border
-                  ...(card.isSelected ? {} : { borderColor: referenceStyle.borderColor })
-                } : {}}
+                style={referenceStyleInfo && !card.isSelected ? referenceStyleInfo.cssVariables as React.CSSProperties : {}}
                 onClick={() => handleCardClick(card)}
               >
                 <div className="card-content">
