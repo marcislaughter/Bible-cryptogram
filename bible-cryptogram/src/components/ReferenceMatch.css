@@ -106,7 +106,8 @@ body.win-gradient .reference-match-container {
   z-index: 10;
 }
 
-.match-card.selected::before {
+/* Black background shadow only for non-reference cards */
+.match-card.selected:not(.reference)::before {
   content: '';
   position: absolute;
   top: -10px;
@@ -118,8 +119,8 @@ body.win-gradient .reference-match-container {
   border-radius: 12px;
 }
 
-/* Specific selected styles */
-.match-card.selected {
+/* Specific selected styles - exclude reference cards */
+.match-card.selected:not(.reference) {
   background: linear-gradient(135deg, #800080 0%, #9c1a9c 100%);
   color: white;
 }
@@ -130,10 +131,19 @@ body.win-gradient .reference-match-container {
   box-shadow: 0 8px 25px rgba(163, 163, 163, 0.4);
 }
 
-.match-card.reference.selected {
-  background: url('../assets/1cor_11_1_realistic.jpg') center/cover;
+/* Selected reference cards with images */
+.match-card.reference.selected.has-image {
+  background-image: var(--reference-bg-image);
+  background-size: cover;
+  background-position: center;
   background-blend-mode: overlay;
-  background-color: rgba(0, 0, 139, 0.3);
+  background-color: var(--reference-bg-color);
+  color: white;
+}
+
+/* Selected reference cards without images */
+.match-card.reference.selected.no-image {
+  background-color: var(--reference-bg-color);
   color: white;
 }
 
@@ -469,10 +479,15 @@ body.win-gradient .reference-match-container {
     transform-origin: center center;
     box-shadow: none;
     border-width: 5px;
+  }
+  
+  /* Mobile selected background for non-reference cards */
+  .match-card.selected:not(.reference) {
     background: #800080;
   }
 
-  .match-card.selected::before {
+  /* Mobile pseudo-element adjustments only for non-reference cards */
+  .match-card.selected:not(.reference)::before {
     top: -15px;
     left: -15px;
     right: -15px;

@@ -500,7 +500,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 } ${
                   referenceStyleInfo ? referenceStyleInfo.cssClass : ''
                 }`}
-                style={referenceStyleInfo && !card.isSelected ? referenceStyleInfo.cssVariables as React.CSSProperties : {}}
+                style={referenceStyleInfo ? referenceStyleInfo.cssVariables as React.CSSProperties : {}}
                 onClick={() => handleCardClick(card)}
               >
                 <div className="card-content">
