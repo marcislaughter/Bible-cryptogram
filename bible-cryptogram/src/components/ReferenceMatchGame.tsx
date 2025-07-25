@@ -7,67 +7,108 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './ReferenceMatch.css';
 
-// Import all 1 Corinthians images - add more as you create them
-// Currently using existing file names, will rename to 1cor_chapter_verse.jpg pattern later
-import img1cor_11_1 from '../assets/1cor_11_1_realistic.jpg';
-import img1cor_11_2 from '../assets/1cor_11_2_realistic.jpg';
-import img1cor_11_3 from '../assets/1cor_11_3_realistic.jpg';
-import img1cor_11_4 from '../assets/1cor_11_4_realistic.jpg';
-import img1cor_11_5 from '../assets/1cor_11_5_realistic.jpg';
-import img1cor_11_6 from '../assets/1cor_11_6.jpg';
-import img1cor_11_7 from '../assets/1cor_11_7.jpg';
-import img1cor_11_8 from '../assets/1cor_11_8.jpg';
-import img1cor_11_9 from '../assets/1cor_11_9.jpg';
-import img1cor_11_10 from '../assets/1cor_11_10.jpg';
-import img1cor_11_11 from '../assets/1cor_11_11.jpg';
-import img1cor_11_12 from '../assets/1cor_11_12.jpg';
-import img1cor_11_13 from '../assets/1cor_11_13.jpg';
-import img1cor_11_14 from '../assets/1cor_11_14.jpg';
-import img1cor_11_15 from '../assets/1cor_11_15.jpg';
-import img1cor_11_16 from '../assets/1cor_11_16.jpg';
-import img1cor_11_17 from '../assets/1cor_11_17.jpg';
-import img1cor_11_18 from '../assets/1cor_11_18.jpg';
-import img1cor_11_19 from '../assets/1cor_11_19.jpg';
+// Dynamic image loading using Vite's import.meta.glob
+// This automatically imports all images matching the pattern
+const imageModules = import.meta.glob('../assets/*.{png,jpg,jpeg,svg}', { eager: true });
 
-// Centralized image mapping - easily extendable
-// To add new images: 1) Import above, 2) Add to this mapping
-const IMAGE_MAP: Record<string, string> = {
-  '1cor_11_1': img1cor_11_1,
-  '1cor_11_2': img1cor_11_2,
-  '1cor_11_3': img1cor_11_3,
-  '1cor_11_4': img1cor_11_4,
-  '1cor_11_5': img1cor_11_5,
-  '1cor_11_6': img1cor_11_6,
-  '1cor_11_7': img1cor_11_7,
-  '1cor_11_8': img1cor_11_8,
-  '1cor_11_9': img1cor_11_9,
-  '1cor_11_10': img1cor_11_10,
-  '1cor_11_11': img1cor_11_11,
-  '1cor_11_12': img1cor_11_12,
-  '1cor_11_13': img1cor_11_13,
-  '1cor_11_14': img1cor_11_14,
-  '1cor_11_15': img1cor_11_15,
-  '1cor_11_16': img1cor_11_16,
-  '1cor_11_17': img1cor_11_17,
-  '1cor_11_18': img1cor_11_18,
-  '1cor_11_19': img1cor_11_19,
-  // Easy to add more:
-  // '1cor_12_1': img1cor_12_1,
-  // '1cor_13_4': img1cor_13_4,
-  // etc.
+// Create dynamic image mapping
+const createImageMap = () => {
+  const imageMap: Record<string, string> = {};
+  
+  Object.entries(imageModules).forEach(([path, module]) => {
+    // Extract filename without extension from path
+    // '../assets/1cor_11_1_realistic.jpg' -> '1cor_11_1_realistic'
+    const filename = path.split('/').pop()?.replace(/\.(png|jpg|jpeg|svg)$/i, '') || '';
+    
+    // Get the default export (the image URL)
+    const imageUrl = (module as { default: string }).default;
+    
+    // Create mapping with original filename as key
+    imageMap[filename] = imageUrl;
+    
+    // Also create simplified mapping for the reference system
+    // 'filename' could be '1cor_11_1_realistic' -> create '1cor_11_1' mapping
+    const simplifiedKey = filename.replace(/_realistic$/, '');
+    if (simplifiedKey !== filename) {
+      imageMap[simplifiedKey] = imageUrl;
+    }
+  });
+  
+  console.log('Dynamic image map created:', Object.keys(imageMap));
+  return imageMap;
 };
 
-console.log('Available image keys:', Object.keys(IMAGE_MAP)); // Debug
+// Create the image map at module load time
+const IMAGE_MAP = createImageMap();
 
-// Function to get image key from reference
+// Function to convert reference to image key
 const getReferenceImageKey = (reference: string): string | null => {
-  // Match various 1 Corinthians formats: "1 Corinthians 11:2", "1 Cor 11:2", "1cor11:2", etc.
-  const match = reference.match(/1\s*Cor(?:inthians)?\s*(\d+):(\d+)/i);
-  if (!match) return null;
+  // Convert reference formats to image filename patterns
   
-  const [, chapter, verse] = match;
-  console.log('Found 1 Cor reference:', reference, '-> key:', `1cor_${chapter}_${verse}`); // Debug
-  return `1cor_${chapter}_${verse}`;
+  // Bible verses: "1 Cor 11:1" -> "1cor_11_1"
+  const bibleMatch = reference.match(/(\d*)\s*([A-Za-z]+)\s*(\d+):(\d+)/i);
+  if (bibleMatch) {
+    const [, bookNum, book, chapter, verse] = bibleMatch;
+    
+    // Normalize book names
+    const bookKey = normalizeBookName(bookNum + book);
+    if (bookKey) {
+      return `${bookKey}_${chapter}_${verse}`;
+    }
+  }
+  
+  // Other reference types can be added here
+  // Example: "Psalm 23:1" -> "ps_23_1"
+  // Example: "John 3:16" -> "john_3_16"
+  
+  return null;
+};
+
+// Helper function to normalize book names to consistent keys
+const normalizeBookName = (bookInput: string): string | null => {
+  const normalized = bookInput.toLowerCase().replace(/\s+/g, '');
+  
+  // Book name mappings - expand this as you add more books
+  const bookMappings: Record<string, string> = {
+    '1cor': '1cor',
+    '1corinthians': '1cor',
+    '2cor': '2cor', 
+    '2corinthians': '2cor',
+    'john': 'john',
+    'psalm': 'ps',
+    'psalms': 'ps',
+    'genesis': 'gen',
+    'matthew': 'matt',
+    'mark': 'mark',
+    'luke': 'luke',
+    'romans': 'rom',
+    // Add more mappings as needed
+  };
+  
+  return bookMappings[normalized] || null;
+};
+
+// Function to get image URL for a reference
+const getImageForReference = (reference: string): string | null => {
+  const imageKey = getReferenceImageKey(reference);
+  if (!imageKey) return null;
+  
+  // Try multiple possible filename patterns in order of preference
+  const possibleKeys = [
+    `${imageKey}_realistic`,     // prefer realistic versions
+    imageKey,                    // exact match
+    `${imageKey}_artistic`,      // artistic versions
+    `${imageKey}_illustration`   // illustration versions
+  ];
+  
+  for (const key of possibleKeys) {
+    if (IMAGE_MAP[key]) {
+      console.log(`Found image for ${reference}: ${key}`);
+      return IMAGE_MAP[key];
+    }
+  }
+  
+  return null;
 };
 
 // Utility function to shuffle array
@@ -152,23 +193,20 @@ const getReferenceStyleInfo = (reference: string) => {
     };
   }
   
-  // Check if this is a 1 Corinthians reference and if we have an image for it
-  const imageKey = getReferenceImageKey(reference);
-  if (imageKey) {
-    console.log('Image key:', imageKey, 'Available:', !!IMAGE_MAP[imageKey]); // Debug
-    if (IMAGE_MAP[imageKey]) {
-      // We have an image for this 1 Corinthians reference
-      console.log('Using image for:', reference); // Debug
-      return {
-        hasImage: true,
-        cssClass: 'has-image',
-        cssVariables: {
-          '--reference-bg-image': `url(${IMAGE_MAP[imageKey]})`,
-          '--reference-bg-color': `${color.color}80`, // 50% opacity for images
-          '--reference-border-color': color.color
-        }
-      };
-    }
+  // Check if we have an image for this reference using the dynamic system
+  const imageUrl = getImageForReference(reference);
+  
+  if (imageUrl) {
+    console.log('Using dynamic image for:', reference);
+    return {
+      hasImage: true,
+      cssClass: 'has-image',
+      cssVariables: {
+        '--reference-bg-image': `url(${imageUrl})`,
+        '--reference-bg-color': `${color.color}80`, // 50% opacity for images
+        '--reference-border-color': color.color
+      }
+    };
   }
   
   // For all other references, use 30% transparent color background (no image)
