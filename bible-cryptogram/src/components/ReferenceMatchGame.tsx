@@ -41,6 +41,14 @@ const createImageMap = () => {
 // Create the image map at module load time
 const IMAGE_MAP = createImageMap();
 
+// Helper function to convert hex to rgba
+const hexToRgba = (hex: string, alpha: number): string => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 // Function to convert reference to image key
 const getReferenceImageKey = (reference: string): string | null => {
   // Convert reference formats to image filename patterns
@@ -171,6 +179,7 @@ const getReferenceStyleInfo = (reference: string) => {
       cssClass: 'no-image',
       cssVariables: {
         '--reference-bg-color': 'rgba(0, 0, 139, 0.3)',
+        '--reference-bg-color-rgba': 'rgba(0, 0, 139, 0.3)',
         '--reference-border-color': '#00008B'
       }
     };
@@ -188,6 +197,7 @@ const getReferenceStyleInfo = (reference: string) => {
       cssClass: 'no-image',
       cssVariables: {
         '--reference-bg-color': 'rgba(0, 0, 139, 0.3)',
+        '--reference-bg-color-rgba': 'rgba(0, 0, 139, 0.3)',
         '--reference-border-color': '#00008B'
       }
     };
@@ -204,6 +214,7 @@ const getReferenceStyleInfo = (reference: string) => {
       cssVariables: {
         '--reference-bg-image': `url(${imageUrl})`,
         '--reference-bg-color': `${color.color}80`, // 50% opacity for images
+        '--reference-bg-color-rgba': `${hexToRgba(color.color, 0.5)}`, // RGBA fallback
         '--reference-border-color': color.color
       }
     };
@@ -215,6 +226,7 @@ const getReferenceStyleInfo = (reference: string) => {
     cssClass: 'no-image',
     cssVariables: {
       '--reference-bg-color': `${color.color}30`, // 30% opacity
+      '--reference-bg-color-rgba': `${hexToRgba(color.color, 0.3)}`, // RGBA fallback
       '--reference-border-color': color.color
     }
   };

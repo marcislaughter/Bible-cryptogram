@@ -64,11 +64,12 @@ body.win-gradient .reference-match-container {
 
 /* Reference cards with images */
 .match-card.reference.has-image {
-  background-image: var(--reference-bg-image);
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: overlay;
-  background-color: var(--reference-bg-color);
+  background: 
+    linear-gradient(var(--reference-bg-color-rgba), var(--reference-bg-color-rgba)),
+    var(--reference-bg-image);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
   border-color: var(--reference-border-color);
 }
 
@@ -133,11 +134,12 @@ body.win-gradient .reference-match-container {
 
 /* Selected reference cards with images */
 .match-card.reference.selected.has-image {
-  background-image: var(--reference-bg-image);
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: overlay;
-  background-color: var(--reference-bg-color);
+  background: 
+    linear-gradient(var(--reference-bg-color-rgba), var(--reference-bg-color-rgba)),
+    var(--reference-bg-image) !important;
+  background-size: cover, cover !important;
+  background-position: center, center !important;
+  background-repeat: no-repeat, no-repeat !important;
   color: white;
 }
 
@@ -172,6 +174,25 @@ body.win-gradient .reference-match-container {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 25px rgba(139, 0, 0, 0.6);
   animation: shakeRed 0.5s ease-in-out;
+}
+
+/* Preserve image backgrounds during feedback states */
+.match-card.reference.has-image.correct {
+  background: 
+    linear-gradient(rgba(61, 165, 66, 0.8), rgba(61, 165, 66, 0.8)),
+    var(--reference-bg-image) !important;
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.match-card.reference.has-image.incorrect {
+  background: 
+    linear-gradient(rgba(139, 0, 0, 0.8), rgba(139, 0, 0, 0.8)),
+    var(--reference-bg-image) !important;
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .match-card.correct .verse-content,
