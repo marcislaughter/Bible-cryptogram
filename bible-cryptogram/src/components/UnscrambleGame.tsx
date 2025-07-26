@@ -188,31 +188,43 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     handleReset();
   };
 
-  // Add useEffect to manage body background when puzzle is solved
+  // Unscramble-specific win message handler with score-based behavior
   useEffect(() => {
     if (isSolved) {
-      // Only show win gradient for perfect scores (100%)
       const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
+      
+      // Different gradient classes based on score
       if (score === 100) {
-        document.body.classList.add('win-gradient');
+        document.body.classList.add('unscramble-perfect-win-gradient');
+      } else if (score >= 80) {
+        document.body.classList.add('unscramble-good-win-gradient');
+      } else {
+        document.body.classList.add('unscramble-basic-win-gradient');
       }
       
-      // Scroll to completion message on mobile
-      setTimeout(() => {
-        const solvedMessage = document.querySelector('.solved-message');
-        if (solvedMessage) {
-          solvedMessage.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }
-      }, 100); // Small delay to ensure message is rendered
+      // Unscramble uses gentle fade-in scroll
+              setTimeout(() => {
+          const solvedMessage = document.querySelector('.solved-message') as HTMLElement;
+          if (solvedMessage) {
+            // Slow, gentle scroll for unscramble
+            const targetTop = solvedMessage.offsetTop - window.innerHeight * 0.1;
+            window.scrollTo({
+              top: targetTop,
+              behavior: 'smooth'
+            });
+          }
+        }, 50); // Quick response for unscramble
     } else {
-      document.body.classList.remove('win-gradient');
+      // Remove all possible win gradient classes
+      document.body.classList.remove('unscramble-perfect-win-gradient');
+      document.body.classList.remove('unscramble-good-win-gradient');
+      document.body.classList.remove('unscramble-basic-win-gradient');
     }
     
     return () => {
-      document.body.classList.remove('win-gradient');
+      document.body.classList.remove('unscramble-perfect-win-gradient');
+      document.body.classList.remove('unscramble-good-win-gradient');
+      document.body.classList.remove('unscramble-basic-win-gradient');
     };
   }, [isSolved, originalWords.length, revealedWords.length, wordsWithIncorrectGuesses.length]);
 

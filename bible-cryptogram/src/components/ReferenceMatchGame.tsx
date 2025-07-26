@@ -278,14 +278,14 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
 
   // Function to scroll down slightly on mobile to hide browser navigation
   const hideMobileBrowserNavigation = () => {
-    if (isMobileDevice()) {
+    if (isMobileDevice() && !isSolved) { // Don't interfere with win message
       // Small delay to ensure the page is rendered
       setTimeout(() => {
         window.scrollTo({
           top: 1,
           behavior: 'smooth'
         });
-      }, 100);
+      }, 50); // Shorter delay to avoid conflict
     }
   };
 
@@ -455,27 +455,34 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     handleReset();
   };
 
-  // Add useEffect to manage body background when puzzle is solved
+  // Reference Match specific win message handler
   useEffect(() => {
     if (isSolved) {
-      document.body.classList.add('win-gradient');
+      document.body.classList.add('reference-match-win-gradient');
       
-      // Scroll to completion message on mobile
-      setTimeout(() => {
-        const solvedMessage = document.querySelector('.solved-message');
-        if (solvedMessage) {
-          solvedMessage.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
-        }
-      }, 100);
+      // Reference Match uses animated scroll with bounce effect
+              setTimeout(() => {
+          const solvedMessage = document.querySelector('.solved-message') as HTMLElement;
+          if (solvedMessage) {
+            // First scroll past the target, then back to create bounce effect
+            window.scrollTo({
+              top: solvedMessage.offsetTop - 50,
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              solvedMessage.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+              });
+            }, 300);
+          }
+        }, 200); // Longer delay for reference match
     } else {
-      document.body.classList.remove('win-gradient');
+      document.body.classList.remove('reference-match-win-gradient');
     }
     
     return () => {
-      document.body.classList.remove('win-gradient');
+      document.body.classList.remove('reference-match-win-gradient');
     };
   }, [isSolved]);
 

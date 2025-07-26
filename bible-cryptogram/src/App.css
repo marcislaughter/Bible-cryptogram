@@ -10,9 +10,7 @@ body {
   transition: background 0.5s ease;
 }
 
-body.win-gradient {
-  background: linear-gradient(135deg, #800080 0%, #3da542 100%);
-}
+/* Old shared win-gradient class removed - each game now has unique gradients */
 
 .cryptogram-container {
   margin-top: 70px;
@@ -202,8 +200,22 @@ body.win-gradient {
   font-family: Arial, sans-serif;
 }
 
-/* Ensure citation remains black when win message is displayed */
-body.win-gradient .citation {
+/* Cryptogram-specific win gradient */
+body.cryptogram-win-gradient {
+  background: linear-gradient(45deg, #800080, #3da542);
+  background-attachment: fixed;
+  background-size: 400% 400%;
+  animation: cryptogramGradientAnimation 3s ease infinite;
+}
+
+@keyframes cryptogramGradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ensure citation remains black when cryptogram win message is displayed */
+body.cryptogram-win-gradient .citation {
   color: #000000;
 }
 

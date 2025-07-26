@@ -423,27 +423,27 @@ const Game: React.FC<CryptogramGameProps> = ({
     return baseClass.trim();
   };
 
-  // Add useEffect to manage body background when puzzle is solved
+  // Cryptogram-specific win message handler
   useEffect(() => {
     if (isSolved) {
-      document.body.classList.add('win-gradient');
+      document.body.classList.add('cryptogram-win-gradient');
       
-      // Scroll to completion message on mobile
+      // Cryptogram uses instant scroll to top of message
       setTimeout(() => {
         const solvedMessage = document.querySelector('.solved-message');
         if (solvedMessage) {
           solvedMessage.scrollIntoView({ 
             behavior: 'smooth', 
-            block: 'center' 
+            block: 'start' 
           });
         }
-      }, 100); // Small delay to ensure message is rendered
+      }, 150); // Slightly longer delay for cryptogram
     } else {
-      document.body.classList.remove('win-gradient');
+      document.body.classList.remove('cryptogram-win-gradient');
     }
     
     return () => {
-      document.body.classList.remove('win-gradient');
+      document.body.classList.remove('cryptogram-win-gradient');
     };
   }, [isSolved]);
 
