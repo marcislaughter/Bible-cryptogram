@@ -462,7 +462,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       
       // Reference Match uses animated scroll with bounce effect
               setTimeout(() => {
-          const solvedMessage = document.querySelector('.solved-message') as HTMLElement;
+          const solvedMessage = document.querySelector('.reference-match-solved-message') as HTMLElement;
           if (solvedMessage) {
             // First scroll past the target, then back to create bounce effect
             window.scrollTo({
@@ -539,7 +539,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         </div>
         
         {isSolved && (
-          <div className="solved-message">
+          <div className="reference-match-solved-message">
             {(() => {
               const score = Math.round(((6 - incorrectAttempts) / 6) * 100);
               if (score === 100) {
