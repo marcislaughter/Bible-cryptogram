@@ -37,7 +37,6 @@
 }
 
 .first-letter-input {
-  width: 40px;
   height: 40px;
   text-align: center;
   font-size: 1.1rem;
@@ -223,7 +222,6 @@ body.first-letter-win-gradient .citation {
 /* Tablet sizing (1024px and below) */
 @media (max-width: 1024px) {
   .first-letter-input {
-    width: 35px;
     height: 35px;
     font-size: 1rem;
   }
@@ -248,7 +246,6 @@ body.first-letter-win-gradient .citation {
   }
   
   .first-letter-input {
-    width: 30px;
     height: 30px;
     font-size: 1rem;
     
@@ -297,7 +294,6 @@ body.first-letter-win-gradient .citation {
 /* Additional mobile optimizations for smaller screens */
 @media (max-width: 500px) {
   .first-letter-input {
-    width: 25px;
     height: 25px;
     font-size: 16px; /* Keep 16px for iOS to prevent zoom */
   }

@@ -30,6 +30,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [hiddenWordIndices, setHiddenWordIndices] = useState<number[]>([]);
   const [incorrectGuesses, setIncorrectGuesses] = useState<number[]>([]);
   const [errorInputs, setErrorInputs] = useState<number[]>([]);
+  const [forceUpdate, setForceUpdate] = useState(0);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -330,6 +331,44 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     return '';
   };
 
+  // Function to calculate input width based on word length
+  const getInputWidth = (wordIndex: number) => {
+    const wordLength = originalWords[wordIndex].length;
+    
+    // Responsive width calculation based on screen size
+    const isMobile = window.innerWidth <= 768;
+    const isSmallMobile = window.innerWidth <= 500;
+    
+    let baseWidth, charWidth, minWidth;
+    
+    if (isSmallMobile) {
+      baseWidth = 10;
+      charWidth = 5;
+      minWidth = 20;
+    } else if (isMobile) {
+      baseWidth = 12;
+      charWidth = 6;
+      minWidth = 22;
+    } else {
+      baseWidth = 15;
+      charWidth = 8;
+      minWidth = 25;
+    }
+    
+    const calculatedWidth = Math.max(minWidth, baseWidth + (wordLength * charWidth));
+    return `${calculatedWidth}px`;
+  };
+
+  // Resize listener to update input widths on screen size change
+  useEffect(() => {
+    const handleResize = () => {
+      setForceUpdate(prev => prev + 1);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Win message handler
   useEffect(() => {
     if (isSolved) {
@@ -375,6 +414,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                   type="text"
                   maxLength={1}
                   className={`first-letter-input ${getInputClass(wordIndex)}`}
+                  style={{ width: getInputWidth(wordIndex) }}
                   value={guesses[wordIndex] || ''}
                   onChange={(e) => handleInputChangeEvent(e, wordIndex)}
                   onFocus={handleInputFocus}
