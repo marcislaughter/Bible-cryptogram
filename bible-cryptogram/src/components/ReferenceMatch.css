@@ -303,20 +303,10 @@ body.reference-match-win-gradient .reference-match-container {
    REFERENCE MATCH WIN GRADIENT
    ======================================== */
 
-/* Reference Match specific win gradient with card-flip animation */
+/* Reference Match specific win gradient - static purple to green */
 body.reference-match-win-gradient {
-  background: linear-gradient(135deg, #800080, #ff6b6b, #4ecdc4, #3da542);
+  background: linear-gradient(135deg, #800080, #3da542);
   background-attachment: fixed;
-  background-size: 600% 600%;
-  animation: referenceMatchGradientAnimation 4s ease infinite;
-}
-
-@keyframes referenceMatchGradientAnimation {
-  0% { background-position: 0% 0%; }
-  25% { background-position: 100% 0%; }
-  50% { background-position: 100% 100%; }
-  75% { background-position: 0% 100%; }
-  100% { background-position: 0% 0%; }
 }
 
 /* ========================================
