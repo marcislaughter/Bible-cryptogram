@@ -289,7 +289,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
 
   // Function to update viewport height CSS custom property
   const updateViewportHeight = () => {
-    const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
   };
 
