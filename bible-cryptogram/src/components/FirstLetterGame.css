@@ -219,6 +219,71 @@ body.first-letter-win-gradient .citation {
   max-width: 600px;
 }
 
+.difficulty-stepper {
+  margin-top: 30px;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(128, 0, 128, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(128, 0, 128, 0.2);
+}
+
+.difficulty-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #800080;
+  margin-bottom: 15px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.stepper-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.stepper-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #800080;
+  background-color: white;
+  color: #800080;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-button:hover {
+  background-color: #f0e6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.2);
+}
+
+.stepper-button.active {
+  background-color: #800080;
+  color: white;
+  box-shadow: 0 4px 15px rgba(128, 0, 128, 0.3);
+}
+
+.stepper-button.active:hover {
+  background-color: #9900cc;
+  transform: translateY(-2px);
+}
+
+.difficulty-description {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  font-family: 'Courier New', Courier, monospace;
+}
+
 /* Tablet sizing (1024px and below) */
 @media (max-width: 1024px) {
   .first-letter-input {
@@ -289,6 +354,25 @@ body.first-letter-win-gradient .citation {
     font-size: 1rem;
     padding: 10px 20px;
   }
+  
+  .difficulty-stepper {
+    margin-top: 20px;
+    padding: 15px;
+  }
+  
+  .stepper-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  
+  .difficulty-label {
+    font-size: 0.9rem;
+  }
+  
+  .difficulty-description {
+    font-size: 0.8rem;
+  }
 }
 
 /* Additional mobile optimizations for smaller screens */
@@ -315,6 +399,30 @@ body.first-letter-win-gradient .citation {
     font-size: 0.9rem;
     padding: 8px 16px;
     min-height: 40px;
+  }
+  
+  .difficulty-stepper {
+    margin-top: 15px;
+    padding: 12px;
+  }
+  
+  .stepper-container {
+    gap: 8px;
+  }
+  
+  .stepper-button {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+  
+  .difficulty-label {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .difficulty-description {
+    font-size: 0.7rem;
   }
 }
 

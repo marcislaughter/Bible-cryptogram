@@ -31,9 +31,51 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [incorrectGuesses, setIncorrectGuesses] = useState<number[]>([]);
   const [errorInputs, setErrorInputs] = useState<number[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
+  const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
+
+  // Function to calculate which words should be hidden based on difficulty level
+  const calculateHiddenWords = (words: string[], difficulty: number): number[] => {
+    const totalWords = words.length;
+    let hiddenCount = 0;
+    
+    switch (difficulty) {
+      case 1: hiddenCount = 0; break; // 0% hidden
+      case 2: hiddenCount = Math.round(totalWords * 0.25); break; // 25% hidden
+      case 3: hiddenCount = Math.round(totalWords * 0.5); break; // 50% hidden
+      case 4: hiddenCount = Math.round(totalWords * 0.75); break; // 75% hidden
+      case 5: hiddenCount = totalWords; break; // 100% hidden
+      default: hiddenCount = Math.round(totalWords * 0.25); break;
+    }
+    
+    if (hiddenCount === 0) return [];
+    if (hiddenCount >= totalWords) return Array.from({ length: totalWords }, (_, i) => i);
+    
+    // Distribute hidden words evenly across the verse
+    const hiddenIndices: number[] = [];
+    const step = totalWords / hiddenCount;
+    
+    for (let i = 0; i < hiddenCount; i++) {
+      const index = Math.round(i * step);
+      if (index < totalWords && !hiddenIndices.includes(index)) {
+        hiddenIndices.push(index);
+      }
+    }
+    
+    // If we didn't get enough indices due to rounding, fill in gaps
+    while (hiddenIndices.length < hiddenCount && hiddenIndices.length < totalWords) {
+      for (let i = 0; i < totalWords && hiddenIndices.length < hiddenCount; i++) {
+        if (!hiddenIndices.includes(i)) {
+          hiddenIndices.push(i);
+          break;
+        }
+      }
+    }
+    
+    return hiddenIndices.sort((a, b) => a - b);
+  };
 
   const generateNewGame = () => {
     // Parse the verse into words, handling punctuation
@@ -45,11 +87,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     // Store original words
     setOriginalWords(words);
 
-    // Determine which words should be hidden (every 4th word)
-    const hiddenIndices: number[] = [];
-    for (let i = 3; i < words.length; i += 4) {
-      hiddenIndices.push(i);
-    }
+    // Determine which words should be hidden based on difficulty level
+    const hiddenIndices = calculateHiddenWords(words, difficultyLevel);
     setHiddenWordIndices(hiddenIndices);
 
     // Initialize guesses array
@@ -62,7 +101,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
   useEffect(() => {
     generateNewGame();
-  }, [currentVerse]);
+  }, [currentVerse, difficultyLevel]);
 
   // Focus first input when game starts
   useEffect(() => {
@@ -462,6 +501,28 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
           Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
           Used by permission. All rights reserved worldwide.
+        </div>
+        
+        <div className="difficulty-stepper">
+          <div className="difficulty-label">Difficulty Level:</div>
+          <div className="stepper-container">
+            {[1, 2, 3, 4, 5].map((level) => (
+              <button
+                key={level}
+                className={`stepper-button ${difficultyLevel === level ? 'active' : ''}`}
+                onClick={() => setDifficultyLevel(level)}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+          <div className="difficulty-description">
+            {difficultyLevel === 1 && "All words visible"}
+            {difficultyLevel === 2 && "1/4 words missing"}
+            {difficultyLevel === 3 && "1/2 words missing"}
+            {difficultyLevel === 4 && "3/4 words missing"}
+            {difficultyLevel === 5 && "All words missing"}
+          </div>
         </div>
       </div>
     </>
