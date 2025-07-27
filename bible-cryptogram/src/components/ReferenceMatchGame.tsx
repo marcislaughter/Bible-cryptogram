@@ -267,6 +267,11 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const [incorrectAttempts, setIncorrectAttempts] = useState(0);
   const [gameVerses, setGameVerses] = useState<BibleVerse[]>([]);
   const [feedbackCards, setFeedbackCards] = useState<FeedbackCard[]>([]);
+  
+  // Timer state
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
+  
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
 
@@ -288,6 +293,31 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       }, 50); // Shorter delay to avoid conflict
     }
   };
+
+  // Format time as MM:SS
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // Timer effect
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (gameStartTime && !isSolved) {
+      intervalId = setInterval(() => {
+        const currentTime = Math.floor((Date.now() - gameStartTime) / 1000);
+        setElapsedTime(currentTime);
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [gameStartTime, isSolved]);
 
   const generateNewGame = () => {
     // Get 6 random verses including the current one
@@ -327,6 +357,10 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setIsSolved(false);
     setIncorrectAttempts(0);
     setFeedbackCards([]);
+    
+    // Reset timer
+    setElapsedTime(0);
+    setGameStartTime(Date.now());
     
     // Hide mobile browser navigation after generating new game
     hideMobileBrowserNavigation();
@@ -431,6 +465,11 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setWordStatsEnabled(false);
     setIncorrectAttempts(0);
     setFeedbackCards([]);
+    
+    // Reset timer
+    setElapsedTime(0);
+    setGameStartTime(null);
+    
     generateNewGame();
   };
 
@@ -498,7 +537,10 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       />
 
       <div className="reference-match-container">
-
+        {/* Timer Display */}
+        <div className="game-timer">
+          Time: {formatTime(elapsedTime)}
+        </div>
         
         {wordStatsEnabled && <WordStats />}
         
@@ -555,6 +597,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             <div className="score-display">
               <p className="score-text">
                 Score: {Math.round(((6 - incorrectAttempts) / 6) * 100)}%
+              </p>
+              <p className="time-text">
+                Time: {formatTime(elapsedTime)}
               </p>
             </div>
             <div className="matches-summary">

@@ -15,6 +15,23 @@
   color: #a3a3a3;
 }
 
+/* Timer display styles */
+.game-timer {
+  background: #a3a3a3;
+  color: black;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 25px;
+  border: 2px solid #a3a3a3;
+  margin: 10px 0 20px 0;
+  box-shadow: 0 4px 12px rgba(163, 163, 163, 0.3);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  min-width: 120px;
+  text-align: center;
+}
+
 body.reference-match-win-gradient .reference-match-container {
   background: transparent;
 }
@@ -335,10 +352,17 @@ body.reference-match-win-gradient {
   margin: 20px 0;
 }
 
-.score-text {
+.score-text,
+.time-text {
   font-size: 1.3rem;
   font-weight: bold;
-  margin: 0;
+  margin: 5px 0;
+}
+
+.time-text {
+  color: #e6ccff;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
 }
 
 .matches-summary {
