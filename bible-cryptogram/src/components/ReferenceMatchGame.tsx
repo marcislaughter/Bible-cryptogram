@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import './ReferenceMatch.css';
 
 // Dynamic image loading using Vite's import.meta.glob
@@ -600,7 +600,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 onClick={() => setIsAccordionExpanded(!isAccordionExpanded)}
               >
                 <span>View completed matches ({gameVerses.length})</span>
-                <span className="accordion-arrow">{isAccordionExpanded ? '▼' : '▶'}</span>
+                <span className="accordion-arrow">
+                  <FontAwesomeIcon icon={isAccordionExpanded ? faChevronDown : faChevronRight} />
+                </span>
               </button>
               <div className={`accordion-content ${isAccordionExpanded ? 'expanded' : ''}`}>
                 <div className="matches-summary">
