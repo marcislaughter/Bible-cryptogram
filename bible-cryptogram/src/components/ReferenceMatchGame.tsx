@@ -306,7 +306,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
 
   // Timer effect
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: number;
 
     if (gameStartTime && !isSolved) {
       intervalId = setInterval(() => {
@@ -495,10 +495,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     window.scrollTo(0, 0);
   };
 
-  const handleRepeatVerse = () => {
-    handleReset();
-  };
-
   // Reference Match specific win message handler
   useEffect(() => {
     if (isSolved) {
@@ -629,9 +625,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             </div>
             
             <div className="solved-buttons">
-              <button onClick={handleRepeatVerse} className="repeat-verse-btn">
-                <FontAwesomeIcon icon={faArrowLeft} /> Play Again
-              </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
                 Next Game <FontAwesomeIcon icon={faArrowRight} />
               </button>
