@@ -7,6 +7,7 @@ import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import './CryptogramGame.css';
 
 // Utility function to create a substitution cipher
 const createCipher = (): Record<string, string> => {

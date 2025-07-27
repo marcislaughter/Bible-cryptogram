@@ -1,0 +1,352 @@
+/* Cryptogram-specific styles */
+
+.cryptogram-container {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  position: relative;
+  padding: 0 10px;
+}
+
+.verse-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  row-gap: 8px;
+  padding: 10px;
+  border: 2px solid #800080;
+  border-radius: 10px;
+  margin: 0 auto;
+  max-width: 95%;
+}
+
+.word-container {
+  display: flex;
+  gap: 4px;
+}
+
+.char-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guess-input {
+  width: 32px;
+  height: 40px;
+  text-align: center;
+  font-size: 1.1rem;
+  border: 1px solid #800080;
+  text-transform: uppercase;
+  background-color: #e6ccff;
+  cursor: pointer;
+  caret-color: transparent;
+  color: #800080;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.guess-input:disabled {
+  background-color: transparent;
+  border: none;
+  cursor: default;
+}
+
+.guess-input:focus {
+  background-color: #3da542;
+  border-color: #3da542;
+  color: white;
+  outline: none;
+}
+
+.guess-input.same-letter:not(:focus) {
+  background-color: #a7d379;
+  border-color: #a7d379;
+  color: #800080;
+}
+
+.guess-input.incorrect {
+  background-color: #e6ccff;
+  border-color: #800080;
+  color: #ff0000;
+}
+
+.encrypted-char {
+  width: 32px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #a3a3a3;
+  user-select: none;
+}
+
+.punctuation-mark {
+  width: 10px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #a3a3a3;
+  background: transparent;
+  border: none;
+  position: relative;
+  user-select: none;
+}
+
+.punctuation-mark.comma {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.apostrophe {
+  align-items: flex-start;
+  padding-top: 8px;
+}
+
+.punctuation-mark.period {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.question {
+  align-items: center;
+}
+
+.punctuation-mark.exclamation {
+  align-items: center;
+}
+
+.punctuation-mark.colon {
+  align-items: center;
+}
+
+.punctuation-mark.semicolon {
+  align-items: flex-end;
+  padding-bottom: 8px;
+}
+
+.punctuation-mark.quote {
+  align-items: flex-start;
+  padding-top: 8px;
+}
+
+/* Cryptogram-specific win gradient */
+body.cryptogram-win-gradient {
+  background: linear-gradient(45deg, #800080, #3da542);
+  background-attachment: fixed;
+}
+
+/* Ensure citation remains black when cryptogram win message is displayed */
+body.cryptogram-win-gradient .citation {
+  color: #000000;
+}
+
+.cryptogram-dropdown {
+  margin-left: 0px;
+}
+
+.cryptogram-button {
+  background: none;
+  border: none;
+  color: #e6ccff;
+  font-size: 18px;
+  padding: 0px 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s ease;
+}
+
+.cryptogram-button:hover {
+  color: white;
+}
+
+.cryptogram-button svg {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.cryptogram-button:hover svg {
+  transform: translateY(2px);
+}
+
+/* Tablet sizing (1024px and below) */
+@media (max-width: 1024px) {
+  .guess-input {
+    width: 28px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .encrypted-char {
+    width: 28px;
+    height: 36px;
+    font-size: 0.75rem;
+  }
+  
+  .punctuation-mark {
+    width: 28px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile-specific optimizations for keyboard handling */
+@media (max-width: 768px) {
+  .guess-input {
+    /* Smaller size for mobile */
+    width: 20px;
+    height: 32px;
+    font-size: 1rem;
+    
+    /* Prevent zoom on iOS when focusing inputs */
+    font-size: 16px;
+    
+    /* Ensure consistent text color on mobile */
+    -webkit-text-fill-color: #800080;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  .encrypted-char {
+    width: 24px;
+    height: 32px;
+    font-size: 0.7rem;
+  }
+  
+  .punctuation-mark {
+    width: 24px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+  
+  .guess-input:focus {
+    /* Force white text color on focus for mobile */
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    
+    /* Ensure focus background is visible */
+    background-color: #3da542 !important;
+    border-color: #3da542 !important;
+    
+    /* Override any mobile browser focus styles */
+    outline: none !important;
+    
+    /* Ensure caret is visible */
+    caret-color: white !important;
+  }
+  
+  .guess-input:focus::selection {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .guess-input:focus::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input:focus::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .guess-input.same-letter:not(:focus) {
+    /* Ensure same-letter highlighting works on mobile */
+    background-color: #a7d379 !important;
+    border-color: #a7d379 !important;
+    color: #800080 !important;
+    -webkit-text-fill-color: #800080 !important;
+  }
+  
+  .guess-input.incorrect {
+    /* Ensure incorrect styling is visible on mobile */
+    background-color: #e6ccff !important;
+    border-color: #800080 !important;
+    color: #ff0000 !important;
+    -webkit-text-fill-color: #ff0000 !important;
+  }
+  
+  .guess-input.correct {
+    /* Ensure correct styling is visible on mobile */
+    background-color: #e6ccff !important;
+    border-color: #800080 !important;
+    color: #3da542 !important;
+    -webkit-text-fill-color: #3da542 !important;
+  }
+  
+  /* Adjust spacing for mobile */
+  .word-container {
+    gap: 4px;
+  }
+  
+  .verse-container {
+    gap: 15px;
+    row-gap: 8px;
+    padding: 10px;
+  }
+}
+
+/* Additional mobile optimizations for smaller screens */
+@media (max-width: 500px) {
+  .guess-input {
+    width: 14px;
+    height: 25px;
+    font-size: 1rem;
+    /* Keep 16px for iOS to prevent zoom */
+    font-size: 16px;
+  }
+  
+  .encrypted-char {
+    width: 18px;
+    height: 25px;
+    font-size: 0.8rem;
+  }
+  
+  .punctuation-mark {
+    width: 10px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+  
+  .verse-container {
+    gap: 10px;
+    row-gap: 6px;
+    padding: 10px;
+  }
+  
+  .word-container {
+    gap: 2px;
+  }
+}
+
+/* Ensure consistent behavior across all mobile browsers */
+.guess-input {
+  /* Prevent text selection issues on mobile */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  /* Prevent input zoom on iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.guess-input:focus {
+  /* Keep text selection disabled even when focused */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} 
