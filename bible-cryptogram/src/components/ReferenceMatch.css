@@ -648,6 +648,7 @@ body.reference-match-win-gradient {
   
   /* Mobile selected background for non-reference cards */
   .match-card.selected:not(.reference) {
+    border: 5px solid #ffffff;
     background: #800080;
   }
 
