@@ -90,8 +90,8 @@
 }
 
 .word-display.hidden {
-  background-color: #e6ccff;
-  border: 2px solid #800080;
+  background-color: transparent;
+  border: none;
   color: #a3a3a3;
   font-size: 1rem;
 }

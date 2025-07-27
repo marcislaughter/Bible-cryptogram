@@ -432,7 +432,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                   : 'always-visible'
               }`}>
                 {hiddenWordIndices.includes(wordIndex) 
-                  ? (guesses[wordIndex] === word[0] ? word : '?????')
+                  ? (guesses[wordIndex] === word[0] ? word : '_'.repeat(word.length))
                   : word
                 }
               </div>
