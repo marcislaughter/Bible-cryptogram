@@ -9,7 +9,7 @@ import { BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
-export type GameType = 'cryptogram' | 'unscramble' | 'reference-match';
+export type GameType = 'cryptogram' | 'unscramble' | 'first-letter' | 'reference-match';
 
 interface GameHeaderProps {
   wordStatsEnabled: boolean;
@@ -42,7 +42,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     },
     {
       type: 'button',
-      content: 'Coming soon - First Letter'
+      content: 'First Letter',
+      onClick: () => onGameTypeChange?.('first-letter')
     },
     {
       type: 'button',
@@ -76,10 +77,13 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     <div className="top-banner">
       <div className="banner-content">
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <Dropdown
+                      <Dropdown
             trigger={
               <button className="cryptogram-button">
-                {gameType === 'cryptogram' ? 'Cryptogram' : gameType === 'unscramble' ? 'Unscramble' : 'Reference Match'} <FontAwesomeIcon icon={faChevronDown} />
+                {gameType === 'cryptogram' ? 'Cryptogram' : 
+                 gameType === 'unscramble' ? 'Unscramble' : 
+                 gameType === 'first-letter' ? 'First Letter' : 
+                 'Reference Match'} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
             items={gameTypeItems}
@@ -102,7 +106,10 @@ const GameHeader: React.FC<GameHeaderProps> = ({
         </div>
 
         <div className="banner-right">
-          <Link to={gameType === 'cryptogram' ? '/instructions' : gameType === 'unscramble' ? '/unscramble-instructions' : '/reference-match-instructions'} className="help-btn">
+          <Link to={gameType === 'cryptogram' ? '/instructions' : 
+                    gameType === 'unscramble' ? '/unscramble-instructions' : 
+                    gameType === 'first-letter' ? '/first-letter-instructions' : 
+                    '/reference-match-instructions'} className="help-btn">
             <FontAwesomeIcon icon={faCircleQuestion} />
           </Link>
           <Dropdown

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import CryptogramGame from './components/CryptogramGame';
 import UnscrambleGame from './components/UnscrambleGame';
+import FirstLetterGame from './components/FirstLetterGame';
 import ReferenceMatchGame from './components/ReferenceMatchGame';
 import Instructions from './components/Instructions';
 import UnscrambleInstructions from './components/UnscrambleInstructions';
+import FirstLetterInstructions from './components/FirstLetterInstructions';
 import ReferenceMatchInstructions from './components/ReferenceMatchInstructions';
 import WhyMemorize from './components/WhyMemorize.tsx';
 import StatementOfFaith from './components/StatementOfFaith.tsx';
@@ -44,6 +46,14 @@ const GameContainer: React.FC = () => {
           onVerseChange={handleVerseChange}
         />
       )}
+      {gameType === 'first-letter' && (
+        <FirstLetterGame 
+          gameType={gameType} 
+          onGameTypeChange={handleGameTypeChange}
+          currentVerse={currentVerse}
+          onVerseChange={handleVerseChange}
+        />
+      )}
       {gameType === 'reference-match' && (
         <ReferenceMatchGame 
           gameType={gameType} 
@@ -63,6 +73,7 @@ function App() {
         <Route path="/" element={<GameContainer />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/unscramble-instructions" element={<UnscrambleInstructions />} />
+        <Route path="/first-letter-instructions" element={<FirstLetterInstructions />} />
         <Route path="/reference-match-instructions" element={<ReferenceMatchInstructions />} />
         <Route path="/memorization" element={<WhyMemorize />} />
         <Route path="/faith" element={<StatementOfFaith />} />
