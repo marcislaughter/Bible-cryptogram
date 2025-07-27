@@ -384,6 +384,12 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       return;
     }
 
+    // Prevent clicking cards that are showing feedback
+    const cardHasFeedback = feedbackCards.some(f => f.id === clickedCard.id);
+    if (cardHasFeedback) {
+      return;
+    }
+
     // If the card is already selected, deselect it
     if (clickedCard.isSelected) {
       const newCards = cards.map(card =>
@@ -424,6 +430,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         { id: card2.id, type: feedbackType }
       ]);
       
+      // Clear selectedCards immediately to allow new selections during animation
+      setSelectedCards([]);
+      
       if (isMatch) {
         // Match found - show green feedback, then mark as matched
         setTimeout(() => {
@@ -435,7 +444,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             )
           );
           setMatchedPairs(prev => [...prev, card1.verseId]);
-          setSelectedCards([]);
           setFeedbackCards([]);
           
           // Check if game is complete
@@ -455,7 +463,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 : card
             )
           );
-          setSelectedCards([]);
           setFeedbackCards([]);
         }, 1000); // Show red feedback for 1000ms
       }
