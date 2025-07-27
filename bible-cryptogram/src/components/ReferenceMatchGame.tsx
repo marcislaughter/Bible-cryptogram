@@ -462,24 +462,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     }
   };
 
-  const handleReset = () => {
-    setSelectedCards([]);
-    setMatchedPairs([]);
-    setIsSolved(false);
-    setWordStatsEnabled(false);
-    setIncorrectAttempts(0);
-    setFeedbackCards([]);
-    setIsAccordionExpanded(false); // Reset accordion state
-    
-    // Reset timer
-    setElapsedTime(0);
-    setGameStartTime(null);
-    
-    generateNewGame();
-  };
-
-
-
   const handleVerseChange = (verse: BibleVerse) => {
     onVerseChange(verse);
   };
