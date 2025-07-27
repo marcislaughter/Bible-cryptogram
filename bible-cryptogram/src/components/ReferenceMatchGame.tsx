@@ -379,6 +379,13 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     hideMobileBrowserNavigation();
   }, []);
 
+  // Check for game completion when matchedPairs changes
+  useEffect(() => {
+    if (matchedPairs.length === 6) {
+      setIsSolved(true);
+    }
+  }, [matchedPairs]);
+
   const handleCardClick = (clickedCard: MatchCard) => {
     if (clickedCard.isMatched) {
       return;
@@ -454,11 +461,6 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           );
           setMatchedPairs(prev => [...prev, card1.verseId]);
           setFeedbackCards([]);
-          
-          // Check if game is complete
-          if (matchedPairs.length + 1 === 6) {
-            setIsSolved(true);
-          }
         }, 800); // Show green feedback for 800ms
       } else {
         // No match - show red feedback, then revert
