@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Controls from './Controls';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
@@ -25,9 +24,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [guesses, setGuesses] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isSolved, setIsSolved] = useState(false);
-  const [hintsRemaining, setHintsRemaining] = useState(3);
-  const [revealedWords, setRevealedWords] = useState<number[]>([]);
-  const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
@@ -58,8 +54,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     // Initialize guesses array
     setGuesses(new Array(words.length).fill(''));
     setCurrentWordIndex(0);
-    setHintsRemaining(3);
-    setRevealedWords([]);
     setIsSolved(false);
     setIncorrectGuesses([]);
     setErrorInputs([]);
@@ -264,10 +258,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const handleReset = () => {
     setGuesses(new Array(originalWords.length).fill(''));
     setIsSolved(false);
-    setHintsRemaining(3);
-    setRevealedWords([]);
-    setAutoCheckEnabled(false);
-    setWordStatsEnabled(false);
     setIncorrectGuesses([]);
     setErrorInputs([]);
     isAdvancingFocus.current = false;
@@ -275,11 +265,11 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   };
 
   const handleHint = () => {
-    if (hintsRemaining <= 0 || isSolved) return;
+    if (isSolved) return;
 
     // Find the first word that hasn't been correctly guessed yet
     const nextWordToReveal = originalWords.findIndex((word, index) => 
-      guesses[index] !== word[0] && !revealedWords.includes(index)
+      guesses[index] !== word[0] && !hiddenWordIndices.includes(index)
     );
 
     if (nextWordToReveal !== -1) {
@@ -287,7 +277,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       const newGuesses = [...guesses];
       newGuesses[nextWordToReveal] = originalWords[nextWordToReveal][0];
       setGuesses(newGuesses);
-      setRevealedWords(prev => [...prev, nextWordToReveal]);
       
       // Remove from incorrect guesses and error inputs if they were there
       setIncorrectGuesses(prev => prev.filter(i => i !== nextWordToReveal));
@@ -298,12 +287,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         setIsSolved(true);
       }
     }
-
-    setHintsRemaining(prev => prev - 1);
-  };
-
-  const handleAutoCheck = () => {
-    setAutoCheckEnabled(!autoCheckEnabled);
   };
 
   const handleVerseChange = (verse: BibleVerse) => {
@@ -339,14 +322,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     
     if (!guess) return '';
     
-    // Always show incorrect guesses as red, regardless of auto-check setting
+    // Show incorrect guesses as red
     if (guess !== correctLetter) {
       return 'incorrect';
-    }
-    
-    // Only show correct state if auto-check is enabled
-    if (autoCheckEnabled && guess === correctLetter) {
-      return 'correct';
     }
     
     return '';
@@ -375,10 +353,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     };
   }, [isSolved]);
 
-  // Calculate progress percentage
-  const progressPercentage = originalWords.length > 0 ? 
-    (originalWords.filter((word, index) => guesses[index] === word[0]).length / originalWords.length) * 100 : 0;
-
   return (
     <>
       <GameHeader 
@@ -391,25 +365,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       />
 
       <div className="first-letter-container">
-        <Controls
-          onReset={handleReset}
-          onHint={handleHint}
-          onAutoCheck={handleAutoCheck}
-          hintsRemaining={hintsRemaining}
-          autoCheckEnabled={autoCheckEnabled}
-        />
-        
         {wordStatsEnabled && <WordStats />}
-        
-        <div className="progress-indicator">
-          <span>Progress: {Math.round(progressPercentage)}%</span>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
-          </div>
-        </div>
         
         <div className="first-letter-verse-container">
           {originalWords.map((word, wordIndex) => (
