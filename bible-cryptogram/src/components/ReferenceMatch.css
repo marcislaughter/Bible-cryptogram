@@ -596,6 +596,11 @@ body.reference-match-win-gradient {
    ======================================== */
 
 @media (max-width: 500px) {
+  /* Hide timer on mobile during gameplay */
+  .game-timer {
+    display: none;
+  }
+  
   /* Container adjustments */
   .reference-match-container {
     margin-top: 50px;
