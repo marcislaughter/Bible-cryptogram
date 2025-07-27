@@ -188,18 +188,15 @@ body.reference-match-win-gradient .reference-match-container {
   animation: correctPulse 0.3s ease-in-out;
 }
 
-.match-card.verse.correct {
-  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
-}
-
-.match-card.verse.selected.correct {
-  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
-}
-
 /* Reference cards with images - remove image during correct feedback */
 .match-card.reference.has-image.correct {
   background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
   /* Remove all the background image properties - no image during correct animation */
+}
+
+/* Reference cards without images - ensure they also turn green */
+.match-card.reference.no-image.correct {
+  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
 }
 
 .match-card.correct .verse-content,

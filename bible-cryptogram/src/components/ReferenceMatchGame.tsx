@@ -424,11 +424,20 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       const isMatch = card1.verseId === card2.verseId && card1.type !== card2.type;
       const feedbackType = isMatch ? 'correct' : 'incorrect';
       
-      // Set feedback for both cards
+      // Set feedback for both cards AND clear their selected state immediately
       setFeedbackCards([
         { id: card1.id, type: feedbackType },
         { id: card2.id, type: feedbackType }
       ]);
+      
+      // Clear selected state from the actual cards to prevent CSS conflicts
+      setCards(prevCards =>
+        prevCards.map(card =>
+          (card.id === card1.id || card.id === card2.id)
+            ? { ...card, isSelected: false }
+            : card
+        )
+      );
       
       // Clear selectedCards immediately to allow new selections during animation
       setSelectedCards([]);
