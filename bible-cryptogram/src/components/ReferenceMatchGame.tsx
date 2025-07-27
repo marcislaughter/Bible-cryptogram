@@ -540,8 +540,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
     onVerseChange(BIBLE_VERSES[nextIndex]);
     
-    // Scroll to top of page
-    window.scrollTo(0, 0);
+    // Don't auto-scroll - maintain current scroll position
   };
 
   // Reference Match specific win message handler
@@ -587,6 +586,18 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       />
 
       <div className="reference-match-container">
+        {/* NIV Citation - visible at top on mobile */}
+        <div className="niv-citation-mobile">
+          Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
+          Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
+          Used by permission. All rights reserved worldwide.
+        </div>
+        
+        {/* Scroll instruction for mobile */}
+        <div className="scroll-instruction-mobile">
+          Scroll down to see game
+        </div>
+        
         {/* Timer Display - hidden when game is solved */}
         {!isSolved && (
           <div className="game-timer">
