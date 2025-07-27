@@ -339,8 +339,14 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     
     if (!guess) return '';
     
-    if (autoCheckEnabled) {
-      return guess === correctLetter ? 'correct' : 'incorrect';
+    // Always show incorrect guesses as red, regardless of auto-check setting
+    if (guess !== correctLetter) {
+      return 'incorrect';
+    }
+    
+    // Only show correct state if auto-check is enabled
+    if (autoCheckEnabled && guess === correctLetter) {
+      return 'correct';
     }
     
     return '';
