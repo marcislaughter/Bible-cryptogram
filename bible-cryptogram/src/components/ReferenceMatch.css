@@ -144,6 +144,7 @@ body.reference-match-win-gradient .reference-match-container {
 }
 
 .match-card.verse.selected {
+  border: 6px solid #ffffff;
   background: #121212;
   color: #a3a3a3;
   box-shadow: 0 8px 25px rgba(163, 163, 163, 0.4);
@@ -151,6 +152,7 @@ body.reference-match-win-gradient .reference-match-container {
 
 /* Selected reference cards with images */
 .match-card.reference.selected.has-image {
+  border: 6px solid #ffffff;
   background: 
     linear-gradient(var(--reference-bg-color-rgba), var(--reference-bg-color-rgba)),
     var(--reference-bg-image) !important;
@@ -162,6 +164,7 @@ body.reference-match-win-gradient .reference-match-container {
 
 /* Selected reference cards without images */
 .match-card.reference.selected.no-image {
+  border: 6px solid #ffffff;
   background-color: var(--reference-bg-color);
   color: white;
 }
@@ -637,10 +640,10 @@ body.reference-match-win-gradient {
   
   /* Mobile selected states */
   .match-card.selected {
+    border: 5px solid #ffffff;
     transform: scale(1.1);
     transform-origin: center center;
     box-shadow: none;
-    border-width: 5px;
   }
   
   /* Mobile selected background for non-reference cards */
