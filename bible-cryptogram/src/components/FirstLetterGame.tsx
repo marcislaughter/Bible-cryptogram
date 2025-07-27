@@ -497,12 +497,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           </div>
         )}
         
-        <div className="citation">
-          Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
-          Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
-          Used by permission. All rights reserved worldwide.
-        </div>
-        
         <div className="difficulty-stepper">
           <div className="difficulty-label">Difficulty Level:</div>
           <div className="stepper-container">
@@ -516,6 +510,12 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               </button>
             ))}
           </div>
+        </div>
+        
+        <div className="citation">
+          Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
+          Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
+          Used by permission. All rights reserved worldwide.
         </div>
       </div>
     </>
