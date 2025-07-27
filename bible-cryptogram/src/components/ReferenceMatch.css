@@ -175,16 +175,17 @@ body.reference-match-win-gradient .reference-match-container {
 }
 
 /* ========================================
-   CARD FEEDBACK STATES (CORRECT/INCORRECT)
+   MATCH ANIMATION SYSTEM
    ======================================== */
 
+/* Phase 1: Correct feedback (shows for 800ms) */
 .match-card.correct {
   background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
   border: 4px solid #ffffff !important;
   color: white !important;
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 25px rgba(61, 165, 66, 0.6);
-  animation: pulseGreen 0.3s ease-in-out;
+  animation: correctPulse 0.3s ease-in-out;
 }
 
 .match-card.verse.correct {
@@ -195,21 +196,42 @@ body.reference-match-win-gradient .reference-match-container {
   background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
 }
 
+/* Reference cards with images - remove image during correct feedback */
+.match-card.reference.has-image.correct {
+  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
+  /* Remove all the background image properties - no image during correct animation */
+}
+
+.match-card.correct .verse-content,
+.match-card.correct .reference-content {
+  color: white !important;
+}
+
+/* Phase 2: Match completion (shrink and disappear) */
+.match-card.matched {
+  cursor: default;
+  animation: matchShrink 0.5s ease-in-out forwards;
+}
+
+.match-card.matched .verse-content,
+.match-card.matched .reference-content {
+  animation: textFadeOut 0.5s ease-in-out forwards;
+}
+
+/* ========================================
+   INCORRECT FEEDBACK STATES
+   ======================================== */
+
 .match-card.incorrect {
   background: linear-gradient(135deg, #8B0000 0%, #CD5C5C 100%) !important;
   border: 4px solid #ffffff !important;
   color: white !important;
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 25px rgba(139, 0, 0, 0.6);
-  animation: shakeRed 0.5s ease-in-out;
+  animation: incorrectShake 0.5s ease-in-out;
 }
 
-/* Preserve image backgrounds during feedback states */
-.match-card.reference.has-image.correct {
-  background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%) !important;
-  /* Remove all the background image properties - no image during correct animation */
-}
-
+/* Preserve image backgrounds during incorrect feedback */
 .match-card.reference.has-image.incorrect {
   background: 
     linear-gradient(rgba(139, 0, 0, 0.8), rgba(139, 0, 0, 0.8)),
@@ -219,29 +241,9 @@ body.reference-match-win-gradient .reference-match-container {
   background-repeat: no-repeat, no-repeat !important;
 }
 
-.match-card.correct .verse-content,
-.match-card.correct .reference-content,
 .match-card.incorrect .verse-content,
 .match-card.incorrect .reference-content {
   color: white !important;
-}
-
-/* ========================================
-   CARD MATCHED STATES
-   ======================================== */
-
-.match-card.matched {
-  background: #121212;
-  color: #121212;
-  border-color: #121212;
-  cursor: default;
-  animation: matchAnimation 0.5s ease-in-out;
-}
-
-.match-card.matched .verse-content,
-.match-card.matched .reference-content {
-  color: #121212;
-  animation: textFadeAnimation 0.5s ease-in-out;
 }
 
 /* ========================================
@@ -277,45 +279,47 @@ body.reference-match-win-gradient .reference-match-container {
 }
 
 /* ========================================
-   ANIMATIONS
+   ANIMATION KEYFRAMES
    ======================================== */
 
-@keyframes pulseGreen {
+/* Correct match animations */
+@keyframes correctPulse {
   0%, 100% { transform: translateY(-3px) scale(1.05); }
   50% { transform: translateY(-3px) scale(1.1); }
 }
 
-@keyframes shakeRed {
-  0%, 100% { transform: translateY(-3px) scale(1.05) translateX(0); }
-  25% { transform: translateY(-3px) scale(1.05) translateX(-5px); }
-  75% { transform: translateY(-3px) scale(1.05) translateX(5px); }
-}
-
-@keyframes matchAnimation {
+@keyframes matchShrink {
   0% {
     transform: scale(1);
     background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
-    border-color: #ffffff;
+    border: 4px solid #ffffff;
     color: white;
   }
   70% {
     transform: scale(0.3);
     background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
-    border-color: #ffffff;
+    border: 4px solid #ffffff;
     color: white;
   }
   100% {
     transform: scale(0);
-    background: linear-gradient(135deg, #3da542 0%, #5cbf60 100%);
-    border-color: #ffffff;
-    color: white;
+    background: #121212;
+    border-color: #121212;
+    color: #121212;
   }
 }
 
-@keyframes textFadeAnimation {
+@keyframes textFadeOut {
   0% { color: white; }
   70% { color: white; }
-  100% { color: white; }
+  100% { color: #121212; }
+}
+
+/* Incorrect match animation */
+@keyframes incorrectShake {
+  0%, 100% { transform: translateY(-3px) scale(1.05) translateX(0); }
+  25% { transform: translateY(-3px) scale(1.05) translateX(-5px); }
+  75% { transform: translateY(-3px) scale(1.05) translateX(5px); }
 }
 
 @keyframes fadeIn {
