@@ -516,13 +516,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               </button>
             ))}
           </div>
-          <div className="difficulty-description">
-            {difficultyLevel === 1 && "All words visible"}
-            {difficultyLevel === 2 && "1/4 words missing"}
-            {difficultyLevel === 3 && "1/2 words missing"}
-            {difficultyLevel === 4 && "3/4 words missing"}
-            {difficultyLevel === 5 && "All words missing"}
-          </div>
         </div>
       </div>
     </>

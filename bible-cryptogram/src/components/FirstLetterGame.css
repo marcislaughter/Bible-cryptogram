@@ -240,7 +240,6 @@ body.first-letter-win-gradient .citation {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 15px;
 }
 
 .stepper-button {
@@ -275,13 +274,6 @@ body.first-letter-win-gradient .citation {
 .stepper-button.active:hover {
   background-color: #9900cc;
   transform: translateY(-2px);
-}
-
-.difficulty-description {
-  font-size: 0.9rem;
-  color: #666;
-  font-style: italic;
-  font-family: 'Courier New', Courier, monospace;
 }
 
 /* Tablet sizing (1024px and below) */
@@ -369,10 +361,6 @@ body.first-letter-win-gradient .citation {
   .difficulty-label {
     font-size: 0.9rem;
   }
-  
-  .difficulty-description {
-    font-size: 0.8rem;
-  }
 }
 
 /* Additional mobile optimizations for smaller screens */
@@ -419,10 +407,6 @@ body.first-letter-win-gradient .citation {
   .difficulty-label {
     font-size: 0.8rem;
     margin-bottom: 10px;
-  }
-  
-  .difficulty-description {
-    font-size: 0.7rem;
   }
 }
 
