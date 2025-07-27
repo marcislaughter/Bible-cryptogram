@@ -510,7 +510,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           );
           setMatchedPairs(prev => [...prev, card1.verseId]);
           setFeedbackCards([]);
-        }, 800); // Show green feedback for 800ms
+        }, 500); // Show green feedback for 500ms
       } else {
         // No match - show red feedback, then revert
         setIncorrectAttempts(prev => prev + 1);
