@@ -97,9 +97,9 @@
 }
 
 .word-display.revealed {
-  background-color: #a7d379;
-  border: 2px solid #3da542;
-  color: #800080;
+  background-color: transparent;
+  border: none;
+  color: #a3a3a3;
   font-size: 1rem;
   animation: revealAnimation 0.5s ease;
 }
@@ -114,17 +114,18 @@
 @keyframes revealAnimation {
   0% {
     transform: scale(1);
-    background-color: #e6ccff;
+    background-color: transparent;
+    color: #a3a3a3;
   }
   50% {
     transform: scale(1.1);
-    background-color: #3da542;
-    color: white;
+    background-color: transparent;
+    color: #3da542;
   }
   100% {
     transform: scale(1);
-    background-color: #a7d379;
-    color: #800080;
+    background-color: transparent;
+    color: #a3a3a3;
   }
 }
 
@@ -165,10 +166,12 @@
   justify-content: center;
   margin-top: 20px;
   align-items: stretch;
+  flex-wrap: wrap;
 }
 
 .next-verse-btn,
-.repeat-verse-btn {
+.retry-btn,
+.next-level-btn {
   padding: 12px 24px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -187,8 +190,16 @@
   min-height: 50px;
 }
 
+.retry-btn,
+.next-level-btn {
+  padding: 12px;
+  min-width: 50px;
+  gap: 0;
+}
+
 .next-verse-btn:hover,
-.repeat-verse-btn:hover {
+.retry-btn:hover,
+.next-level-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -342,9 +353,16 @@ body.first-letter-win-gradient .citation {
   }
   
   .next-verse-btn,
-  .repeat-verse-btn {
+  .retry-btn,
+  .next-level-btn {
     font-size: 1rem;
     padding: 10px 20px;
+  }
+  
+  .retry-btn,
+  .next-level-btn {
+    padding: 10px;
+    min-width: 45px;
   }
   
   .difficulty-stepper {
@@ -383,10 +401,17 @@ body.first-letter-win-gradient .citation {
   }
   
   .next-verse-btn,
-  .repeat-verse-btn {
+  .retry-btn,
+  .next-level-btn {
     font-size: 0.9rem;
     padding: 8px 16px;
     min-height: 40px;
+  }
+  
+  .retry-btn,
+  .next-level-btn {
+    padding: 8px;
+    min-width: 40px;
   }
   
   .difficulty-stepper {

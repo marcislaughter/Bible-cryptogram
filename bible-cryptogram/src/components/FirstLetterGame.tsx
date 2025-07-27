@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowLeft, faArrowUp, faRepeat } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 
 interface FirstLetterGameProps {
@@ -350,6 +350,15 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     handleReset();
   };
 
+  const handleNextLevel = () => {
+    if (difficultyLevel < 5) {
+      setDifficultyLevel(difficultyLevel + 1);
+    } else {
+      // If already at max level, go to next verse
+      handleNextVerse();
+    }
+  };
+
   // Function to get CSS class for input based on state
   const getInputClass = (wordIndex: number) => {
     const guess = guesses[wordIndex];
@@ -487,8 +496,11 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             </div>
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
-              <button onClick={handleRepeatVerse} className="repeat-verse-btn">
-                <FontAwesomeIcon icon={faArrowLeft} /> {currentVerse.reference}
+              <button onClick={handleRepeatVerse} className="retry-btn">
+                <FontAwesomeIcon icon={faRepeat} />
+              </button>
+              <button onClick={handleNextLevel} className="next-level-btn">
+                <FontAwesomeIcon icon={faArrowUp} />
               </button>
               <button onClick={handleNextVerse} className="next-verse-btn">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
