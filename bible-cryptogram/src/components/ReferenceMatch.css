@@ -491,8 +491,28 @@ body.reference-match-win-gradient {
 }
 
 .accordion-content.expanded {
-  max-height: 600px;
+  max-height: 400px;
+  overflow-y: auto;
   transition: max-height 0.4s ease-in;
+}
+
+/* Custom scrollbar styling for the accordion */
+.accordion-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.accordion-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.accordion-content::-webkit-scrollbar-thumb {
+  background: #e6ccff;
+  border-radius: 4px;
+}
+
+.accordion-content::-webkit-scrollbar-thumb:hover {
+  background: white;
 }
 
 .accordion-content .matches-summary {
