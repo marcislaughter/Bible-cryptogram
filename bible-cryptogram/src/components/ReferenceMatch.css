@@ -671,15 +671,15 @@ body.reference-match-win-gradient {
   
   /* Mobile selected states */
   .match-card.selected {
-    border: 5px solid #ffffff;
-    transform: scale(1.1);
+    border: 8px solid #ffffff;
+    transform: scale(1.04);
     transform-origin: center center;
     box-shadow: none;
   }
   
   /* Mobile selected background for non-reference cards */
   .match-card.selected:not(.reference) {
-    border: 5px solid #ffffff;
+    border: 8px solid #ffffff;
     background: #800080;
   }
 
@@ -693,12 +693,12 @@ body.reference-match-win-gradient {
   }
 
   /* Position adjustments for selected cards */
-  .match-card.selected:nth-child(3n+1) { transform: scale(1.1) translate(15px, -5px); }
-  .match-card.selected:nth-child(3n) { transform: scale(1.1) translate(-15px, -5px); }
-  .match-card.selected:nth-child(3n+2) { transform: scale(1.1) translate(0, -10px); }
-  .match-card.selected:nth-child(-n+3) { transform: scale(1.1) translate(0, 10px); }
-  .match-card.selected:nth-child(1) { transform: scale(1.1) translate(15px, 10px); }
-  .match-card.selected:nth-child(3) { transform: scale(1.1) translate(-15px, 10px); }
+  .match-card.selected:nth-child(3n+1) { transform: scale(1.04) translate(15px, -5px); }
+  .match-card.selected:nth-child(3n) { transform: scale(1.04) translate(-15px, -5px); }
+  .match-card.selected:nth-child(3n+2) { transform: scale(1.04) translate(0, -10px); }
+  .match-card.selected:nth-child(-n+3) { transform: scale(1.04) translate(0, 10px); }
+  .match-card.selected:nth-child(1) { transform: scale(1.04) translate(15px, 10px); }
+  .match-card.selected:nth-child(3) { transform: scale(1.04) translate(-15px, 10px); }
   
   /* Mobile content adjustments */
   .verse-content {
