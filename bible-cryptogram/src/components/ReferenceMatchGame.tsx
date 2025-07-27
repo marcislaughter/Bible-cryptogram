@@ -536,10 +536,12 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
       />
 
       <div className="reference-match-container">
-        {/* Timer Display */}
-        <div className="game-timer">
-          Time: {formatTime(elapsedTime)}
-        </div>
+        {/* Timer Display - hidden when game is solved */}
+        {!isSolved && (
+          <div className="game-timer">
+            Time: {formatTime(elapsedTime)}
+          </div>
+        )}
         
         {wordStatsEnabled && <WordStats />}
         

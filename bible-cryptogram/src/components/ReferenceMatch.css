@@ -332,6 +332,7 @@ body.reference-match-win-gradient .reference-match-container {
 body.reference-match-win-gradient {
   background: linear-gradient(135deg, #800080, #3da542);
   background-attachment: fixed;
+  overflow: hidden;
 }
 
 /* ========================================
@@ -340,14 +341,20 @@ body.reference-match-win-gradient {
 
 .reference-match-solved-message {
   text-align: center;
-  margin: 30px 0;
   padding: 30px;
   background: linear-gradient(135deg, #800080 0%, #3da542 100%);
   color: white;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
-  max-width: 90%;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 .reference-match-solved-message h2 {
@@ -707,12 +714,7 @@ body.reference-match-win-gradient {
   /* Mobile solved message - Reference Match specific */
   .reference-match-solved-message {
     padding: 15px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    z-index: 1000;
+    max-width: calc(100vw - 20px);
   }
   
   .reference-match-solved-message h2 {
