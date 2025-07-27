@@ -201,18 +201,18 @@ body.reference-match-win-gradient .reference-match-container {
   background: 
     linear-gradient(rgba(61, 165, 66, 0.8), rgba(61, 165, 66, 0.8)),
     var(--reference-bg-image) !important;
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover !important;
+  background-position: center, center !important;
+  background-repeat: no-repeat, no-repeat !important;
 }
 
 .match-card.reference.has-image.incorrect {
   background: 
     linear-gradient(rgba(139, 0, 0, 0.8), rgba(139, 0, 0, 0.8)),
     var(--reference-bg-image) !important;
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover !important;
+  background-position: center, center !important;
+  background-repeat: no-repeat, no-repeat !important;
 }
 
 .match-card.correct .verse-content,
