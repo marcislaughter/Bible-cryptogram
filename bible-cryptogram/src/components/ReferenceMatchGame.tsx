@@ -518,7 +518,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
         setTimeout(() => {
           setCards(prevCards =>
             prevCards.map(card =>
-              card.isSelected && !card.isMatched
+              (card.id === card1.id || card.id === card2.id)
                 ? { ...card, isSelected: false }
                 : card
             )
