@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './ReferenceMatch.css';
 
 // Dynamic image loading using Vite's import.meta.glob
