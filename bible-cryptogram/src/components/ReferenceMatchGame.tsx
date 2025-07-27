@@ -272,6 +272,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const [elapsedTime, setElapsedTime] = useState(0);
   const [gameStartTime, setGameStartTime] = useState<number | null>(null);
   
+  // Add accordion state near the other state declarations
+  const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
+
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
 
@@ -357,6 +360,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setIsSolved(false);
     setIncorrectAttempts(0);
     setFeedbackCards([]);
+    setIsAccordionExpanded(false); // Reset accordion state
     
     // Reset timer
     setElapsedTime(0);
@@ -465,6 +469,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setWordStatsEnabled(false);
     setIncorrectAttempts(0);
     setFeedbackCards([]);
+    setIsAccordionExpanded(false); // Reset accordion state
     
     // Reset timer
     setElapsedTime(0);
@@ -602,14 +607,27 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 Time: {formatTime(elapsedTime)}
               </p>
             </div>
-            <div className="matches-summary">
-              <h3>Completed Matches:</h3>
-              {gameVerses.map((verse) => (
-                <div key={verse.reference} className="match-summary">
-                  <strong>{verse.reference}</strong>: {verse.text}
+            
+            {/* NEW: Replace the old matches-summary div with this accordion */}
+            <div className="matches-accordion">
+              <button 
+                className={`accordion-header ${isAccordionExpanded ? 'expanded' : ''}`}
+                onClick={() => setIsAccordionExpanded(!isAccordionExpanded)}
+              >
+                <span>📖 Completed Matches ({gameVerses.length})</span>
+                <span className="accordion-arrow">{isAccordionExpanded ? '▼' : '▶'}</span>
+              </button>
+              <div className={`accordion-content ${isAccordionExpanded ? 'expanded' : ''}`}>
+                <div className="matches-summary">
+                  {gameVerses.map((verse) => (
+                    <div key={verse.reference} className="match-summary">
+                      <strong>{verse.reference}</strong>: {verse.text}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
+            
             <div className="solved-buttons">
               <button onClick={handleRepeatVerse} className="repeat-verse-btn">
                 <FontAwesomeIcon icon={faArrowLeft} /> Play Again

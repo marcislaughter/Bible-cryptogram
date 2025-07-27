@@ -431,6 +431,93 @@ body.reference-match-win-gradient {
 }
 
 /* ========================================
+   ACCORDION STYLES
+   ======================================== */
+
+.matches-accordion {
+  margin: 25px 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.accordion-header {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid #e6ccff;
+  border-radius: 10px;
+  padding: 15px 20px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.accordion-header:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: white;
+  transform: translateY(-1px);
+}
+
+.accordion-header.expanded {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.accordion-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+  font-family: Arial, sans-serif;
+  color: #e6ccff;
+  font-weight: bold;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #e6ccff;
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.accordion-content.expanded {
+  max-height: 600px;
+  transition: max-height 0.4s ease-in;
+}
+
+.accordion-content .matches-summary {
+  margin: 0;
+  padding: 15px 20px;
+  text-align: left;
+}
+
+.accordion-content .match-summary {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border-left: 4px solid #e6ccff;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.accordion-content .match-summary strong {
+  color: #e6ccff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* ========================================
    RESPONSIVE: TABLET
    ======================================== */
 
@@ -604,5 +691,23 @@ body.reference-match-win-gradient {
     transform: none;
     box-shadow: none;
     background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* ========================================
+   RESPONSIVE: MOBILE ACCORDION
+   ======================================== */
+
+  .accordion-header {
+    padding: 12px 15px;
+    font-size: 1rem;
+  }
+  
+  .accordion-content .matches-summary {
+    padding: 10px 15px;
+  }
+  
+  .accordion-content .match-summary {
+    font-size: 0.85rem;
+    padding: 8px 12px;
   }
 } 
