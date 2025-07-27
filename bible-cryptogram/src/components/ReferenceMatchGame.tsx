@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
@@ -274,6 +274,9 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   
   // Add accordion state near the other state declarations
   const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
+  
+  // Ref for viewport update timeout
+  const viewportUpdateTimeoutRef = useRef<number | null>(null);
 
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
@@ -282,6 +285,12 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
   const isMobileDevice = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
            (window.innerWidth <= 768 && 'ontouchstart' in window);
+  };
+
+  // Function to update viewport height CSS custom property
+  const updateViewportHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
   };
 
   // Function to scroll down slightly on mobile to hide browser navigation
@@ -293,6 +302,8 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
           top: 1,
           behavior: 'smooth'
         });
+        // Update viewport height after scroll to account for URL bar changes
+        setTimeout(updateViewportHeight, 100);
       }, 50); // Shorter delay to avoid conflict
     }
   };
@@ -366,7 +377,8 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     setElapsedTime(0);
     setGameStartTime(Date.now());
     
-    // Hide mobile browser navigation after generating new game
+    // Hide mobile browser navigation and update viewport after generating new game
+    updateViewportHeight();
     hideMobileBrowserNavigation();
   };
 
@@ -374,9 +386,47 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
     generateNewGame();
   }, [currentVerse]);
 
-  // Hide mobile browser navigation on component mount
+  // Hide mobile browser navigation on component mount and set up viewport tracking
   useEffect(() => {
+    // Initial setup
+    updateViewportHeight();
     hideMobileBrowserNavigation();
+    
+    // Add event listeners for viewport changes
+    const handleResize = () => {
+      updateViewportHeight();
+    };
+    
+    const handleScroll = () => {
+      // Debounce scroll events
+      if (viewportUpdateTimeoutRef.current) {
+        clearTimeout(viewportUpdateTimeoutRef.current);
+      }
+      viewportUpdateTimeoutRef.current = setTimeout(updateViewportHeight, 150);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('orientationchange', handleResize);
+    
+    // Visual viewport API for better mobile support
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('orientationchange', handleResize);
+      
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+      }
+      
+      if (viewportUpdateTimeoutRef.current) {
+        clearTimeout(viewportUpdateTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Check for game completion when matchedPairs changes

@@ -618,24 +618,33 @@ body.reference-match-win-gradient {
     display: none;
   }
   
-  /* Container adjustments */
+  /* Container adjustments - use dynamic viewport height */
   .reference-match-container {
     margin-top: 50px;
     padding: 0 0 10px 0;
-    min-height: calc(100vh - 50px);
-    height: calc(100vh - 50px);
+    min-height: calc(100dvh - 50px);
+    height: calc(100dvh - 50px);
     justify-content: flex-start;
   }
   
-  /* Grid layout changes */
+  /* Fallback for browsers that don't support dvh */
+  @supports not (height: 100dvh) {
+    .reference-match-container {
+      min-height: calc(var(--viewport-height, 100vh) - 50px);
+      height: calc(var(--viewport-height, 100vh) - 50px);
+    }
+  }
+  
+  /* Grid layout changes - fill the container completely */
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 0;
     padding: 0;
     margin: 0;
-    height: calc(100vh - 60px);
+    height: 100%;
     max-width: none;
+    flex: 1;
   }
   
   /* Card base mobile styles */
