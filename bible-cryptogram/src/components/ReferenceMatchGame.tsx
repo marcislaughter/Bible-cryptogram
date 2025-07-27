@@ -599,7 +599,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
                 className={`accordion-header ${isAccordionExpanded ? 'expanded' : ''}`}
                 onClick={() => setIsAccordionExpanded(!isAccordionExpanded)}
               >
-                <span>Completed Matches ({gameVerses.length})</span>
+                <span>View completed matches ({gameVerses.length})</span>
                 <span className="accordion-arrow">{isAccordionExpanded ? '▼' : '▶'}</span>
               </button>
               <div className={`accordion-content ${isAccordionExpanded ? 'expanded' : ''}`}>
