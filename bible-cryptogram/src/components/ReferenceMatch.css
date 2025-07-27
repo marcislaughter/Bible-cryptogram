@@ -220,7 +220,7 @@ body.reference-match-win-gradient .reference-match-container {
    ======================================== */
 
 .match-card.incorrect {
-  background: linear-gradient(135deg, #8B0000 0%, #CD5C5C 100%) !important;
+  background: #DC143C !important;
   border: 4px solid #ffffff !important;
   color: white !important;
   transform: translateY(-3px) scale(1.05);
@@ -228,14 +228,10 @@ body.reference-match-win-gradient .reference-match-container {
   animation: incorrectShake 0.5s ease-in-out;
 }
 
-/* Preserve image backgrounds during incorrect feedback */
+/* Reference cards with images - turn solid red during incorrect feedback */
 .match-card.reference.has-image.incorrect {
-  background: 
-    linear-gradient(rgba(139, 0, 0, 0.8), rgba(139, 0, 0, 0.8)),
-    var(--reference-bg-image) !important;
-  background-size: cover, cover !important;
-  background-position: center, center !important;
-  background-repeat: no-repeat, no-repeat !important;
+  background: #DC143C !important;
+  /* Remove all the background image properties - no image during incorrect animation */
 }
 
 .match-card.incorrect .verse-content,
