@@ -362,7 +362,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       }
     });
     
-    return currentChapter.verses.filter((verse, index) => verseHasError[index]);
+    return currentChapter.verses.filter((_, index) => verseHasError[index]);
   };
 
   // Render a verse with error words highlighted
@@ -537,7 +537,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
               {versesWithErrors.length > 0 ? (
                 <>
                   <h3>Verses that needed corrections:</h3>
-                  {versesWithErrors.map((verse, index) => {
+                  {versesWithErrors.map((verse) => {
                     const originalVerseIndex = currentChapter!.verses.indexOf(verse);
                     return renderVerseWithErrors(verse, originalVerseIndex);
                   })}
