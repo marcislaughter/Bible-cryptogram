@@ -120,19 +120,30 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 
     setChapterWords(wordItems);
     
-    // Set up revealed words - in review mode, automatically reveal verse numbers
+    // Set up revealed words
     const initialRevealedWords = new Array(wordItems.length).fill(false);
-    let firstUnrevealedIndex = 0;
+    let isFirstVerseNumber = true;
     
-    if (reviewMode) {
-      wordItems.forEach((wordItem, index) => {
-        if (wordItem.isVerseNumber) {
+    wordItems.forEach((wordItem, index) => {
+      if (wordItem.isVerseNumber) {
+        if (reviewMode) {
+          // In review mode, reveal all verse numbers
           initialRevealedWords[index] = true;
-        } else if (firstUnrevealedIndex === 0) {
-          // Set the first content word as the starting point
-          firstUnrevealedIndex = index;
+        } else if (isFirstVerseNumber) {
+          // In regular mode, only reveal the first verse number
+          initialRevealedWords[index] = true;
+          isFirstVerseNumber = false;
         }
-      });
+      }
+    });
+    
+    // Find the first unrevealed word
+    let firstUnrevealedIndex = 0;
+    for (let i = 0; i < initialRevealedWords.length; i++) {
+      if (!initialRevealedWords[i]) {
+        firstUnrevealedIndex = i;
+        break;
+      }
     }
     
     setRevealedWords(initialRevealedWords);
@@ -405,6 +416,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     );
   };
 
+  // Get minimum words to display (ensure first verse number + current word are always visible)
+  const getMinimumDisplayWords = () => {
+    // Always show at least 2 words to ensure first verse number and current position are visible
+    return Math.max(2, currentWordIndex + 1);
+  };
+
   // Calculate percentage correct
   const calculatePercentageCorrect = () => {
     if (chapterWords.length === 0) return 100;
@@ -459,7 +476,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         )}
         
         <div className="verse-text">
-          {chapterWords.slice(0, currentWordIndex + 1).map((wordItem, wordIndex) => (
+          {chapterWords.slice(0, Math.max(currentWordIndex + 1, getMinimumDisplayWords())).map((wordItem, wordIndex) => (
             <span key={wordIndex}>
               <span 
                 className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
@@ -471,7 +488,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                   : '__'
                 }
               </span>
-              {wordIndex < currentWordIndex ? ' ' : ''}
+              {wordIndex < Math.max(currentWordIndex, getMinimumDisplayWords() - 1) ? ' ' : ''}
             </span>
           ))}
         </div>
@@ -480,7 +497,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           <div className="instruction-text">
             {isReviewMode 
               ? 'Review mode: Verse numbers are shown - type first letters of words to complete these verses'
-              : 'Type verse numbers and first letters of words to reveal the chapter'
+              : 'Type verse numbers and first letters of words to reveal the chapter (first verse number is shown)'
             }
           </div>
         )}
