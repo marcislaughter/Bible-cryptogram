@@ -190,8 +190,7 @@
   min-height: 50px;
 }
 
-.retry-btn,
-.next-level-btn {
+.retry-btn {
   padding: 12px;
   min-width: 50px;
   gap: 0;
@@ -359,8 +358,7 @@ body.first-letter-win-gradient .citation {
     padding: 10px 20px;
   }
   
-  .retry-btn,
-  .next-level-btn {
+  .retry-btn {
     padding: 10px;
     min-width: 45px;
   }
@@ -408,8 +406,7 @@ body.first-letter-win-gradient .citation {
     min-height: 40px;
   }
   
-  .retry-btn,
-  .next-level-btn {
+  .retry-btn {
     padding: 8px;
     min-width: 40px;
   }

@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowLeft, faArrowUp, faRepeat } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowLeft, faArrowUp, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 
 interface FirstLetterGameProps {
@@ -440,6 +440,23 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     };
   }, [isSolved]);
 
+  // Handle Enter key on completion screen
+  useEffect(() => {
+    const handleCompletionKeyDown = (event: KeyboardEvent) => {
+      if (isSolved && event.key === 'Enter') {
+        event.preventDefault();
+        if (difficultyLevel < 5) {
+          handleNextLevel();
+        } else {
+          handleNextVerse();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleCompletionKeyDown);
+    return () => window.removeEventListener('keydown', handleCompletionKeyDown);
+  }, [isSolved, difficultyLevel]);
+
   return (
     <>
       <GameHeader 
@@ -497,11 +514,13 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
               <button onClick={handleRepeatVerse} className="retry-btn">
-                <FontAwesomeIcon icon={faRepeat} />
+                <FontAwesomeIcon icon={faArrowRotateLeft} />
               </button>
-              <button onClick={handleNextLevel} className="next-level-btn">
-                <FontAwesomeIcon icon={faArrowUp} />
-              </button>
+              {difficultyLevel < 5 && (
+                <button onClick={handleNextLevel} className="next-level-btn">
+                  Next Level <FontAwesomeIcon icon={faArrowUp} />
+                </button>
+              )}
               <button onClick={handleNextVerse} className="next-verse-btn">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
