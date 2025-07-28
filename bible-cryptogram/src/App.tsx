@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import CryptogramGame from './components/CryptogramGame';
 import UnscrambleGame from './components/UnscrambleGame';
 import FirstLetterGame from './components/FirstLetterGame';
+import FirstLetterTestGame from './components/FirstLetterTestGame';
 import ReferenceMatchGame from './components/ReferenceMatchGame';
 import Instructions from './components/Instructions';
 import UnscrambleInstructions from './components/UnscrambleInstructions';
@@ -48,6 +49,14 @@ const GameContainer: React.FC = () => {
       )}
       {gameType === 'first-letter' && (
         <FirstLetterGame 
+          gameType={gameType} 
+          onGameTypeChange={handleGameTypeChange}
+          currentVerse={currentVerse}
+          onVerseChange={handleVerseChange}
+        />
+      )}
+      {gameType === 'first-letter-test' && (
+        <FirstLetterTestGame 
           gameType={gameType} 
           onGameTypeChange={handleGameTypeChange}
           currentVerse={currentVerse}

@@ -9,7 +9,7 @@ import { BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
-export type GameType = 'cryptogram' | 'unscramble' | 'first-letter' | 'reference-match';
+export type GameType = 'cryptogram' | 'unscramble' | 'first-letter' | 'first-letter-test' | 'reference-match';
 
 interface GameHeaderProps {
   wordStatsEnabled: boolean;
@@ -44,6 +44,11 @@ const GameHeader: React.FC<GameHeaderProps> = ({
       type: 'button',
       content: 'First Letter',
       onClick: () => onGameTypeChange?.('first-letter')
+    },
+    {
+      type: 'button',
+      content: 'First Letter Test',
+      onClick: () => onGameTypeChange?.('first-letter-test')
     },
     {
       type: 'button',
@@ -83,6 +88,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
                 {gameType === 'cryptogram' ? 'Cryptogram' : 
                  gameType === 'unscramble' ? 'Unscramble' : 
                  gameType === 'first-letter' ? 'First Letter' : 
+                 gameType === 'first-letter-test' ? 'First Letter Test' :
                  'Reference Match'} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
@@ -109,6 +115,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           <Link to={gameType === 'cryptogram' ? '/instructions' : 
                     gameType === 'unscramble' ? '/unscramble-instructions' : 
                     gameType === 'first-letter' ? '/first-letter-instructions' : 
+                    gameType === 'first-letter-test' ? '/first-letter-instructions' :
                     '/reference-match-instructions'} className="help-btn">
             <FontAwesomeIcon icon={faCircleQuestion} />
           </Link>
