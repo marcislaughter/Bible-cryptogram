@@ -335,6 +335,14 @@ body.first-letter-win-gradient .citation {
     border-color: #3da542 !important;
   }
   
+  /* Ensure incorrect state overrides focus state on mobile */
+  .first-letter-input.incorrect:focus {
+    background-color: #ff9999 !important;
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
+    -webkit-text-fill-color: #ff0000 !important;
+  }
+  
   .word-display {
     min-height: 20px;
     padding: 3px 6px;

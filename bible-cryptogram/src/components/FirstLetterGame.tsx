@@ -246,9 +246,20 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       // Clear the input value to prevent display issues on mobile
       e.target.value = '';
       
-      // Only advance focus if the guess was correct
       if (canAdvance) {
+        // Correct guess - advance focus
         advanceFocus(e.target);
+      } else {
+        // Incorrect guess - clear the stored guess and blur briefly to reset state
+        const newGuesses = [...guesses];
+        newGuesses[wordIndex] = '';
+        setGuesses(newGuesses);
+        
+        // Blur and refocus to reset the input state on mobile
+        e.target.blur();
+        setTimeout(() => {
+          e.target.focus();
+        }, 100);
       }
     } else if (value === '') {
       handleInputChange(wordIndex, '');
@@ -267,9 +278,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       if (/^[A-Z]$/.test(key)) {
         event.preventDefault();
         const canAdvance = handleInputChange(wordIndex, key, true);
-        // Only advance focus if the guess was correct
+        
         if (canAdvance) {
+          // Correct guess - advance focus
           advanceFocus(activeElement);
+        } else {
+          // Incorrect guess - clear the stored guess and reset input state
+          const newGuesses = [...guesses];
+          newGuesses[wordIndex] = '';
+          setGuesses(newGuesses);
+          
+          // Brief blur/refocus to reset state for consistency with mobile
+          activeElement.blur();
+          setTimeout(() => {
+            activeElement.focus();
+          }, 100);
         }
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         event.preventDefault();
