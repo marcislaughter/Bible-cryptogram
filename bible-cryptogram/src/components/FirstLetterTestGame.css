@@ -102,6 +102,11 @@
   animation: bounce 0.5s ease;
 }
 
+.test-word.revealed.error {
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+}
+
 @keyframes revealAnimation {
   0% {
     color: #000000;
@@ -169,6 +174,19 @@
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
+}
+
+.revealed-chapter h3 {
+  color: #e6ccff;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.error-word {
+  color: #ff0000 !important;
+  text-shadow: 0 0 5px #ff0000;
+  font-weight: bold;
 }
 
 .verse-line {

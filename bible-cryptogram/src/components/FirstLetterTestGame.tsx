@@ -18,6 +18,7 @@ interface WordItem {
   text: string;
   isVerseNumber: boolean;
   originalIndex: number;
+  verseIndex: number;
 }
 
 const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({ 
@@ -28,6 +29,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 }) => {
   const [chapterWords, setChapterWords] = useState<WordItem[]>([]);
   const [revealedWords, setRevealedWords] = useState<boolean[]>([]);
+  const [wordsWithErrors, setWordsWithErrors] = useState<boolean[]>([]);
   const [isSolved, setIsSolved] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
@@ -63,7 +65,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       wordItems.push({
         text: verseNumber,
         isVerseNumber: true,
-        originalIndex: wordIndex++
+        originalIndex: wordIndex++,
+        verseIndex: verseIndex
       });
 
       // Add verse words (removing punctuation and filtering empty)
@@ -75,13 +78,15 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         wordItems.push({
           text: word,
           isVerseNumber: false,
-          originalIndex: wordIndex++
+          originalIndex: wordIndex++,
+          verseIndex: verseIndex
         });
       });
     });
 
     setChapterWords(wordItems);
     setRevealedWords(new Array(wordItems.length).fill(false));
+    setWordsWithErrors(new Array(wordItems.length).fill(false));
     setIsSolved(false);
     setCurrentWordIndex(0);
     setHasError(false);
@@ -160,8 +165,11 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
             setCurrentWordIndex(nextUnrevealedIndex);
           }
         } else {
-          // Wrong input - show error
+          // Wrong input - show error and mark word as having had an error
           setHasError(true);
+          const newWordsWithErrors = [...wordsWithErrors];
+          newWordsWithErrors[nextWordIndex] = true;
+          setWordsWithErrors(newWordsWithErrors);
           
           // Clear error after animation duration
           setTimeout(() => {
@@ -173,7 +181,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapterWords, revealedWords, currentWordIndex, isSolved, hasError]);
+  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError]);
 
   const handleReset = () => {
     generateNewGame();
@@ -185,10 +193,14 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
     if (nextWordIndex === -1) return; // All words revealed
     
-    // Reveal the current word
+    // Reveal the current word and mark it as having had an error (since a hint was needed)
     const newRevealedWords = [...revealedWords];
     newRevealedWords[nextWordIndex] = true;
     setRevealedWords(newRevealedWords);
+    
+    const newWordsWithErrors = [...wordsWithErrors];
+    newWordsWithErrors[nextWordIndex] = true;
+    setWordsWithErrors(newWordsWithErrors);
     
     // Move to next unrevealed word
     const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
@@ -230,9 +242,102 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     }
   };
 
+  // Get verses that had errors (at least one red word)
+  const getVersesWithErrors = () => {
+    if (!currentChapter) return [];
+    
+    const verseHasError = new Array(currentChapter.verses.length).fill(false);
+    
+    chapterWords.forEach((wordItem, wordIndex) => {
+      if (wordsWithErrors[wordIndex]) {
+        verseHasError[wordItem.verseIndex] = true;
+      }
+    });
+    
+    return currentChapter.verses.filter((verse, index) => verseHasError[index]);
+  };
+
+  // Render a verse with error words highlighted
+  const renderVerseWithErrors = (verse: any, verseIndex: number) => {
+    const verseWords = chapterWords.filter(wordItem => wordItem.verseIndex === verseIndex);
+    const originalText = verse.text;
+    const words = originalText.split(' ');
+    
+    let wordItemIndex = 0;
+    let renderedElements: React.ReactElement[] = [];
+    
+    // Add verse number first
+    const verseNumberWordItem = verseWords.find(w => w.isVerseNumber);
+    if (verseNumberWordItem) {
+      const wordIndex = chapterWords.indexOf(verseNumberWordItem);
+      const hasError = wordsWithErrors[wordIndex];
+      
+      renderedElements.push(
+        <span key={`verse-num-${verseIndex}`} className={hasError ? 'error-word' : ''}>
+          {verseNumberWordItem.text}
+        </span>
+      );
+      renderedElements.push(<span key={`space-after-num-${verseIndex}`}> </span>);
+      wordItemIndex++;
+    }
+    
+    // Process each word in the original text
+    words.forEach((originalWord: string, originalWordIndex: number) => {
+      // Extract just the letters for matching
+      const cleanWord = originalWord.replace(/[^A-Z]/g, '');
+      
+      if (cleanWord.length > 0) {
+        // Find the corresponding word item
+        const wordItem = verseWords.find((w, idx) => 
+          !w.isVerseNumber && idx === wordItemIndex
+        );
+        
+        if (wordItem) {
+          const wordIndex = chapterWords.indexOf(wordItem);
+          const hasError = wordsWithErrors[wordIndex];
+          
+          renderedElements.push(
+            <span key={`word-${verseIndex}-${originalWordIndex}`} className={hasError ? 'error-word' : ''}>
+              {originalWord}
+            </span>
+          );
+          wordItemIndex++;
+        } else {
+          // Fallback for words that don't match
+          renderedElements.push(
+            <span key={`word-fallback-${verseIndex}-${originalWordIndex}`}>
+              {originalWord}
+            </span>
+          );
+        }
+      } else {
+        // Handle punctuation-only "words"
+        renderedElements.push(
+          <span key={`punct-${verseIndex}-${originalWordIndex}`}>
+            {originalWord}
+          </span>
+        );
+      }
+      
+      // Add space after word (except for last word)
+      if (originalWordIndex < words.length - 1) {
+        renderedElements.push(
+          <span key={`space-${verseIndex}-${originalWordIndex}`}> </span>
+        );
+      }
+    });
+    
+    return (
+      <div key={verseIndex} className="verse-line">
+        {renderedElements}
+      </div>
+    );
+  };
+
   // Get current chapter info for display
   const currentChapter = getCurrentChapter();
   const chapterTitle = currentChapter ? currentChapter.chapterTitle : '';
+  const versesWithErrors = getVersesWithErrors();
 
   return (
     <>
@@ -275,7 +380,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
               <span 
                 className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
                   wordIndex === currentWordIndex && hasError ? 'error' : ''
-                }`}
+                } ${wordsWithErrors[wordIndex] ? 'error' : ''}`}
               >
                 {revealedWords[wordIndex] 
                   ? wordItem.text 
@@ -297,12 +402,17 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           <div className="solved-message">
             <h2>Excellent! You completed the entire chapter!</h2>
             <div className="revealed-chapter">
-              {currentChapter?.verses.map((verse, index) => (
-                <div key={index} className="verse-line">
-                  {verse.text}
-                  <span className="verse-reference"> — {verse.reference}</span>
-                </div>
-              ))}
+              {versesWithErrors.length > 0 ? (
+                <>
+                  <h3>Verses that needed corrections:</h3>
+                  {versesWithErrors.map((verse, index) => {
+                    const originalVerseIndex = currentChapter!.verses.indexOf(verse);
+                    return renderVerseWithErrors(verse, originalVerseIndex);
+                  })}
+                </>
+              ) : (
+                <h3>Perfect! No errors in any verse!</h3>
+              )}
             </div>
             <div className="solved-buttons">
               <button onClick={handleReset} className="retry-btn">
