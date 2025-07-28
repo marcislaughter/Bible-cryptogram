@@ -47,6 +47,12 @@
   text-shadow: 0 0 10px #3da542;
 }
 
+.test-word.error {
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+  animation: bounce 0.5s ease;
+}
+
 @keyframes revealAnimation {
   0% {
     color: #000000;
@@ -61,6 +67,21 @@
     color: #a3a3a3;
     transform: scale(1);
     text-shadow: none;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  25% { 
+    transform: translateY(-10px); 
+  }
+  50% { 
+    transform: translateY(0); 
+  }
+  75% { 
+    transform: translateY(-5px); 
   }
 }
 

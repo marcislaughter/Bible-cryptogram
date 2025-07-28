@@ -27,6 +27,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [hasError, setHasError] = useState(false);
 
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
@@ -53,6 +54,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     setRevealedWords(new Array(words.length).fill(false));
     setIsSolved(false);
     setCurrentWordIndex(0);
+    setHasError(false);
   };
 
   useEffect(() => {
@@ -91,7 +93,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         const targetWord = chapterWords[nextWordIndex];
         
         if (key === targetWord[0]) {
-          // Correct first letter - reveal the word
+          // Correct first letter - clear error and reveal the word
+          setHasError(false);
           const newRevealedWords = [...revealedWords];
           newRevealedWords[nextWordIndex] = true;
           setRevealedWords(newRevealedWords);
@@ -104,14 +107,21 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           } else {
             setCurrentWordIndex(nextUnrevealedIndex);
           }
+        } else {
+          // Wrong letter - show error
+          setHasError(true);
+          
+          // Clear error after animation duration
+          setTimeout(() => {
+            setHasError(false);
+          }, 500);
         }
-        // If incorrect, do nothing (no feedback shown)
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapterWords, revealedWords, currentWordIndex, isSolved]);
+  }, [chapterWords, revealedWords, currentWordIndex, isSolved, hasError]);
 
   const handleReset = () => {
     generateNewGame();
@@ -173,7 +183,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           {chapterWords.slice(0, currentWordIndex + 1).map((word, wordIndex) => (
             <span 
               key={wordIndex} 
-              className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'}`}
+              className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
+                wordIndex === currentWordIndex && hasError ? 'error' : ''
+              }`}
             >
               {revealedWords[wordIndex] ? word : '__'}
               {wordIndex < currentWordIndex ? ' ' : ''}
