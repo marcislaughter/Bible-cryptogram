@@ -91,6 +91,16 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     generateNewGame();
   }, [currentVerse]);
 
+  // Check for game completion whenever revealed words change
+  useEffect(() => {
+    if (chapterWords.length > 0 && revealedWords.length > 0) {
+      const allRevealed = revealedWords.every(revealed => revealed);
+      if (allRevealed && !isSolved) {
+        setIsSolved(true);
+      }
+    }
+  }, [revealedWords, chapterWords, isSolved]);
+
   // Find the next unrevealed word
   const findNextUnrevealedWord = (startIndex: number = 0): number => {
     for (let i = startIndex; i < chapterWords.length; i++) {
