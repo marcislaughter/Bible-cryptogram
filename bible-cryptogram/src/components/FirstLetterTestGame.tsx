@@ -36,6 +36,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const onVerseChange = propOnVerseChange || (() => {});
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [hasError, setHasError] = useState(false);
+  const [isReviewMode, setIsReviewMode] = useState(false);
+  const [originalWordsWithErrors, setOriginalWordsWithErrors] = useState<boolean[]>([]);
 
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
@@ -51,44 +53,99 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     return parts.length > 1 ? parts[1] : '1';
   };
 
-  const generateNewGame = () => {
+  const generateNewGame = (reviewMode = false) => {
     const currentChapter = getCurrentChapter();
     if (!currentChapter) return;
 
     const wordItems: WordItem[] = [];
     let wordIndex = 0;
 
-    // Process each verse in the chapter
-    currentChapter.verses.forEach((verse, verseIndex) => {
-      // Add verse number
-      const verseNumber = extractVerseNumber(verse.reference);
-      wordItems.push({
-        text: verseNumber,
-        isVerseNumber: true,
-        originalIndex: wordIndex++,
-        verseIndex: verseIndex
-      });
-
-      // Add verse words (removing punctuation and filtering empty)
-      const verseWords = verse.text.split(' ')
-        .map(word => word.replace(/[^A-Z]/g, ''))
-        .filter(word => word.length > 0);
-
-      verseWords.forEach(word => {
+    if (reviewMode) {
+      // In review mode, only include verses that had errors
+      const versesWithErrors = getVersesWithErrors();
+      
+      versesWithErrors.forEach((verse) => {
+        const verseIndex = currentChapter.verses.indexOf(verse);
+        
+        // Add verse number
+        const verseNumber = extractVerseNumber(verse.reference);
         wordItems.push({
-          text: word,
-          isVerseNumber: false,
+          text: verseNumber,
+          isVerseNumber: true,
           originalIndex: wordIndex++,
           verseIndex: verseIndex
         });
+
+        // Add verse words (removing punctuation and filtering empty)
+        const verseWords = verse.text.split(' ')
+          .map(word => word.replace(/[^A-Z]/g, ''))
+          .filter(word => word.length > 0);
+
+        verseWords.forEach(word => {
+          wordItems.push({
+            text: word,
+            isVerseNumber: false,
+            originalIndex: wordIndex++,
+            verseIndex: verseIndex
+          });
+        });
       });
-    });
+    } else {
+      // Regular mode - process all verses in the chapter
+      currentChapter.verses.forEach((verse, verseIndex) => {
+        // Add verse number
+        const verseNumber = extractVerseNumber(verse.reference);
+        wordItems.push({
+          text: verseNumber,
+          isVerseNumber: true,
+          originalIndex: wordIndex++,
+          verseIndex: verseIndex
+        });
+
+        // Add verse words (removing punctuation and filtering empty)
+        const verseWords = verse.text.split(' ')
+          .map(word => word.replace(/[^A-Z]/g, ''))
+          .filter(word => word.length > 0);
+
+        verseWords.forEach(word => {
+          wordItems.push({
+            text: word,
+            isVerseNumber: false,
+            originalIndex: wordIndex++,
+            verseIndex: verseIndex
+          });
+        });
+      });
+    }
 
     setChapterWords(wordItems);
-    setRevealedWords(new Array(wordItems.length).fill(false));
-    setWordsWithErrors(new Array(wordItems.length).fill(false));
+    
+    // Set up revealed words - in review mode, automatically reveal verse numbers
+    const initialRevealedWords = new Array(wordItems.length).fill(false);
+    let firstUnrevealedIndex = 0;
+    
+    if (reviewMode) {
+      wordItems.forEach((wordItem, index) => {
+        if (wordItem.isVerseNumber) {
+          initialRevealedWords[index] = true;
+        } else if (firstUnrevealedIndex === 0) {
+          // Set the first content word as the starting point
+          firstUnrevealedIndex = index;
+        }
+      });
+    }
+    
+    setRevealedWords(initialRevealedWords);
+    
+    if (!reviewMode) {
+      setWordsWithErrors(new Array(wordItems.length).fill(false));
+    } else {
+      // In review mode, start fresh with error tracking
+      setWordsWithErrors(new Array(wordItems.length).fill(false));
+    }
+    
     setIsSolved(false);
-    setCurrentWordIndex(0);
+    setCurrentWordIndex(reviewMode ? firstUnrevealedIndex : 0);
     setHasError(false);
   };
 
@@ -184,7 +241,21 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError]);
 
   const handleReset = () => {
-    generateNewGame();
+    generateNewGame(isReviewMode);
+  };
+
+  const handleReviewErrors = () => {
+    // Store the original errors before switching to review mode
+    setOriginalWordsWithErrors([...wordsWithErrors]);
+    setIsReviewMode(true);
+    generateNewGame(true);
+  };
+
+  const handleExitReview = () => {
+    setIsReviewMode(false);
+    // Restore original errors and regenerate full game
+    setWordsWithErrors([...originalWordsWithErrors]);
+    generateNewGame(false);
   };
 
   const handleHint = () => {
@@ -367,7 +438,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         {wordStatsEnabled && <WordStats />}
         
         <div className="chapter-title">
-          {chapterTitle}
+          {chapterTitle} {isReviewMode && '(Review Mode - Verses with Errors)'}
         </div>
         
         {!isSolved && (
@@ -407,7 +478,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         
         {!isSolved && (
           <div className="instruction-text">
-            Type verse numbers and first letters of words to reveal the chapter
+            {isReviewMode 
+              ? 'Review mode: Verse numbers are shown - type first letters of words to complete these verses'
+              : 'Type verse numbers and first letters of words to reveal the chapter'
+            }
           </div>
         )}
         
@@ -428,12 +502,41 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
               )}
             </div>
             <div className="solved-buttons">
-              <button onClick={handleReset} className="retry-btn">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-              </button>
-              <button onClick={handleNextChapter} className="next-chapter-btn">
-                {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
-              </button>
+              {!isReviewMode && versesWithErrors.length > 0 ? (
+                <>
+                  <button onClick={handleReset} className="retry-btn">
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                    Replay
+                  </button>
+                  <button onClick={handleReviewErrors} className="review-btn">
+                    <FontAwesomeIcon icon={faLightbulb} />
+                    Review errors
+                  </button>
+                  <button onClick={handleNextChapter} className="next-chapter-btn">
+                    {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
+                  </button>
+                </>
+              ) : isReviewMode ? (
+                <>
+                  <button onClick={handleReset} className="retry-btn">
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                    Retry review
+                  </button>
+                  <button onClick={handleExitReview} className="exit-review-btn">
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                    Back to full chapter
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button onClick={handleReset} className="retry-btn">
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                  </button>
+                  <button onClick={handleNextChapter} className="next-chapter-btn">
+                    {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

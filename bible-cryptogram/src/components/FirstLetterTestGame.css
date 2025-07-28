@@ -210,7 +210,9 @@
 }
 
 .next-chapter-btn,
-.retry-btn {
+.retry-btn,
+.review-btn,
+.exit-review-btn {
   padding: 15px 30px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -236,10 +238,23 @@
 }
 
 .next-chapter-btn:hover,
-.retry-btn:hover {
+.retry-btn:hover,
+.review-btn:hover,
+.exit-review-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.review-btn {
+  background: rgba(255, 140, 0, 0.2);
+  border-color: #ff8c00;
+  color: #ff8c00;
+}
+
+.review-btn:hover {
+  background: rgba(255, 140, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
 }
 
 @keyframes fadeIn {
