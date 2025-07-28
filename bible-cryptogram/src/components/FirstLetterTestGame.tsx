@@ -38,6 +38,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const [hasError, setHasError] = useState(false);
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [originalWordsWithErrors, setOriginalWordsWithErrors] = useState<boolean[]>([]);
+  // Add state to track partial verse number input
+  const [partialVerseInput, setPartialVerseInput] = useState<string>('');
 
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
@@ -158,6 +160,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     setIsSolved(false);
     setCurrentWordIndex(reviewMode ? firstUnrevealedIndex : 0);
     setHasError(false);
+    setPartialVerseInput(''); // Reset partial verse input for new game
   };
 
   useEffect(() => {
@@ -210,8 +213,31 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         let isCorrect = false;
         
         if (targetWordItem.isVerseNumber) {
-          // For verse numbers, check if the key matches the full number
-          isCorrect = key === targetWordItem.text;
+          // For verse numbers, build up the input digit by digit
+          if (/^[0-9]$/.test(key)) {
+            const newPartialInput = partialVerseInput + key;
+            
+            // Check if the new partial input matches the beginning of the target verse number
+            if (targetWordItem.text.startsWith(newPartialInput)) {
+              setPartialVerseInput(newPartialInput);
+              
+              // Check if we've completed the verse number
+              if (newPartialInput === targetWordItem.text) {
+                isCorrect = true;
+                setPartialVerseInput(''); // Reset for next verse number
+              } else {
+                // Partial match - don't advance yet, but don't show error
+                return; // Exit early without showing error or advancing
+              }
+            } else {
+              // Wrong digit - reset partial input and show error
+              setPartialVerseInput('');
+              isCorrect = false;
+            }
+          } else {
+            // Non-digit key pressed for verse number
+            isCorrect = false;
+          }
         } else {
           // For regular words, check if the key matches the first letter
           isCorrect = inputKey === targetWordItem.text[0];
@@ -249,7 +275,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError]);
+  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput]);
 
   const handleReset = () => {
     generateNewGame(isReviewMode);
@@ -485,7 +511,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
               >
                 {revealedWords[wordIndex] 
                   ? wordItem.text 
-                  : '__'
+                  : (wordItem.isVerseNumber && wordIndex === currentWordIndex && partialVerseInput.length > 0)
+                    ? partialVerseInput + '_'.repeat(wordItem.text.length - partialVerseInput.length)
+                    : '__'
                 }
               </span>
               {wordIndex < Math.max(currentWordIndex, getMinimumDisplayWords() - 1) ? ' ' : ''}
