@@ -32,6 +32,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [errorInputs, setErrorInputs] = useState<number[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
+  const [hasManuallySelectedLevel, setHasManuallySelectedLevel] = useState(false);
+  const [preferredLevel, setPreferredLevel] = useState(2);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -343,7 +345,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const handleNextVerse = () => {
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
+    
+    // Set difficulty level based on user preference
+    if (hasManuallySelectedLevel) {
+      setDifficultyLevel(preferredLevel);
+    } else {
+      setDifficultyLevel(2); // Default to level 2
+    }
+    
     onVerseChange(BIBLE_VERSES[nextIndex]);
+  };
+
+  const handleStepperClick = (level: number) => {
+    setDifficultyLevel(level);
+    setHasManuallySelectedLevel(true);
+    setPreferredLevel(level);
   };
 
   const handleRepeatVerse = () => {
@@ -535,7 +551,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               <button
                 key={level}
                 className={`stepper-button ${difficultyLevel === level ? 'active' : ''}`}
-                onClick={() => setDifficultyLevel(level)}
+                onClick={() => handleStepperClick(level)}
               >
                 {level}
               </button>
