@@ -23,7 +23,7 @@
   max-width: 95%;
   line-height: 2;
   font-size: 1.2rem;
-  text-align: center;
+  text-align: left;
   padding: 20px;
   background-color: #000000;
 }
@@ -34,31 +34,31 @@
 }
 
 .test-word.hidden {
-  color: #666666;
+  color: #000000;
 }
 
 .test-word.revealed {
-  color: #ffffff;
+  color: #a3a3a3;
   animation: revealAnimation 0.5s ease;
 }
 
 .test-word.current {
-  color: #00ff00;
-  text-shadow: 0 0 10px #00ff00;
+  color: #3da542;
+  text-shadow: 0 0 10px #3da542;
 }
 
 @keyframes revealAnimation {
   0% {
-    color: #666666;
+    color: #000000;
     transform: scale(1);
   }
   50% {
-    color: #00ff00;
+    color: #3da542;
     transform: scale(1.1);
-    text-shadow: 0 0 15px #00ff00;
+    text-shadow: 0 0 15px #3da542;
   }
   100% {
-    color: #ffffff;
+    color: #a3a3a3;
     transform: scale(1);
     text-shadow: none;
   }
@@ -87,8 +87,8 @@
 .solved-message h2 {
   margin: 0 0 20px 0;
   font-size: 1.5rem;
-  color: #00ff00;
-  text-shadow: 0 0 10px #00ff00;
+  color: #3da542;
+  text-shadow: 0 0 10px #3da542;
 }
 
 .revealed-chapter {

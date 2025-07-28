@@ -170,15 +170,13 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         </div>
         
         <div className="first-letter-test-verse-container">
-          {chapterWords.map((word, wordIndex) => (
+          {chapterWords.slice(0, currentWordIndex + 1).map((word, wordIndex) => (
             <span 
               key={wordIndex} 
-              className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'hidden'} ${
-                currentWordIndex === wordIndex && !revealedWords[wordIndex] ? 'current' : ''
-              }`}
+              className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'}`}
             >
-              {revealedWords[wordIndex] ? word : '_'.repeat(word.length)}
-              {wordIndex < chapterWords.length - 1 ? ' ' : ''}
+              {revealedWords[wordIndex] ? word : '__'}
+              {wordIndex < currentWordIndex ? ' ' : ''}
             </span>
           ))}
         </div>
