@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowLeft, faArrowUp, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowUp, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 
 interface FirstLetterGameProps {
@@ -22,13 +22,11 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 }) => {
   const [originalWords, setOriginalWords] = useState<string[]>([]);
   const [guesses, setGuesses] = useState<string[]>([]);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isSolved, setIsSolved] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [hiddenWordIndices, setHiddenWordIndices] = useState<number[]>([]);
-  const [incorrectGuesses, setIncorrectGuesses] = useState<number[]>([]);
   const [errorInputs, setErrorInputs] = useState<number[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
@@ -95,9 +93,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
     // Initialize guesses array
     setGuesses(new Array(words.length).fill(''));
-    setCurrentWordIndex(0);
     setIsSolved(false);
-    setIncorrectGuesses([]);
     setErrorInputs([]);
   };
 
@@ -198,8 +194,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
     // Check if the guess is correct
     if (upperValue === correctFirstLetter) {
-      // Remove from incorrect guesses and error inputs if they were there
-      setIncorrectGuesses(prev => prev.filter(i => i !== wordIndex));
+      // Remove from error inputs if they were there
       setErrorInputs(prev => prev.filter(i => i !== wordIndex));
       
       // Check if puzzle is solved
@@ -215,10 +210,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         setErrorInputs(prev => [...prev, wordIndex]);
       }
       
-      // Add to incorrect guesses
-      if (!incorrectGuesses.includes(wordIndex)) {
-        setIncorrectGuesses(prev => [...prev, wordIndex]);
-      }
+
       
       // Clear the error state after the shake animation (500ms)
       setTimeout(() => {
@@ -323,36 +315,12 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const handleReset = () => {
     setGuesses(new Array(originalWords.length).fill(''));
     setIsSolved(false);
-    setIncorrectGuesses([]);
     setErrorInputs([]);
     isAdvancingFocus.current = false;
     generateNewGame();
   };
 
-  const handleHint = () => {
-    if (isSolved) return;
 
-    // Find the first word that hasn't been correctly guessed yet
-    const nextWordToReveal = originalWords.findIndex((word, index) => 
-      guesses[index] !== word[0] && !hiddenWordIndices.includes(index)
-    );
-
-    if (nextWordToReveal !== -1) {
-      // Reveal the first letter
-      const newGuesses = [...guesses];
-      newGuesses[nextWordToReveal] = originalWords[nextWordToReveal][0];
-      setGuesses(newGuesses);
-      
-      // Remove from incorrect guesses and error inputs if they were there
-      setIncorrectGuesses(prev => prev.filter(i => i !== nextWordToReveal));
-      setErrorInputs(prev => prev.filter(i => i !== nextWordToReveal));
-
-      // Check if puzzle is solved
-      if (checkIfSolved(newGuesses)) {
-        setIsSolved(true);
-      }
-    }
-  };
 
   const handleVerseChange = (verse: BibleVerse) => {
     onVerseChange(verse);

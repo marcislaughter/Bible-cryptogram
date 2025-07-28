@@ -59,12 +59,6 @@
   outline: none;
 }
 
-.first-letter-input.correct {
-  background-color: #e6ccff;
-  border-color: #800080;
-  color: #800080;
-}
-
 .first-letter-input.incorrect {
   background-color: #ff9999;
   border-color: #ff0000;
