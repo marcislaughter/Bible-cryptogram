@@ -28,7 +28,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const onVerseChange = propOnVerseChange || (() => {});
   const [hiddenWordIndices, setHiddenWordIndices] = useState<number[]>([]);
   const [errorInputs, setErrorInputs] = useState<number[]>([]);
-  const [forceUpdate, setForceUpdate] = useState(0);
+  const [_forceUpdate, setForceUpdate] = useState(0);
   const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
   const [hasManuallySelectedLevel, setHasManuallySelectedLevel] = useState(false);
   const [preferredLevel, setPreferredLevel] = useState(2);
