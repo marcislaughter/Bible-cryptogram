@@ -12,7 +12,6 @@
   color: #a3a3a3;
   display: flex;
   flex-direction: column;
-  border: 2px solid red;
 }
 
 .chapter-title {
@@ -22,13 +21,11 @@
   margin-bottom: 30px;
   text-align: center;
   align-self: center;
-  border: 2px solid red;
 }
 
 .verse-text {
   display: inline;
   text-align: left;
-  border: 2px solid red;
 }
 
 .test-word {
@@ -95,7 +92,6 @@
   text-align: center;
   font-style: italic;
   align-self: center;
-  border: 2px solid red;
 }
 
 .solved-message {
@@ -105,7 +101,7 @@
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border-radius: 15px;
-  border: 2px solid red;
+  border: 2px solid #ffffff;
   animation: fadeIn 0.5s ease-in;
   max-width: 90%;
   align-self: center;
@@ -124,13 +120,11 @@
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
-  border: 2px solid red;
 }
 
 .verse-line {
   margin-bottom: 15px;
   line-height: 1.6;
-  border: 2px solid red;
 }
 
 .verse-reference {
@@ -146,7 +140,6 @@
   margin-top: 30px;
   align-items: center;
   flex-wrap: wrap;
-  border: 2px solid red;
 }
 
 .next-chapter-btn,
@@ -195,7 +188,6 @@
   line-height: 1.4;
   max-width: 600px;
   align-self: center;
-  border: 2px solid red;
 }
 
 /* Mobile optimizations */
