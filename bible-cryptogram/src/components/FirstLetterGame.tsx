@@ -105,9 +105,22 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   useEffect(() => {
     if (originalWords.length > 0) {
       setTimeout(() => {
-        const firstInput = document.querySelector('.first-letter-input') as HTMLInputElement;
-        if (firstInput) {
-          firstInput.focus();
+        // Get all inputs and find the leftmost one visually
+        const allInputs = Array.from(document.querySelectorAll('.first-letter-input')) as HTMLInputElement[];
+        if (allInputs.length > 0) {
+          // Sort inputs by their visual position (left to right, top to bottom)
+          const sortedInputs = allInputs.sort((a, b) => {
+            const aRect = a.getBoundingClientRect();
+            const bRect = b.getBoundingClientRect();
+            
+            // First sort by top position (row), then by left position (column)
+            if (Math.abs(aRect.top - bRect.top) > 5) { // Allow 5px tolerance for same row
+              return aRect.top - bRect.top;
+            }
+            return aRect.left - bRect.left;
+          });
+          
+          sortedInputs[0].focus();
         }
       }, 50);
     }

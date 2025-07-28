@@ -1,14 +1,18 @@
 .first-letter-test-container {
   margin-top: 70px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 95vw;
+  line-height: 2;
+  font-size: 1.2rem;
+  text-align: left;
+  padding: 20px;
   font-family: 'Courier New', Courier, monospace;
   position: relative;
-  padding: 20px;
   background-color: #000000;
   min-height: 100vh;
   color: #a3a3a3;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid red;
 }
 
 .chapter-title {
@@ -17,15 +21,14 @@
   color: #ffffff;
   margin-bottom: 30px;
   text-align: center;
+  align-self: center;
+  border: 2px solid red;
 }
 
-.first-letter-test-verse-container {
-  max-width: 95%;
-  line-height: 2;
-  font-size: 1.2rem;
+.verse-text {
+  display: inline;
   text-align: left;
-  padding: 20px;
-  background-color: #000000;
+  border: 2px solid red;
 }
 
 .test-word {
@@ -91,6 +94,8 @@
   color: #cccccc;
   text-align: center;
   font-style: italic;
+  align-self: center;
+  border: 2px solid red;
 }
 
 .solved-message {
@@ -100,9 +105,10 @@
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border-radius: 15px;
-  border: 2px solid #ffffff;
+  border: 2px solid red;
   animation: fadeIn 0.5s ease-in;
   max-width: 90%;
+  align-self: center;
 }
 
 .solved-message h2 {
@@ -118,11 +124,13 @@
   text-align: left;
   max-height: 400px;
   overflow-y: auto;
+  border: 2px solid red;
 }
 
 .verse-line {
   margin-bottom: 15px;
   line-height: 1.6;
+  border: 2px solid red;
 }
 
 .verse-reference {
@@ -138,6 +146,7 @@
   margin-top: 30px;
   align-items: center;
   flex-wrap: wrap;
+  border: 2px solid red;
 }
 
 .next-chapter-btn,
@@ -185,6 +194,8 @@
   color: #666666;
   line-height: 1.4;
   max-width: 600px;
+  align-self: center;
+  border: 2px solid red;
 }
 
 /* Mobile optimizations */
@@ -198,7 +209,7 @@
     margin-bottom: 20px;
   }
   
-  .first-letter-test-verse-container {
+  .first-letter-test-container {
     font-size: 1rem;
     line-height: 1.8;
     padding: 15px;
@@ -251,7 +262,7 @@
     font-size: 1.1rem;
   }
   
-  .first-letter-test-verse-container {
+  .first-letter-test-container {
     font-size: 0.9rem;
     line-height: 1.6;
     padding: 10px;

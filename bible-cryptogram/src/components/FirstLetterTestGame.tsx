@@ -179,7 +179,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           {chapterTitle}
         </div>
         
-        <div className="first-letter-test-verse-container">
+        <div className="verse-text">
           {chapterWords.slice(0, currentWordIndex + 1).map((word, wordIndex) => (
             <span 
               key={wordIndex} 
