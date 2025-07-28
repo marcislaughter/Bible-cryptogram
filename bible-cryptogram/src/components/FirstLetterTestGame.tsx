@@ -334,10 +334,23 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     );
   };
 
+  // Calculate percentage correct
+  const calculatePercentageCorrect = () => {
+    if (chapterWords.length === 0) return 100;
+    
+    const totalWords = chapterWords.length;
+    const errorWords = wordsWithErrors.filter(hasError => hasError).length;
+    const correctWords = totalWords - errorWords;
+    const percentage = (correctWords / totalWords) * 100;
+    
+    return Math.round(percentage);
+  };
+
   // Get current chapter info for display
   const currentChapter = getCurrentChapter();
   const chapterTitle = currentChapter ? currentChapter.chapterTitle : '';
   const versesWithErrors = getVersesWithErrors();
+  const percentageCorrect = calculatePercentageCorrect();
 
   return (
     <>
@@ -400,7 +413,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         
         {isSolved && (
           <div className="solved-message">
-            <h2>Excellent! You completed the entire chapter!</h2>
+            <h2>Excellent! You completed the entire chapter! ({percentageCorrect}% correct)</h2>
             <div className="revealed-chapter">
               {versesWithErrors.length > 0 ? (
                 <>
