@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterTestGame.css';
 
 interface FirstLetterTestGameProps {
@@ -127,6 +127,27 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     generateNewGame();
   };
 
+  const handleHint = () => {
+    if (isSolved) return;
+    
+    const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
+    if (nextWordIndex === -1) return; // All words revealed
+    
+    // Reveal the current word
+    const newRevealedWords = [...revealedWords];
+    newRevealedWords[nextWordIndex] = true;
+    setRevealedWords(newRevealedWords);
+    
+    // Move to next unrevealed word
+    const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
+    if (nextUnrevealedIndex === -1) {
+      // All words revealed - game complete!
+      setIsSolved(true);
+    } else {
+      setCurrentWordIndex(nextUnrevealedIndex);
+    }
+  };
+
   const handleVerseChange = (verse: BibleVerse) => {
     onVerseChange(verse);
   };
@@ -178,6 +199,23 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         <div className="chapter-title">
           {chapterTitle}
         </div>
+        
+        {!isSolved && (
+          <div className="top-controls">
+            <button onClick={handleReset} className="reset-btn">
+              <FontAwesomeIcon icon={faUndo} />
+              Reset
+            </button>
+            <button 
+              onClick={handleHint} 
+              className="hint-btn"
+              disabled={findNextUnrevealedWord(currentWordIndex) === -1}
+            >
+              <FontAwesomeIcon icon={faLightbulb} />
+              Hint
+            </button>
+          </div>
+        )}
         
         <div className="verse-text">
           {chapterWords.slice(0, currentWordIndex + 1).map((word, wordIndex) => (

@@ -14,6 +14,55 @@
   flex-direction: column;
 }
 
+.top-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.reset-btn,
+.hint-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e6ccff;
+  border: 2px solid #800080;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 45px;
+}
+
+.reset-btn:hover,
+.hint-btn:hover {
+  background: rgba(128, 0, 128, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.3);
+}
+
+.hint-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  border-color: #800080;
+}
+
+.hint-btn:disabled:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
 .chapter-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -230,6 +279,17 @@
     font-size: 0.8rem;
   }
   
+  .top-controls {
+    gap: 10px;
+  }
+  
+  .reset-btn,
+  .hint-btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    min-height: 40px;
+  }
+  
   .solved-buttons {
     gap: 15px;
     flex-direction: row;
@@ -275,6 +335,13 @@
   .revealed-chapter {
     font-size: 0.8rem;
     max-height: 250px;
+  }
+  
+  .reset-btn,
+  .hint-btn {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    min-height: 36px;
   }
   
   .next-chapter-btn,
