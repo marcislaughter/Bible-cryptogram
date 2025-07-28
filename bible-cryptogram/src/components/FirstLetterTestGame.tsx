@@ -14,13 +14,19 @@ interface FirstLetterTestGameProps {
   onVerseChange?: (verse: BibleVerse) => void;
 }
 
+interface WordItem {
+  text: string;
+  isVerseNumber: boolean;
+  originalIndex: number;
+}
+
 const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({ 
   gameType = 'first-letter-test', 
   onGameTypeChange, 
   currentVerse: propCurrentVerse, 
   onVerseChange: propOnVerseChange 
 }) => {
-  const [chapterWords, setChapterWords] = useState<string[]>([]);
+  const [chapterWords, setChapterWords] = useState<WordItem[]>([]);
   const [revealedWords, setRevealedWords] = useState<boolean[]>([]);
   const [isSolved, setIsSolved] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
@@ -38,20 +44,44 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     return BIBLE_CHAPTERS.find(chapter => chapter.chapterReference === chapterRef);
   };
 
+  const extractVerseNumber = (reference: string): string => {
+    const parts = reference.split(':');
+    return parts.length > 1 ? parts[1] : '1';
+  };
+
   const generateNewGame = () => {
     const currentChapter = getCurrentChapter();
     if (!currentChapter) return;
 
-    // Combine all verses in the chapter into one text block
-    const chapterText = currentChapter.verses.map(v => v.text).join(' ');
-    
-    // Parse into words, handling punctuation
-    const words = chapterText.split(' ').map(word => {
-      return word.replace(/[^A-Z]/g, ''); // Remove punctuation
-    }).filter(word => word.length > 0);
+    const wordItems: WordItem[] = [];
+    let wordIndex = 0;
 
-    setChapterWords(words);
-    setRevealedWords(new Array(words.length).fill(false));
+    // Process each verse in the chapter
+    currentChapter.verses.forEach((verse, verseIndex) => {
+      // Add verse number
+      const verseNumber = extractVerseNumber(verse.reference);
+      wordItems.push({
+        text: verseNumber,
+        isVerseNumber: true,
+        originalIndex: wordIndex++
+      });
+
+      // Add verse words (removing punctuation and filtering empty)
+      const verseWords = verse.text.split(' ')
+        .map(word => word.replace(/[^A-Z]/g, ''))
+        .filter(word => word.length > 0);
+
+      verseWords.forEach(word => {
+        wordItems.push({
+          text: word,
+          isVerseNumber: false,
+          originalIndex: wordIndex++
+        });
+      });
+    });
+
+    setChapterWords(wordItems);
+    setRevealedWords(new Array(wordItems.length).fill(false));
     setIsSolved(false);
     setCurrentWordIndex(0);
     setHasError(false);
@@ -82,18 +112,30 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isSolved) return;
 
-      const key = event.key.toUpperCase();
+      const key = event.key;
       
-      if (/^[A-Z]$/.test(key)) {
+      // Handle numbers and letters
+      if (/^[A-Z0-9]$/i.test(key)) {
         event.preventDefault();
         
         const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
         if (nextWordIndex === -1) return; // All words revealed
 
-        const targetWord = chapterWords[nextWordIndex];
+        const targetWordItem = chapterWords[nextWordIndex];
+        const inputKey = key.toUpperCase();
         
-        if (key === targetWord[0]) {
-          // Correct first letter - clear error and reveal the word
+        let isCorrect = false;
+        
+        if (targetWordItem.isVerseNumber) {
+          // For verse numbers, check if the key matches the full number
+          isCorrect = key === targetWordItem.text;
+        } else {
+          // For regular words, check if the key matches the first letter
+          isCorrect = inputKey === targetWordItem.text[0];
+        }
+        
+        if (isCorrect) {
+          // Correct input - clear error and reveal the word
           setHasError(false);
           const newRevealedWords = [...revealedWords];
           newRevealedWords[nextWordIndex] = true;
@@ -108,7 +150,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
             setCurrentWordIndex(nextUnrevealedIndex);
           }
         } else {
-          // Wrong letter - show error
+          // Wrong input - show error
           setHasError(true);
           
           // Clear error after animation duration
@@ -218,14 +260,18 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         )}
         
         <div className="verse-text">
-          {chapterWords.slice(0, currentWordIndex + 1).map((word, wordIndex) => (
-            <span 
-              key={wordIndex} 
-              className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
-                wordIndex === currentWordIndex && hasError ? 'error' : ''
-              }`}
-            >
-              {revealedWords[wordIndex] ? word : '__'}
+          {chapterWords.slice(0, currentWordIndex + 1).map((wordItem, wordIndex) => (
+            <span key={wordIndex}>
+              <span 
+                className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
+                  wordIndex === currentWordIndex && hasError ? 'error' : ''
+                }`}
+              >
+                {revealedWords[wordIndex] 
+                  ? wordItem.text 
+                  : '__'
+                }
+              </span>
               {wordIndex < currentWordIndex ? ' ' : ''}
             </span>
           ))}
@@ -233,7 +279,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         
         {!isSolved && (
           <div className="instruction-text">
-            Type the first letter of each word to reveal it
+            Type verse numbers and first letters of words to reveal the chapter
           </div>
         )}
         
