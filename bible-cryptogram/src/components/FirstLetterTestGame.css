@@ -302,7 +302,7 @@
   }
   
   .first-letter-test-container {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.8;
     padding: 15px;
   }
@@ -336,7 +336,7 @@
   
   .reset-btn,
   .hint-btn {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 10px 20px;
     min-height: 40px;
   }
@@ -366,7 +366,7 @@
   }
   
   .first-letter-test-container {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     line-height: 1.6;
     padding: 10px;
   }
@@ -390,14 +390,14 @@
   
   .reset-btn,
   .hint-btn {
-    font-size: 0.8rem;
+    font-size: 1rem;
     padding: 8px 16px;
     min-height: 36px;
   }
   
   .next-chapter-btn,
   .retry-btn {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 10px 20px;
     min-height: 40px;
   }
