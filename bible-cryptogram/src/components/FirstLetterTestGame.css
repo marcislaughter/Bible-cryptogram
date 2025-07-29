@@ -118,13 +118,11 @@ body.first-letter-test-high-score .citation {
 
 .test-word.error {
   color: #ff0000;
-  text-shadow: 0 0 10px #ff0000;
   animation: bounce 0.5s ease;
 }
 
 .test-word.revealed.error {
   color: #ff0000;
-  text-shadow: 0 0 10px #ff0000;
 }
 
 @keyframes revealAnimation {
@@ -216,7 +214,6 @@ body.first-letter-test-high-score .citation {
 
 .error-word {
   color: #ff0000 !important;
-  text-shadow: 0 0 5px #ff0000;
   font-weight: bold;
 }
 
