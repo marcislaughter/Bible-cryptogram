@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterTestGame.css';
 
 interface FirstLetterTestGameProps {
@@ -201,6 +201,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       hiddenInputRef.current.focus();
     }
   }, [isSolved, currentVerse]);
+
+
 
   // Function to handle character input (works for both desktop and mobile)
   const handleCharacterInput = (key: string) => {
@@ -528,6 +530,20 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const versesWithErrors = getVersesWithErrors();
   const percentageCorrect = calculatePercentageCorrect();
 
+  // Apply high score gradient to body when score is 95% or higher
+  useEffect(() => {
+    if (isSolved && percentageCorrect >= 95) {
+      document.body.classList.add('first-letter-test-high-score');
+    } else {
+      document.body.classList.remove('first-letter-test-high-score');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('first-letter-test-high-score');
+    };
+  }, [isSolved, percentageCorrect]);
+
   return (
     <>
       <GameHeader 
@@ -622,7 +638,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
             <div className="revealed-chapter">
               {versesWithErrors.length > 0 ? (
                 <>
-                  <h3>Verses that needed corrections:</h3>
+                  <h3>Verses with errors:</h3>
                   {versesWithErrors.map((verse) => {
                     const originalVerseIndex = currentChapter!.verses.indexOf(verse);
                     return renderVerseWithErrors(verse, originalVerseIndex);
@@ -637,22 +653,20 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                 <>
                   <button onClick={handleReset} className="retry-btn">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
-                    Replay
                   </button>
                   <button onClick={handleReviewErrors} className="review-btn">
-                    <FontAwesomeIcon icon={faLightbulb} />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
                     Review errors
-                  </button>
-                  <button onClick={handleNextChapter} className="next-chapter-btn">
-                    {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
                   </button>
                 </>
               ) : isReviewMode ? (
                 <>
-                  <button onClick={handleReset} className="retry-btn">
-                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                    Retry review
-                  </button>
+                  {versesWithErrors.length > 0 && (
+                    <button onClick={handleReset} className="retry-btn">
+                      <FontAwesomeIcon icon={faArrowRotateLeft} />
+                      Review errors
+                    </button>
+                  )}
                   <button onClick={handleExitReview} className="exit-review-btn">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                     Back to full chapter

@@ -21,6 +21,19 @@
   user-select: none;
 }
 
+body.first-letter-test-high-score {
+  background: linear-gradient(45deg, #800080, #3da542);
+  background-attachment: fixed;
+}
+
+body.first-letter-test-high-score .first-letter-test-container {
+  background-color: transparent;
+}
+
+body.first-letter-test-high-score .citation {
+  color: #000000;
+}
+
 .top-controls {
   display: flex;
   gap: 15px;
@@ -264,16 +277,7 @@
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
-.review-btn {
-  background: rgba(255, 140, 0, 0.2);
-  border-color: #ff8c00;
-  color: #ff8c00;
-}
 
-.review-btn:hover {
-  background: rgba(255, 140, 0, 0.3);
-  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
-}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
