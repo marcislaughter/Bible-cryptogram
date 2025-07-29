@@ -41,7 +41,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   // Add state to track partial verse number input
   const [partialVerseInput, setPartialVerseInput] = useState<string>('');
   // Ref for hidden input to handle mobile keyboard
-  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
 
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
@@ -291,7 +291,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput]);
 
   // Handle input events for mobile
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     if (value.length > 0) {
       const lastChar = value[value.length - 1];
@@ -541,20 +541,28 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 
       <div className="first-letter-test-container" onClick={handleGameAreaClick}>
         {/* Hidden input for mobile keyboard support */}
-        <input
+        <textarea
           ref={hiddenInputRef}
-          type="text"
           style={{
             position: 'absolute',
             left: '-9999px',
             opacity: 0,
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            resize: 'none'
           }}
           onChange={handleInputChange}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          inputMode="text"
+          enterKeyHint="done"
+          name="game-input"
+          id="game-input-hidden"
+          role="textbox"
+          aria-label="Game input"
+          rows={1}
+          cols={1}
         />
         {wordStatsEnabled && <WordStats />}
         
