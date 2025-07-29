@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
@@ -40,6 +40,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const [originalWordsWithErrors, setOriginalWordsWithErrors] = useState<boolean[]>([]);
   // Add state to track partial verse number input
   const [partialVerseInput, setPartialVerseInput] = useState<string>('');
+  // Ref for hidden input to handle mobile keyboard
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
@@ -193,92 +195,127 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     return -1; // All words revealed
   };
 
-  // Handle keyboard input
+  // Focus the hidden input when component mounts or game resets
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (isSolved) return;
+    if (hiddenInputRef.current && !isSolved) {
+      hiddenInputRef.current.focus();
+    }
+  }, [isSolved, currentVerse]);
 
-      const key = event.key;
+  // Function to handle character input (works for both desktop and mobile)
+  const handleCharacterInput = (key: string) => {
+    if (isSolved) return;
+
+    // Handle numbers and letters
+    if (/^[A-Z0-9]$/i.test(key)) {
+      const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
+      if (nextWordIndex === -1) return; // All words revealed
+
+      const targetWordItem = chapterWords[nextWordIndex];
+      const inputKey = key.toUpperCase();
       
-      // Handle numbers and letters
-      if (/^[A-Z0-9]$/i.test(key)) {
-        event.preventDefault();
-        
-        const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
-        if (nextWordIndex === -1) return; // All words revealed
-
-        const targetWordItem = chapterWords[nextWordIndex];
-        const inputKey = key.toUpperCase();
-        
-        let isCorrect = false;
-        
-        if (targetWordItem.isVerseNumber) {
-          // For verse numbers, build up the input digit by digit
-          if (/^[0-9]$/.test(key)) {
-            const newPartialInput = partialVerseInput + key;
+      let isCorrect = false;
+      
+      if (targetWordItem.isVerseNumber) {
+        // For verse numbers, build up the input digit by digit
+        if (/^[0-9]$/.test(key)) {
+          const newPartialInput = partialVerseInput + key;
+          
+          // Check if the new partial input matches the beginning of the target verse number
+          if (targetWordItem.text.startsWith(newPartialInput)) {
+            setPartialVerseInput(newPartialInput);
             
-            // Check if the new partial input matches the beginning of the target verse number
-            if (targetWordItem.text.startsWith(newPartialInput)) {
-              setPartialVerseInput(newPartialInput);
-              
-              // Check if we've completed the verse number
-              if (newPartialInput === targetWordItem.text) {
-                isCorrect = true;
-                setPartialVerseInput(''); // Reset for next verse number
-              } else {
-                // Partial match - don't advance yet, but don't show error
-                return; // Exit early without showing error or advancing
-              }
+            // Check if we've completed the verse number
+            if (newPartialInput === targetWordItem.text) {
+              isCorrect = true;
+              setPartialVerseInput(''); // Reset for next verse number
             } else {
-              // Wrong digit - reset partial input and show error
-              setPartialVerseInput('');
-              isCorrect = false;
+              // Partial match - don't advance yet, but don't show error
+              return; // Exit early without showing error or advancing
             }
           } else {
-            // Non-digit key pressed for verse number
+            // Wrong digit - reset partial input and show error
+            setPartialVerseInput('');
             isCorrect = false;
           }
         } else {
-          // For regular words, check if the key matches the first letter
-          isCorrect = inputKey === targetWordItem.text[0];
+          // Non-digit key pressed for verse number
+          isCorrect = false;
         }
-        
-        if (isCorrect) {
-          // Correct input - clear error and reveal the word
-          setHasError(false);
-          const newRevealedWords = [...revealedWords];
-          newRevealedWords[nextWordIndex] = true;
-          setRevealedWords(newRevealedWords);
-          
-          // Move to next unrevealed word
-          const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
-          if (nextUnrevealedIndex === -1) {
-            // All words revealed - game complete!
-            setIsSolved(true);
-          } else {
-            setCurrentWordIndex(nextUnrevealedIndex);
-          }
-        } else {
-          // Wrong input - show error and mark word as having had an error
-          setHasError(true);
-          const newWordsWithErrors = [...wordsWithErrors];
-          newWordsWithErrors[nextWordIndex] = true;
-          setWordsWithErrors(newWordsWithErrors);
-          
-          // Clear error after animation duration
-          setTimeout(() => {
-            setHasError(false);
-          }, 500);
-        }
+      } else {
+        // For regular words, check if the key matches the first letter
+        isCorrect = inputKey === targetWordItem.text[0];
       }
+      
+      if (isCorrect) {
+        // Correct input - clear error and reveal the word
+        setHasError(false);
+        const newRevealedWords = [...revealedWords];
+        newRevealedWords[nextWordIndex] = true;
+        setRevealedWords(newRevealedWords);
+        
+        // Move to next unrevealed word
+        const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
+        if (nextUnrevealedIndex === -1) {
+          // All words revealed - game complete!
+          setIsSolved(true);
+        } else {
+          setCurrentWordIndex(nextUnrevealedIndex);
+        }
+      } else {
+        // Wrong input - show error and mark word as having had an error
+        setHasError(true);
+        const newWordsWithErrors = [...wordsWithErrors];
+        newWordsWithErrors[nextWordIndex] = true;
+        setWordsWithErrors(newWordsWithErrors);
+        
+        // Clear error after animation duration
+        setTimeout(() => {
+          setHasError(false);
+        }, 500);
+      }
+    }
+  };
+
+  // Handle keyboard input for desktop
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target === hiddenInputRef.current) return; // Let input handler deal with this
+      
+      event.preventDefault();
+      handleCharacterInput(event.key);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput]);
 
+  // Handle input events for mobile
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (value.length > 0) {
+      const lastChar = value[value.length - 1];
+      handleCharacterInput(lastChar);
+      // Clear the input to allow continuous typing
+      event.target.value = '';
+    }
+  };
+
+  // Handle clicking on the game area to focus the input (mobile)
+  const handleGameAreaClick = () => {
+    if (hiddenInputRef.current && !isSolved) {
+      hiddenInputRef.current.focus();
+    }
+  };
+
   const handleReset = () => {
     generateNewGame(isReviewMode);
+    // Refocus input after reset for mobile
+    setTimeout(() => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.focus();
+      }
+    }, 100);
   };
 
   const handleReviewErrors = () => {
@@ -286,6 +323,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     setOriginalWordsWithErrors([...wordsWithErrors]);
     setIsReviewMode(true);
     generateNewGame(true);
+    // Refocus input after entering review mode for mobile
+    setTimeout(() => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.focus();
+      }
+    }, 100);
   };
 
   const handleExitReview = () => {
@@ -293,6 +336,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     // Restore original errors and regenerate full game
     setWordsWithErrors([...originalWordsWithErrors]);
     generateNewGame(false);
+    // Refocus input after exiting review mode for mobile
+    setTimeout(() => {
+      if (hiddenInputRef.current) {
+        hiddenInputRef.current.focus();
+      }
+    }, 100);
   };
 
   const handleHint = () => {
@@ -318,6 +367,13 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     } else {
       setCurrentWordIndex(nextUnrevealedIndex);
     }
+    
+    // Refocus input after hint for mobile
+    setTimeout(() => {
+      if (hiddenInputRef.current && !isSolved) {
+        hiddenInputRef.current.focus();
+      }
+    }, 100);
   };
 
   const handleVerseChange = (verse: BibleVerse) => {
@@ -347,6 +403,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     // Select the first verse of the next chapter
     if (nextChapter.verses.length > 0) {
       onVerseChange(nextChapter.verses[0]);
+      // Refocus input after changing chapter for mobile
+      setTimeout(() => {
+        if (hiddenInputRef.current) {
+          hiddenInputRef.current.focus();
+        }
+      }, 100);
     }
   };
 
@@ -477,7 +539,23 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         onGameTypeChange={onGameTypeChange}
       />
 
-      <div className="first-letter-test-container">
+      <div className="first-letter-test-container" onClick={handleGameAreaClick}>
+        {/* Hidden input for mobile keyboard support */}
+        <input
+          ref={hiddenInputRef}
+          type="text"
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            opacity: 0,
+            pointerEvents: 'none'
+          }}
+          onChange={handleInputChange}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+        />
         {wordStatsEnabled && <WordStats />}
         
         <div className="chapter-title">

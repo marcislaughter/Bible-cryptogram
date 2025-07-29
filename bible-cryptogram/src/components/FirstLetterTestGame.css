@@ -12,6 +12,13 @@
   color: #a3a3a3;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .top-controls {
@@ -146,6 +153,17 @@
   text-align: center;
   font-style: italic;
   align-self: center;
+}
+
+/* Mobile touch instruction */
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+  .instruction-text::after {
+    content: " (Tap anywhere to start typing)";
+    display: block;
+    font-size: 0.8rem;
+    color: #999999;
+    margin-top: 5px;
+  }
 }
 
 .solved-message {
