@@ -274,7 +274,10 @@ body.first-letter-test-high-score .citation {
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
-
+.primary-button {
+  border: 4px solid white !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }

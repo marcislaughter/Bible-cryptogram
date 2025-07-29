@@ -175,6 +175,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       const allRevealed = revealedWords.every(revealed => revealed);
       if (allRevealed && !isSolved) {
         setIsSolved(true);
+        // Blur the hidden input so Enter key can be handled by main event handler
+        if (hiddenInputRef.current) {
+          hiddenInputRef.current.blur();
+        }
       }
     }
   }, [revealedWords, chapterWords, isSolved]);
@@ -284,13 +288,38 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.target === hiddenInputRef.current) return; // Let input handler deal with this
       
-      event.preventDefault();
-      handleCharacterInput(event.key);
+      // Handle Enter key when game is solved
+      if (event.key === 'Enter' && isSolved) {
+        event.preventDefault();
+        
+        // Determine primary action directly inside the handler
+        let primaryAction = null;
+        const hasErrors = wordsWithErrors.some(hasError => hasError);
+        
+        if (!isReviewMode && hasErrors) {
+          primaryAction = handleReviewErrors;
+        } else if (!isReviewMode && !hasErrors) {
+          primaryAction = handleNextChapter;
+        } else if (isReviewMode) {
+          primaryAction = handleExitReview;
+        }
+        
+        if (primaryAction) {
+          primaryAction();
+        }
+        return;
+      }
+      
+      // Handle regular game input
+      if (!isSolved) {
+        event.preventDefault();
+        handleCharacterInput(event.key);
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput]);
+  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput, isReviewMode]);
 
   // Handle input events for mobile
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -544,6 +573,39 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     };
   }, [isSolved, percentageCorrect]);
 
+  // Function to determine which action should be primary (highlighted and triggered by Enter)
+  const getPrimaryAction = () => {
+    if (!isSolved) return null;
+    
+    if (!isReviewMode && versesWithErrors.length > 0) {
+      // Has errors to review - highlight review errors button
+      return handleReviewErrors;
+    } else if (!isReviewMode && versesWithErrors.length === 0) {
+      // No errors - highlight next chapter button
+      return handleNextChapter;
+    } else if (isReviewMode) {
+      // In review mode - highlight back to full chapter button
+      return handleExitReview;
+    }
+    
+    return null;
+  };
+
+  // Function to determine which button should have primary styling
+  const getPrimaryButtonType = (): 'review' | 'next-chapter' | 'exit-review' | null => {
+    if (!isSolved) return null;
+    
+    if (!isReviewMode && versesWithErrors.length > 0) {
+      return 'review';
+    } else if (!isReviewMode && versesWithErrors.length === 0) {
+      return 'next-chapter';
+    } else if (isReviewMode) {
+      return 'exit-review';
+    }
+    
+    return null;
+  };
+
   return (
     <>
       <GameHeader 
@@ -654,7 +716,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                   <button onClick={handleReset} className="retry-btn">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                   </button>
-                  <button onClick={handleReviewErrors} className="review-btn">
+                  <button 
+                    onClick={handleReviewErrors} 
+                    className={`review-btn ${getPrimaryButtonType() === 'review' ? 'primary-button' : ''}`}
+                  >
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                     Review errors
                   </button>
@@ -667,7 +732,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                       Review errors
                     </button>
                   )}
-                  <button onClick={handleExitReview} className="exit-review-btn">
+                  <button 
+                    onClick={handleExitReview} 
+                    className={`exit-review-btn ${getPrimaryButtonType() === 'exit-review' ? 'primary-button' : ''}`}
+                  >
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                     Back to full chapter
                   </button>
@@ -677,7 +745,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                   <button onClick={handleReset} className="retry-btn">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                   </button>
-                  <button onClick={handleNextChapter} className="next-chapter-btn">
+                  <button 
+                    onClick={handleNextChapter} 
+                    className={`next-chapter-btn ${getPrimaryButtonType() === 'next-chapter' ? 'primary-button' : ''}`}
+                  >
                     {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
                   </button>
                 </>
