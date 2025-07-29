@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo, faMagnifyingGlass, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterTestGame.css';
 
 interface FirstLetterTestGameProps {
@@ -286,7 +286,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   // Handle keyboard input for desktop
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.target === hiddenInputRef.current) return; // Let input handler deal with this
+      // Only skip input handling if it's the hidden input AND the game is not solved
+      if (event.target === hiddenInputRef.current && !isSolved) return;
       
       // Handle Enter key when game is solved
       if (event.key === 'Enter' && isSolved) {
@@ -300,7 +301,11 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           primaryAction = handleReviewErrors;
         } else if (!isReviewMode && !hasErrors) {
           primaryAction = handleNextChapter;
-        } else if (isReviewMode) {
+        } else if (isReviewMode && hasErrors) {
+          // In review mode with errors - restart review
+          primaryAction = handleReset;
+        } else if (isReviewMode && !hasErrors) {
+          // In review mode with no errors - exit review
           primaryAction = handleExitReview;
         }
         
@@ -559,9 +564,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const versesWithErrors = getVersesWithErrors();
   const percentageCorrect = calculatePercentageCorrect();
 
-  // Apply high score gradient to body when score is 95% or higher
+  // Apply high score gradient to body when game is solved
   useEffect(() => {
-    if (isSolved && percentageCorrect >= 95) {
+    if (isSolved) {
       document.body.classList.add('first-letter-test-high-score');
     } else {
       document.body.classList.remove('first-letter-test-high-score');
@@ -571,7 +576,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     return () => {
       document.body.classList.remove('first-letter-test-high-score');
     };
-  }, [isSolved, percentageCorrect]);
+  }, [isSolved]);
 
   // Function to determine which action should be primary (highlighted and triggered by Enter)
   const getPrimaryAction = () => {
@@ -592,14 +597,18 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   };
 
   // Function to determine which button should have primary styling
-  const getPrimaryButtonType = (): 'review' | 'next-chapter' | 'exit-review' | null => {
+  const getPrimaryButtonType = (): 'review' | 'next-chapter' | 'exit-review' | 'retry' | null => {
     if (!isSolved) return null;
     
-    if (!isReviewMode && versesWithErrors.length > 0) {
+    const hasErrors = wordsWithErrors.some(hasError => hasError);
+    
+    if (!isReviewMode && hasErrors) {
       return 'review';
-    } else if (!isReviewMode && versesWithErrors.length === 0) {
+    } else if (!isReviewMode && !hasErrors) {
       return 'next-chapter';
-    } else if (isReviewMode) {
+    } else if (isReviewMode && hasErrors) {
+      return 'retry';
+    } else if (isReviewMode && !hasErrors) {
       return 'exit-review';
     }
     
@@ -726,19 +735,22 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                 </>
               ) : isReviewMode ? (
                 <>
-                  {versesWithErrors.length > 0 && (
-                    <button onClick={handleReset} className="retry-btn">
-                      <FontAwesomeIcon icon={faArrowRotateLeft} />
-                      Review errors
-                    </button>
-                  )}
                   <button 
                     onClick={handleExitReview} 
                     className={`exit-review-btn ${getPrimaryButtonType() === 'exit-review' ? 'primary-button' : ''}`}
                   >
-                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                    Back to full chapter
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                    Back to full passage
                   </button>
+                  {versesWithErrors.length > 0 && (
+                    <button 
+                      onClick={handleReset} 
+                      className={`retry-btn ${getPrimaryButtonType() === 'retry' ? 'primary-button' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faMagnifyingGlass} />
+                      Review errors
+                    </button>
+                  )}
                 </>
               ) : (
                 <>
