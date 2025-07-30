@@ -17,19 +17,6 @@ body.unscramble-basic-win-gradient .unscramble-container {
   background: transparent;
 }
 
-.unscramble-verse-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  row-gap: 8px;
-  padding: 10px;
-  border: 2px solid #800080;
-  border-radius: 10px;
-  margin: 0 auto;
-  max-width: 95%;
-}
-
 .words-grid {
   display: flex;
   flex-wrap: wrap;
@@ -89,6 +76,12 @@ body.unscramble-basic-win-gradient .unscramble-container {
 
 .word-input-container {
   min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.current-input {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,37 +147,6 @@ body.unscramble-basic-win-gradient .unscramble-container {
   user-select: none;
 }
 
-.progress-indicator {
-  width: 100%;
-  max-width: 600px;
-  margin: 30px 0;
-  text-align: center;
-}
-
-.progress-indicator span {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  display: block;
-  color: #a3a3a3;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 20px;
-  background: rgba(128, 0, 128, 0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #800080;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #800080, #3da542);
-  transition: width 0.5s ease;
-  border-radius: 10px;
-}
-
 .solved-message {
   text-align: center;
   margin: 20px 0;
@@ -200,6 +162,16 @@ body.unscramble-basic-win-gradient .unscramble-container {
   margin: 0 0 10px 0;
   font-size: 1.3rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.score-display {
+  margin: 10px 0;
+}
+
+.score-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0;
 }
 
 .revealed-verse {
@@ -337,10 +309,6 @@ body.unscramble-basic-win-gradient {
     width: 35px;
     height: 35px;
     font-size: 1rem;
-  }
-  
-  .progress-indicator {
-    margin: 20px 0;
   }
   
   .solved-message {
