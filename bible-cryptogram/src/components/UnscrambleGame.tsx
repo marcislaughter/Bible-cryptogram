@@ -182,6 +182,12 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     const currentIndex = BIBLE_VERSES.findIndex(verse => verse.reference === currentVerse.reference);
     const nextIndex = (currentIndex + 1) % BIBLE_VERSES.length;
     onVerseChange(BIBLE_VERSES[nextIndex]);
+    
+    // Scroll to top when moving to next verse
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   const handleRepeatVerse = () => {
