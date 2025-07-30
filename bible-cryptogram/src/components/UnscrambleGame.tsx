@@ -253,6 +253,17 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
       />
 
       <div className="unscramble-container">
+        {/* Honeypot fields to prevent autofill suggestions */}
+        <div style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
+          <input type="text" name="username" autoComplete="username" tabIndex={-1} />
+          <input type="password" name="password" autoComplete="current-password" tabIndex={-1} />
+          <input type="email" name="email" autoComplete="email" tabIndex={-1} />
+          <input type="tel" name="phone" autoComplete="tel" tabIndex={-1} />
+          <input type="text" name="address" autoComplete="address-line1" tabIndex={-1} />
+          <input type="text" name="city" autoComplete="address-level2" tabIndex={-1} />
+          <input type="text" name="credit-card" autoComplete="cc-number" tabIndex={-1} />
+        </div>
+        
         <Controls
           onReset={handleReset}
           onHint={handleHint}
@@ -284,13 +295,21 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                   ) : wordIndex === currentWordIndex ? (
                     <div className="current-input">
                       <input
-                        type="text"
+                        type="search"
                         value={currentGuess}
                         onChange={(e) => handleInputChange(e.target.value)}
                         className={`word-input ${hasInputError ? 'incorrect' : ''}`}
                         placeholder="|"
                         maxLength={1}
                         autoFocus
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        inputMode="search"
+                        enterKeyHint="done"
+                        role="textbox"
+                        aria-label="Game input"
                       />
                     </div>
                   ) : (
