@@ -293,21 +293,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       if (event.key === 'Enter' && isSolved) {
         event.preventDefault();
         
-        // Determine primary action directly inside the handler
-        let primaryAction = null;
-        const hasErrors = wordsWithErrors.some(hasError => hasError);
-        
-        if (!isReviewMode && hasErrors) {
-          primaryAction = handleReviewErrors;
-        } else if (!isReviewMode && !hasErrors) {
-          primaryAction = handleNextChapter;
-        } else if (isReviewMode && hasErrors) {
-          // In review mode with errors - restart review
-          primaryAction = handleReset;
-        } else if (isReviewMode && !hasErrors) {
-          // In review mode with no errors - exit review
-          primaryAction = handleExitReview;
-        }
+        // Get the primary action using the existing function
+        const primaryAction = getPrimaryAction();
         
         if (primaryAction) {
           primaryAction();
