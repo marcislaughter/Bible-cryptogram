@@ -5,6 +5,7 @@ import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { COLOR_WHEEL } from '../theme';
 import './ReferenceMatch.css';
 
 // Dynamic image loading using Vite's import.meta.glob
@@ -154,19 +155,7 @@ const getRandomVerses = (count: number, currentVerse: BibleVerse): BibleVerse[] 
   return verses.concat(shuffledOthers.slice(0, count - 1));
 };
 
-// Color wheel mapping for verse numbers
-const COLOR_WHEEL: Record<number, { color: string; name: string }> = {
-  1: { color: '#00008B', name: 'dark blue' },
-  2: { color: '#8B0000', name: 'red' },
-  3: { color: '#228B22', name: 'green' },
-  4: { color: '#FF8C00', name: 'orange' },
-  5: { color: '#9370DB', name: 'purple' },
-  6: { color: '#00FFFF', name: 'cyan' },
-  7: { color: '#8B4513', name: 'brown' },
-  8: { color: '#00FF00', name: 'lime' },
-  9: { color: '#FFFF00', name: 'yellow' },
-  10: { color: '#FF69B4', name: 'pink' }
-};
+// Color wheel mapping for verse numbers - now imported from theme
 
 // Function to get styling info for any verse reference based on ending digit
 const getReferenceStyleInfo = (reference: string) => {

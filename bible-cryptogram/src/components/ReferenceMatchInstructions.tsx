@@ -1,26 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { COLOR_WHEEL_ITEMS } from '../theme';
 import './InstructionsSofWhyMemorize.css';
 
 const ColorWheel: React.FC = () => {
-  const colors = [
-    { id: 1, name: 'dark blue', color: '#00008B', textColor: '#FFFFFF' },
-    { id: 2, name: 'red', color: '#8B0000', textColor: '#FFFFFF' },
-    { id: 3, name: 'green', color: '#228B22', textColor: '#FFFFFF' },
-    { id: 4, name: 'orange', color: '#FF8C00', textColor: '#000000' },
-    { id: 5, name: 'purple', color: '#9370DB', textColor: '#FFFFFF' },
-    { id: 6, name: 'cyan', color: '#00FFFF', textColor: '#000000' },
-    { id: 7, name: 'brown', color: '#8B4513', textColor: '#FFFFFF' },
-    { id: 8, name: 'lime', color: '#00FF00', textColor: '#000000' },
-    { id: 9, name: 'yellow', color: '#FFFF00', textColor: '#000000' },
-    { id: 10, name: 'pink', color: '#FF69B4', textColor: '#000000' }
-  ];
-
   return (
     <div className="color-wheel-container">
       <h2>Color Wheel Reference</h2>
       <div className="color-wheel">
-        {colors.map((item) => (
+        {COLOR_WHEEL_ITEMS.map((item) => (
           <div key={item.id} className="color-segment">
             <div 
               className="color-circle"
