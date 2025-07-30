@@ -11,10 +11,8 @@
   color: #a3a3a3;
 }
 
-body.unscramble-perfect-win-gradient .unscramble-container,
-body.unscramble-good-win-gradient .unscramble-container,
-body.unscramble-basic-win-gradient .unscramble-container {
-  background: transparent;
+body.unscramble-win-gradient .unscramble-container {
+  background: transparent !important;
 }
 
 .words-grid {
@@ -229,49 +227,13 @@ body.unscramble-basic-win-gradient .unscramble-container {
 }
 
 /* ========================================
-   UNSCRAMBLE WIN GRADIENTS
+   UNSCRAMBLE WIN GRADIENT
    ======================================== */
 
-/* Perfect score gradient (100%) */
-body.unscramble-perfect-win-gradient {
-  background: linear-gradient(45deg, #FFD700, #FFA500, #800080, #3da542);
+/* Unscramble win gradient - static purple to green */
+body.unscramble-win-gradient {
+  background: linear-gradient(45deg, #800080, #3da542) !important;
   background-attachment: fixed;
-  background-size: 400% 400%;
-  animation: perfectScoreAnimation 2s ease infinite;
-}
-
-@keyframes perfectScoreAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Good score gradient (80-99%) */
-body.unscramble-good-win-gradient {
-  background: linear-gradient(45deg, #4CAF50, #2196F3, #800080);
-  background-attachment: fixed;
-  background-size: 300% 300%;
-  animation: goodScoreAnimation 3s ease infinite;
-}
-
-@keyframes goodScoreAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Basic completion gradient (below 80%) */
-body.unscramble-basic-win-gradient {
-  background: linear-gradient(45deg, #9E9E9E, #607D8B, #800080);
-  background-attachment: fixed;
-  background-size: 200% 200%;
-  animation: basicScoreAnimation 4s ease infinite;
-}
-
-@keyframes basicScoreAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .citation {
@@ -283,8 +245,10 @@ body.unscramble-basic-win-gradient {
   max-width: 600px;
 }
 
+/* Ensure citation is visible on purple/green gradient */
+body.unscramble-win-gradient .citation,
 .citation.dark-text {
-  color: #2a2a2a;
+  color: #000000;
 }
 
 @media screen and (max-width: 768px) {

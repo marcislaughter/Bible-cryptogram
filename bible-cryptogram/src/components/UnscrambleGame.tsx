@@ -188,19 +188,11 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     handleReset();
   };
 
-  // Unscramble-specific win message handler with score-based behavior
+  // Unscramble-specific win message handler
   useEffect(() => {
     if (isSolved) {
-      const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
-      
-      // Different gradient classes based on score
-      if (score === 100) {
-        document.body.classList.add('unscramble-perfect-win-gradient');
-      } else if (score >= 80) {
-        document.body.classList.add('unscramble-good-win-gradient');
-      } else {
-        document.body.classList.add('unscramble-basic-win-gradient');
-      }
+      // Apply static purple & green gradient for all wins
+      document.body.classList.add('unscramble-win-gradient');
       
       // Unscramble uses gentle fade-in scroll
               setTimeout(() => {
@@ -215,16 +207,12 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
           }
         }, 50); // Quick response for unscramble
     } else {
-      // Remove all possible win gradient classes
-      document.body.classList.remove('unscramble-perfect-win-gradient');
-      document.body.classList.remove('unscramble-good-win-gradient');
-      document.body.classList.remove('unscramble-basic-win-gradient');
+      // Remove win gradient class
+      document.body.classList.remove('unscramble-win-gradient');
     }
     
     return () => {
-      document.body.classList.remove('unscramble-perfect-win-gradient');
-      document.body.classList.remove('unscramble-good-win-gradient');
-      document.body.classList.remove('unscramble-basic-win-gradient');
+      document.body.classList.remove('unscramble-win-gradient');
     };
   }, [isSolved, originalWords.length, revealedWords.length, wordsWithIncorrectGuesses.length]);
 
@@ -323,7 +311,7 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
           </div>
         )}
         
-        <div className={`citation ${isSolved && Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100) === 100 ? 'dark-text' : ''}`}>
+        <div className={`citation ${isSolved ? 'dark-text' : ''}`}>
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
           Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
           Used by permission. All rights reserved worldwide.
