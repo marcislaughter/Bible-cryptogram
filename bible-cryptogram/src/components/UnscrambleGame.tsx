@@ -216,6 +216,25 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
     };
   }, [isSolved, originalWords.length, revealedWords.length, wordsWithIncorrectGuesses.length]);
 
+  // Handle Enter key for primary button
+  useEffect(() => {
+    if (!isSolved) return;
+    
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
+        if (score > 95) {
+          handleNextVerse();
+        } else {
+          handleRepeatVerse();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [isSolved, originalWords.length, revealedWords.length, wordsWithIncorrectGuesses.length]);
+
   return (
     <>
       <GameHeader 
@@ -301,12 +320,27 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
             </div>
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
-              <button onClick={handleRepeatVerse} className="repeat-verse-btn">
-                <FontAwesomeIcon icon={faArrowLeft} /> {currentVerse.reference}
-              </button>
-              <button onClick={handleNextVerse} className="next-verse-btn">
-                {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
-              </button>
+              {(() => {
+                const score = Math.round(((originalWords.length - revealedWords.length - wordsWithIncorrectGuesses.length) / originalWords.length) * 100);
+                const isPrimaryNext = score > 95;
+                
+                return (
+                  <>
+                    <button 
+                      onClick={handleRepeatVerse} 
+                      className={`repeat-verse-btn ${!isPrimaryNext ? 'primary-button' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faArrowLeft} /> {currentVerse.reference}
+                    </button>
+                    <button 
+                      onClick={handleNextVerse} 
+                      className={`next-verse-btn ${isPrimaryNext ? 'primary-button' : ''}`}
+                    >
+                      {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
+                    </button>
+                  </>
+                );
+              })()}
             </div>
           </div>
         )}
