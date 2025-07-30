@@ -94,7 +94,7 @@ body.unscramble-win-gradient .unscramble-container {
   text-transform: uppercase;
   background-color: #e6ccff;
   cursor: pointer;
-  caret-color: transparent;
+  caret-color: white;
   color: #800080;
   transition: all 0.2s ease;
   font-weight: bold;
@@ -108,7 +108,7 @@ body.unscramble-win-gradient .unscramble-container {
   color: white;
   outline: none;
   user-select: none;
-  caret-color: transparent;
+  caret-color: white;
   position: relative;
 }
 
