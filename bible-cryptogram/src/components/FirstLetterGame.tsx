@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowUp, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 
 interface FirstLetterGameProps {
@@ -333,6 +333,50 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     generateNewGame();
   };
 
+  const handleHint = () => {
+    if (isSolved) return;
+    
+    // Find the first word that hasn't been guessed correctly yet
+    const nextWordIndex = originalWords.findIndex((word, index) => {
+      return hiddenWordIndices.includes(index) && guesses[index] !== word[0];
+    });
+    
+    if (nextWordIndex === -1) return; // All words are already correctly guessed
+    
+    // Reveal the first letter of the word
+    const correctFirstLetter = originalWords[nextWordIndex][0];
+    const newGuesses = [...guesses];
+    newGuesses[nextWordIndex] = correctFirstLetter;
+    setGuesses(newGuesses);
+    
+    // Mark this word as having had an error (since a hint was needed)
+    if (!errorInputs.includes(nextWordIndex)) {
+      setErrorInputs(prev => [...prev, nextWordIndex]);
+      
+      // Clear the error state after the shake animation (500ms)
+      setTimeout(() => {
+        setErrorInputs(prev => prev.filter(i => i !== nextWordIndex));
+      }, 500);
+    }
+    
+    // Check if puzzle is solved after the hint
+    if (checkIfSolved(newGuesses)) {
+      setIsSolved(true);
+    }
+    
+    // Focus the next input that needs attention
+    setTimeout(() => {
+      const allInputs = getAllInputs();
+      const nextInput = allInputs.find(input => {
+        const wordIndex = parseInt(input.dataset.wordIndex!);
+        return hiddenWordIndices.includes(wordIndex) && guesses[wordIndex] !== originalWords[wordIndex][0];
+      });
+      
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }, 100);
+  };
 
 
   const handleVerseChange = (verse: BibleVerse) => {
@@ -490,6 +534,23 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
       <div className="first-letter-container">
         {wordStatsEnabled && <WordStats />}
+        
+        {!isSolved && (
+          <div className="top-controls">
+            <button onClick={handleReset} className="reset-btn">
+              <FontAwesomeIcon icon={faUndo} />
+              Reset
+            </button>
+            <button 
+              onClick={handleHint} 
+              className="hint-btn"
+              disabled={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0])}
+            >
+              <FontAwesomeIcon icon={faLightbulb} />
+              Hint
+            </button>
+          </div>
+        )}
         
         <div className="first-letter-verse-container">
           {originalWords.map((word, wordIndex) => (
