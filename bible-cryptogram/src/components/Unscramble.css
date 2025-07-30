@@ -116,18 +116,7 @@ body.unscramble-win-gradient .unscramble-container {
   position: relative;
 }
 
-.current-input::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 2px;
-  height: 20px;
-  background-color: white;
-  pointer-events: none;
-  z-index: 1;
-}
+
 
 .word-input.incorrect {
   background-color: #e6ccff;
