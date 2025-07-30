@@ -27,6 +27,86 @@ export const COLOR_WHEEL: Record<number, { color: string; name: string }> =
     return acc;
   }, {} as Record<number, { color: string; name: string }>);
 
+// Button Theme Definitions
+export interface ButtonTheme {
+  padding: string;
+  fontSize: string;
+  fontWeight: string;
+  background: string;
+  color: string;
+  border: string;
+  borderRadius: string;
+  cursor: string;
+  transition: string;
+  fontFamily: string;
+  backdropFilter: string;
+  display: string;
+  alignItems: string;
+  justifyContent: string;
+  gap: string;
+  minHeight: string;
+  
+  // Hover states
+  hoverBackground: string;
+  hoverTransform: string;
+  hoverBoxShadow: string;
+  
+  // Disabled states
+  disabledOpacity: string;
+  disabledCursor: string;
+  disabledTransform: string;
+  disabledBoxShadow: string;
+  disabledBorderColor: string;
+  disabledHoverBackground: string;
+}
+
+// Glass-style buttons (matching FirstLetterTestGame's style)
+export const GLASS_BUTTON_THEME: ButtonTheme = {
+  padding: '12px 24px',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  background: 'rgba(255, 255, 255, 0.1)',
+  color: '#e6ccff',
+  border: '2px solid #800080',
+  borderRadius: '20px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  fontFamily: "'Courier New', Courier, monospace",
+  backdropFilter: 'blur(5px)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '8px',
+  minHeight: '45px',
+  
+  // Hover states
+  hoverBackground: 'rgba(128, 0, 128, 0.2)',
+  hoverTransform: 'translateY(-2px)',
+  hoverBoxShadow: '0 4px 12px rgba(128, 0, 128, 0.3)',
+  
+  // Disabled states
+  disabledOpacity: '0.5',
+  disabledCursor: 'not-allowed',
+  disabledTransform: 'none',
+  disabledBoxShadow: 'none',
+  disabledBorderColor: '#800080',
+  disabledHoverBackground: 'rgba(255, 255, 255, 0.1)'
+};
+
+// Mobile responsive adjustments for glass buttons
+export const GLASS_BUTTON_MOBILE = {
+  fontSize: '1rem',
+  padding: '10px 20px',
+  minHeight: '40px',
+  
+  // Small mobile
+  smallMobile: {
+    fontSize: '1rem',
+    padding: '8px 16px',
+    minHeight: '36px'
+  }
+};
+
 /*
   //optional color wheell
 
