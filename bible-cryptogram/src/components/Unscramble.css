@@ -33,7 +33,7 @@ body.unscramble-basic-win-gradient .unscramble-container {
   text-align: center;
   transition: all 0s ease;
   position: relative;
-  min-width: 120px;
+  width: 200px;
 }
 
 .word-item.current-word {
@@ -298,7 +298,7 @@ body.unscramble-basic-win-gradient {
   
   .word-item {
     padding: 15px;
-    min-width: 100px;
+    width: 170px;
   }
   
   .scrambled-word {
@@ -335,7 +335,7 @@ body.unscramble-basic-win-gradient {
   
   .word-item {
     padding: 10px;
-    min-width: 80px;
+    width: 140px;
   }
   
   .scrambled-word {
