@@ -5,7 +5,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import './Unscramble.css';
 
 // Utility function to scramble a word
@@ -332,12 +332,12 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                 
                 return (
                   <>
-                    <button 
-                      onClick={handleRepeatVerse} 
-                      className={`repeat-verse-btn ${!isPrimaryNext ? 'primary-button' : ''}`}
-                    >
-                      <FontAwesomeIcon icon={faArrowLeft} /> {currentVerse.reference}
-                    </button>
+                                         <button 
+                       onClick={handleRepeatVerse} 
+                       className={`repeat-verse-btn ${!isPrimaryNext ? 'primary-button' : ''}`}
+                     >
+                       <FontAwesomeIcon icon={faRotateLeft} />
+                     </button>
                     <button 
                       onClick={handleNextVerse} 
                       className={`next-verse-btn ${isPrimaryNext ? 'primary-button' : ''}`}
