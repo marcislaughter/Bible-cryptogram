@@ -2,7 +2,7 @@
   margin-top: 70px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Changed from 'center' to 'flex-start' */
+  align-items: center; /* Changed back to 'center' to center all child elements */
   font-family: 'Courier New', Courier, monospace;
   position: relative;
   padding: 0 10px;
@@ -11,13 +11,13 @@
 .first-letter-verse-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Changed from 'center' to 'flex-start' */
+  justify-content: center; /* Changed back to 'center' for proper alignment */
   gap: 15px;
   row-gap: 8px;
   padding: 10px;
   border: 2px solid #800080;
   border-radius: 10px;
-  margin: 0; /* Changed from '0 auto' to '0' to remove auto centering */
+  margin: 0 auto; /* Changed back to '0 auto' for centering */
   max-width: 95%;
 }
 
@@ -223,6 +223,57 @@ body.first-letter-win-gradient .citation {
   max-width: 600px;
 }
 
+.top-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.reset-btn,
+.hint-btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #800080;
+  color: white;
+  border: 2px solid #800080;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 45px;
+  min-width: 100px;
+}
+
+.reset-btn:hover,
+.hint-btn:hover {
+  background-color: #9900cc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.3);
+}
+
+.hint-btn:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.hint-btn:disabled:hover {
+  background-color: #cccccc;
+  transform: none;
+  box-shadow: none;
+}
+
 .difficulty-stepper {
   margin-top: 30px;
   padding: 20px;
@@ -230,6 +281,8 @@ body.first-letter-win-gradient .citation {
   background-color: rgba(128, 0, 128, 0.05);
   border-radius: 15px;
   border: 1px solid rgba(128, 0, 128, 0.2);
+  width: 100%;
+  max-width: 400px;
 }
 
 .difficulty-label {
@@ -379,6 +432,19 @@ body.first-letter-win-gradient .citation {
   .difficulty-label {
     font-size: 0.9rem;
   }
+  
+  .top-controls {
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .reset-btn,
+  .hint-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    min-height: 40px;
+    min-width: 80px;
+  }
 }
 
 /* Additional mobile optimizations for smaller screens */
@@ -431,6 +497,19 @@ body.first-letter-win-gradient .citation {
   .difficulty-label {
     font-size: 0.8rem;
     margin-bottom: 10px;
+  }
+  
+  .top-controls {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .reset-btn,
+  .hint-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    min-height: 35px;
+    min-width: 70px;
   }
 }
 
