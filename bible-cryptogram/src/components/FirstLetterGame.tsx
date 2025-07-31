@@ -6,6 +6,7 @@ import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
+import './Controls.css';
 
 interface FirstLetterGameProps {
   gameType?: import('./GameHeader').GameType;
@@ -536,19 +537,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         {wordStatsEnabled && <WordStats />}
         
         {!isSolved && (
-          <div className="top-controls">
-            <button onClick={handleReset} className="reset-btn">
-              <FontAwesomeIcon icon={faUndo} />
-              Reset
-            </button>
-            <button 
-              onClick={handleHint} 
-              className="hint-btn"
-              disabled={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0])}
-            >
-              <FontAwesomeIcon icon={faLightbulb} />
-              Hint
-            </button>
+          <div className="first-letter-top-controls">
+            <div className="controls-container">
+              <button onClick={handleReset}>
+                <FontAwesomeIcon icon={faUndo} />
+                Reset
+              </button>
+              <button 
+                onClick={handleHint}
+                className={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0]) ? 'disabled' : ''}
+                disabled={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0])}
+              >
+                <FontAwesomeIcon icon={faLightbulb} />
+                Hint
+              </button>
+            </div>
           </div>
         )}
         
@@ -589,33 +592,33 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         {isSolved && (
           <div className="solved-message">
             <h2>Excellent! You got all the first letters!</h2>
-            <div className="revealed-verse">
+            <div className="first-letter-revealed-verse">
               {currentVerse.text}
             </div>
-            <p className="reference">— {currentVerse.reference}</p>
-            <div className="solved-buttons">
-              <button onClick={handleRepeatVerse} className="retry-btn">
+            <p className="first-letter-reference">— {currentVerse.reference}</p>
+            <div className="first-letter-solved-buttons">
+              <button onClick={handleRepeatVerse} className="solved-button-base retry-btn">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
               </button>
               {difficultyLevel < 5 && (
-                <button onClick={handleNextLevel} className="next-level-btn">
+                <button onClick={handleNextLevel} className="solved-button-base">
                   Next Level <FontAwesomeIcon icon={faArrowUp} />
                 </button>
               )}
-              <button onClick={handleNextVerse} className="next-verse-btn">
+              <button onClick={handleNextVerse} className="solved-button-base">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
           </div>
         )}
         
-        <div className="difficulty-stepper">
-          <div className="difficulty-label">Difficulty Level:</div>
-          <div className="stepper-container">
+        <div className="first-letter-difficulty-stepper">
+          <div className="first-letter-difficulty-label">Difficulty Level:</div>
+          <div className="first-letter-stepper-container">
             {[1, 2, 3, 4, 5].map((level) => (
               <button
                 key={level}
-                className={`stepper-button ${difficultyLevel === level ? 'active' : ''}`}
+                className={`first-letter-stepper-button ${difficultyLevel === level ? 'active' : ''}`}
                 onClick={() => handleStepperClick(level)}
               >
                 {level}
@@ -624,7 +627,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           </div>
         </div>
         
-        <div className="citation">
+        <div className="first-letter-citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
           Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
           Used by permission. All rights reserved worldwide.

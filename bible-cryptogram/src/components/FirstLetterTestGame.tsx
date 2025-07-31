@@ -454,7 +454,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       const hasError = wordsWithErrors[wordIndex];
       
       renderedElements.push(
-        <span key={`verse-num-${verseIndex}`} className={hasError ? 'error-word' : ''}>
+        <span key={`verse-num-${verseIndex}`} className={hasError ? 'first-letter-test-error-word' : ''}>
           {verseNumberWordItem.text}
         </span>
       );
@@ -478,7 +478,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           const hasError = wordsWithErrors[wordIndex];
           
           renderedElements.push(
-            <span key={`word-${verseIndex}-${originalWordIndex}`} className={hasError ? 'error-word' : ''}>
+            <span key={`word-${verseIndex}-${originalWordIndex}`} className={hasError ? 'first-letter-test-error-word' : ''}>
               {originalWord}
             </span>
           );
@@ -509,7 +509,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     });
     
     return (
-      <div key={verseIndex} className="verse-line">
+      <div key={verseIndex} className="first-letter-test-verse-line">
         {renderedElements}
       </div>
     );
@@ -614,7 +614,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         />
         {wordStatsEnabled && <WordStats />}
         
-        <div className="chapter-title">
+        <div className="first-letter-test-chapter-title">
           {chapterTitle} {isReviewMode && '(Review Mode - Verses with Errors)'}
         </div>
         
@@ -634,11 +634,11 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           </div>
         )}
         
-        <div className="verse-text">
+        <div className="first-letter-test-verse-text">
           {chapterWords.slice(0, Math.max(currentWordIndex + 1, getMinimumDisplayWords())).map((wordItem, wordIndex) => (
             <span key={wordIndex}>
               <span 
-                className={`test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
+                className={`first-letter-test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
                   wordIndex === currentWordIndex && hasError ? 'error' : ''
                 } ${wordsWithErrors[wordIndex] ? 'error' : ''}`}
               >
@@ -655,7 +655,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         </div>
         
         {!isSolved && (
-          <div className="instruction-text">
+          <div className="first-letter-test-instruction-text">
             {isReviewMode 
               ? 'Review mode: Verse numbers are shown - type first letters of words to complete these verses'
               : 'Type verse numbers and first letters of words to reveal the chapter (first verse number is shown)'
@@ -664,9 +664,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         )}
         
         {isSolved && (
-          <div className="solved-message">
+          <div className="first-letter-test-solved-message">
             <h2>Excellent! You completed the entire chapter! ({percentageCorrect}% correct)</h2>
-            <div className="revealed-chapter">
+            <div className="first-letter-test-revealed-chapter">
               {versesWithErrors.length > 0 ? (
                 <>
                   <h3>Verses with errors:</h3>
@@ -679,7 +679,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                 <h3>Perfect! No errors in any verse!</h3>
               )}
             </div>
-            <div className="solved-buttons">
+            <div className="first-letter-test-solved-buttons">
               {!isReviewMode && versesWithErrors.length > 0 ? (
                 <>
                   <button onClick={handleReset} className="retry-btn solved-button-base">
@@ -729,7 +729,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           </div>
         )}
         
-        <div className="citation">
+        <div className="first-letter-test-citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
           Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™<br />
           Used by permission. All rights reserved worldwide.

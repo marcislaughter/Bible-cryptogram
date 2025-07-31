@@ -140,21 +140,21 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.revealed-verse {
+.first-letter-revealed-verse {
   font-size: 1.1rem;
   margin: 15px 0;
   font-weight: bold;
   color: white;
 }
 
-.reference {
+.first-letter-reference {
   margin: 10px 0;
   font-size: 1rem;
   font-style: italic;
   opacity: 0.9;
 }
 
-.solved-buttons {
+.first-letter-solved-buttons {
   display: flex;
   gap: 15px;
   justify-content: center;
@@ -163,40 +163,7 @@
   flex-wrap: wrap;
 }
 
-.next-verse-btn,
-.retry-btn,
-.next-level-btn {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid white;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 50px;
-}
-
-.retry-btn {
-  padding: 12px;
-  min-width: 50px;
-  gap: 0;
-}
-
-.next-verse-btn:hover,
-.retry-btn:hover,
-.next-level-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+/* Button styles now handled by Controls.css - removed custom solved button styles */
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -210,11 +177,11 @@ body.first-letter-win-gradient {
 }
 
 /* Ensure citation remains black when win message is displayed */
-body.first-letter-win-gradient .citation {
+body.first-letter-win-gradient .first-letter-citation {
   color: #000000;
 }
 
-.citation {
+.first-letter-citation {
   margin: 40px 0 20px 0;
   text-align: center;
   font-size: 0.8rem;
@@ -223,7 +190,7 @@ body.first-letter-win-gradient .citation {
   max-width: 600px;
 }
 
-.top-controls {
+.first-letter-top-controls {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -232,49 +199,9 @@ body.first-letter-win-gradient .citation {
   width: 100%;
 }
 
-.reset-btn,
-.hint-btn {
-  padding: 12px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #800080;
-  color: white;
-  border: 2px solid #800080;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 45px;
-  min-width: 100px;
-}
+/* Button styles now handled by Controls.css - removed custom button styles */
 
-.reset-btn:hover,
-.hint-btn:hover {
-  background-color: #9900cc;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.3);
-}
-
-.hint-btn:disabled {
-  background-color: #cccccc;
-  border-color: #cccccc;
-  color: #666666;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.hint-btn:disabled:hover {
-  background-color: #cccccc;
-  transform: none;
-  box-shadow: none;
-}
-
-.difficulty-stepper {
+.first-letter-difficulty-stepper {
   margin-top: 30px;
   padding: 20px;
   text-align: center;
@@ -285,7 +212,7 @@ body.first-letter-win-gradient .citation {
   max-width: 400px;
 }
 
-.difficulty-label {
+.first-letter-difficulty-label {
   font-size: 1rem;
   font-weight: bold;
   color: #800080;
@@ -293,13 +220,13 @@ body.first-letter-win-gradient .citation {
   font-family: 'Courier New', Courier, monospace;
 }
 
-.stepper-container {
+.first-letter-stepper-container {
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
-.stepper-button {
+.first-letter-stepper-button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -316,19 +243,19 @@ body.first-letter-win-gradient .citation {
   justify-content: center;
 }
 
-.stepper-button:hover {
+.first-letter-stepper-button:hover {
   background-color: #f0e6ff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(128, 0, 128, 0.2);
 }
 
-.stepper-button.active {
+.first-letter-stepper-button.active {
   background-color: #800080;
   color: white;
   box-shadow: 0 4px 15px rgba(128, 0, 128, 0.3);
 }
 
-.stepper-button.active:hover {
+.first-letter-stepper-button.active:hover {
   background-color: #9900cc;
   transform: translateY(-2px);
 }
@@ -406,44 +333,26 @@ body.first-letter-win-gradient .citation {
     flex-wrap: wrap;
   }
   
-  .next-verse-btn,
-  .retry-btn,
-  .next-level-btn {
-    font-size: 1rem;
-    padding: 10px 20px;
-  }
+  /* Button styles handled by Controls.css mobile responsive styles */
   
-  .retry-btn {
-    padding: 10px;
-    min-width: 45px;
-  }
-  
-  .difficulty-stepper {
+  .first-letter-difficulty-stepper {
     margin-top: 20px;
     padding: 15px;
   }
   
-  .stepper-button {
+  .first-letter-stepper-button {
     width: 35px;
     height: 35px;
     font-size: 1rem;
   }
   
-  .difficulty-label {
+  .first-letter-difficulty-label {
     font-size: 0.9rem;
   }
   
-  .top-controls {
+  .first-letter-top-controls {
     gap: 12px;
     margin-bottom: 15px;
-  }
-  
-  .reset-btn,
-  .hint-btn {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-    min-height: 40px;
-    min-width: 80px;
   }
 }
 
@@ -466,50 +375,31 @@ body.first-letter-win-gradient .citation {
     padding: 8px;
   }
   
-  .next-verse-btn,
-  .retry-btn,
-  .next-level-btn {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-    min-height: 40px;
-  }
+  /* Button styles handled by Controls.css mobile responsive styles */
   
-  .retry-btn {
-    padding: 8px;
-    min-width: 40px;
-  }
-  
-  .difficulty-stepper {
+  .first-letter-difficulty-stepper {
     margin-top: 15px;
     padding: 12px;
   }
   
-  .stepper-container {
+  .first-letter-stepper-container {
     gap: 8px;
   }
   
-  .stepper-button {
+  .first-letter-stepper-button {
     width: 30px;
     height: 30px;
     font-size: 0.9rem;
   }
   
-  .difficulty-label {
+  .first-letter-difficulty-label {
     font-size: 0.8rem;
     margin-bottom: 10px;
   }
   
-  .top-controls {
+  .first-letter-top-controls {
     gap: 10px;
     margin-bottom: 12px;
-  }
-  
-  .reset-btn,
-  .hint-btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    min-height: 35px;
-    min-width: 70px;
   }
 }
 

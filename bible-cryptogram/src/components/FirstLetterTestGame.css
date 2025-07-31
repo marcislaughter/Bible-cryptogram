@@ -30,13 +30,13 @@ body.first-letter-test-high-score .first-letter-test-container {
   background-color: transparent;
 }
 
-body.first-letter-test-high-score .citation {
+body.first-letter-test-high-score .first-letter-test-citation {
   color: #000000;
 }
 
 /* Button styles are now handled by the centralized Controls.css */
 
-.chapter-title {
+.first-letter-test-chapter-title {
   font-size: 1.5rem;
   font-weight: bold;
   color: #ffffff;
@@ -45,32 +45,32 @@ body.first-letter-test-high-score .citation {
   align-self: center;
 }
 
-.verse-text {
+.first-letter-test-verse-text {
   display: inline;
   text-align: left;
 }
 
-.test-word {
+.first-letter-test-word {
   font-weight: bold;
   transition: all 0.3s ease;
 }
 
-.test-word.revealed {
+.first-letter-test-word.revealed {
   color: #a3a3a3;
   animation: revealAnimation 0.5s ease;
 }
 
-.test-word.current {
+.first-letter-test-word.current {
   color: #3da542;
   text-shadow: 0 0 10px #3da542;
 }
 
-.test-word.error {
+.first-letter-test-word.error {
   color: #ff0000;
   animation: bounce 0.5s ease;
 }
 
-.test-word.revealed.error {
+.first-letter-test-word.revealed.error {
   color: #ff0000;
 }
 
@@ -117,7 +117,7 @@ body.first-letter-test-high-score .citation {
   }
 }
 
-.instruction-text {
+.first-letter-test-instruction-text {
   margin-top: 30px;
   font-size: 1rem;
   color: #cccccc;
@@ -128,7 +128,7 @@ body.first-letter-test-high-score .citation {
 
 /* Mobile touch instruction */
 @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
-  .instruction-text::after {
+  .first-letter-test-instruction-text::after {
     content: " (Tap anywhere to start typing)";
     display: block;
     font-size: 0.8rem;
@@ -137,7 +137,7 @@ body.first-letter-test-high-score .citation {
   }
 }
 
-.solved-message {
+.first-letter-test-solved-message {
   text-align: center;
   margin: 40px 0;
   padding: 30px;
@@ -150,14 +150,14 @@ body.first-letter-test-high-score .citation {
   align-self: center;
 }
 
-.solved-message h2 {
+.first-letter-test-solved-message h2 {
   margin: 0 0 20px 0;
   font-size: 1.5rem;
   color: #3da542;
   text-shadow: 0 0 10px #3da542;
 }
 
-.revealed-chapter {
+.first-letter-test-revealed-chapter {
   font-size: 1.1rem;
   margin: 20px 0;
   text-align: left;
@@ -165,24 +165,24 @@ body.first-letter-test-high-score .citation {
   overflow-y: auto;
 }
 
-.revealed-chapter h3 {
+.first-letter-test-revealed-chapter h3 {
   color: #e6ccff;
   text-align: center;
   margin-bottom: 15px;
   font-size: 1.1rem;
 }
 
-.error-word {
+.first-letter-test-error-word {
   color: #ff0000 !important;
   font-weight: bold;
 }
 
-.verse-line {
+.first-letter-test-verse-line {
   margin-bottom: 15px;
   line-height: 1.6;
 }
 
-.solved-buttons {
+.first-letter-test-solved-buttons {
   display: flex;
   gap: 20px;
   justify-content: center;
@@ -197,6 +197,16 @@ body.first-letter-test-high-score .citation {
 .review-btn,
 .exit-review-btn {
   /* All base styles come from .solved-button-base in Controls.css */
+}
+
+.first-letter-test-citation {
+  margin: 40px 0 20px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #a3a3a3;
+  line-height: 1.4;
+  max-width: 600px;
+  align-self: center;
 }
 
  
