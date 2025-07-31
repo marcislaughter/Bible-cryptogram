@@ -11,7 +11,6 @@ export interface GameState {
   chapterWords: WordItem[];
   revealedWords: boolean[];
   wordsWithErrors: boolean[];
-  originalWordsWithErrors: boolean[];
   currentWordIndex: number;
   partialVerseInput: string;
   isSolved: boolean;
@@ -36,7 +35,6 @@ export type GameAction =
   | { type: 'TOGGLE_WORD_STATS' }
   | { type: 'SET_REVIEW_MODE'; payload: { 
       isReviewMode: boolean; 
-      originalWordsWithErrors?: boolean[] 
     }}
   | { type: 'CLEAR_ERROR' };
 

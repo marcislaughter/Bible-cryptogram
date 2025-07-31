@@ -4,7 +4,6 @@ export const initialGameState: GameState = {
   chapterWords: [],
   revealedWords: [],
   wordsWithErrors: [],
-  originalWordsWithErrors: [],
   currentWordIndex: 0,
   partialVerseInput: '',
   isSolved: false,
@@ -74,7 +73,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         isReviewMode: action.payload.isReviewMode,
-        originalWordsWithErrors: action.payload.originalWordsWithErrors || state.originalWordsWithErrors,
       };
 
     case 'CLEAR_ERROR':

@@ -165,8 +165,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     dispatch({ 
       type: 'SET_REVIEW_MODE', 
       payload: { 
-        isReviewMode: true, 
-        originalWordsWithErrors: [...state.wordsWithErrors] 
+        isReviewMode: true
       } 
     });
     generateNewGame(true);
