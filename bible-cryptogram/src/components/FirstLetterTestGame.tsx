@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef, useMemo } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
@@ -278,12 +278,33 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     };
   }, [state.isSolved]);
 
-  // Computed values
-  const currentChapter = getCurrentChapter(currentVerse);
-  const chapterTitle = currentChapter ? currentChapter.chapterTitle : '';
-  const versesWithErrors = getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors);
-  const percentageCorrect = calculatePercentageCorrect(state.chapterWords, state.wordsWithErrors);
-  const buttonState = getButtonState();
+  // Computed values (optimized with useMemo)
+  const currentChapter = useMemo(() => 
+    getCurrentChapter(currentVerse), 
+    [currentVerse]
+  );
+  
+  const chapterTitle = useMemo(() => 
+    currentChapter ? currentChapter.chapterTitle : '', 
+    [currentChapter]
+  );
+  
+  const versesWithErrors = useMemo(() => 
+    getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors),
+    [currentVerse, state.chapterWords, state.wordsWithErrors]
+  );
+  
+  const percentageCorrect = useMemo(() => 
+    calculatePercentageCorrect(state.chapterWords, state.wordsWithErrors),
+    [state.chapterWords, state.wordsWithErrors]
+  );
+  
+  const buttonState = useMemo(() => 
+    getButtonState(),
+    [state.isSolved, state.wordsWithErrors, state.isReviewMode]
+  );
+  
+  // These change frequently and need to recalculate often
   const displayCount = Math.max(state.currentWordIndex + 1, getMinimumDisplayWords(state.currentWordIndex));
   const isHintDisabled = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex) === -1;
 
