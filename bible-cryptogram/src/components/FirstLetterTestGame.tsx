@@ -63,9 +63,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     
     const wordItems = generateWordItems(currentVerse, reviewMode, versesWithErrors);
     const revealedWords = initializeRevealedWords(wordItems, reviewMode);
-    const wordsWithErrors = reviewMode ? 
-      new Array(wordItems.length).fill(false) : 
-      new Array(wordItems.length).fill(false);
+    const wordsWithErrors = new Array(wordItems.length).fill(false);
     
     const firstUnrevealedIndex = findFirstUnrevealedIndex(revealedWords);
     
