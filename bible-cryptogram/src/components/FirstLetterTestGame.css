@@ -34,8 +34,6 @@ body.first-letter-test-high-score .first-letter-test-citation {
   color: #000000;
 }
 
-/* Button styles are now handled by the centralized Controls.css */
-
 .first-letter-test-chapter-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -189,14 +187,6 @@ body.first-letter-test-high-score .first-letter-test-citation {
   margin-top: 30px;
   align-items: center;
   flex-wrap: wrap;
-}
-
-/* Button styles are now handled by the centralized Controls.css */
-.next-chapter-btn,
-.retry-btn,
-.review-btn,
-.exit-review-btn {
-  /* All base styles come from .solved-button-base in Controls.css */
 }
 
 .first-letter-test-citation {

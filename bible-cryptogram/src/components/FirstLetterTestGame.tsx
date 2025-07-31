@@ -1,12 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo, faMagnifyingGlass, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterTestGame.css';
 import './Controls.css';
+
+// Import refactored components and utilities
+import type { ButtonState } from './FirstLetterTestGameTypes';
+import { gameReducer, initialGameState } from './FirstLetterTestGameReducer';
+import {
+  getCurrentChapter,
+  generateWordItems,
+  initializeRevealedWords,
+  findNextUnrevealedWord,
+  findFirstUnrevealedIndex,
+  processVerseNumberInput,
+  processWordInput,
+  calculatePercentageCorrect,
+  getVersesWithErrors,
+  getNextChapterReference,
+  getMinimumDisplayWords
+} from './FirstLetterTestGameUtils';
+import {
+  GameControls,
+  WordDisplay,
+  InstructionText,
+  SolvedMessage
+} from './FirstLetterTestGameComponents';
 
 interface FirstLetterTestGameProps {
   gameType?: import('./GameHeader').GameType;
@@ -15,313 +36,97 @@ interface FirstLetterTestGameProps {
   onVerseChange?: (verse: BibleVerse) => void;
 }
 
-interface WordItem {
-  text: string;
-  isVerseNumber: boolean;
-  originalIndex: number;
-  verseIndex: number;
-}
-
 const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({ 
   gameType = 'first-letter-test', 
   onGameTypeChange, 
   currentVerse: propCurrentVerse, 
   onVerseChange: propOnVerseChange 
 }) => {
-  const [chapterWords, setChapterWords] = useState<WordItem[]>([]);
-  const [revealedWords, setRevealedWords] = useState<boolean[]>([]);
-  const [wordsWithErrors, setWordsWithErrors] = useState<boolean[]>([]);
-  const [isSolved, setIsSolved] = useState(false);
-  const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
+  const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [hasError, setHasError] = useState(false);
-  const [isReviewMode, setIsReviewMode] = useState(false);
-  const [originalWordsWithErrors, setOriginalWordsWithErrors] = useState<boolean[]>([]);
-  // Add state to track partial verse number input
-  const [partialVerseInput, setPartialVerseInput] = useState<string>('');
-  // Ref for hidden input to handle mobile keyboard
   const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
 
   // Utility function to refocus the hidden input for mobile
   const refocusInput = () => {
     setTimeout(() => {
-      if (hiddenInputRef.current && !isSolved) {
+      if (hiddenInputRef.current && !state.isSolved) {
         hiddenInputRef.current.focus();
       }
     }, 100);
   };
 
-  // Get the current chapter based on the selected verse
-  const getCurrentChapter = () => {
-    const chapterRef = currentVerse.reference.includes(':') 
-      ? currentVerse.reference.split(':')[0]  // "1 Cor 11:1" -> "1 Cor 11"
-      : currentVerse.reference;
-    
-    return BIBLE_CHAPTERS.find(chapter => chapter.chapterReference === chapterRef);
-  };
-
-  const extractVerseNumber = (reference: string): string => {
-    const parts = reference.split(':');
-    return parts.length > 1 ? parts[1] : '1';
-  };
-
+  // Generate new game
   const generateNewGame = (reviewMode = false) => {
-    const currentChapter = getCurrentChapter();
-    if (!currentChapter) return;
-
-    const wordItems: WordItem[] = [];
-    let wordIndex = 0;
-
-    if (reviewMode) {
-      // In review mode, only include verses that had errors
-      const versesWithErrors = getVersesWithErrors();
-      
-      versesWithErrors.forEach((verse) => {
-        const verseIndex = currentChapter.verses.indexOf(verse);
-        
-        // Add verse number
-        const verseNumber = extractVerseNumber(verse.reference);
-        wordItems.push({
-          text: verseNumber,
-          isVerseNumber: true,
-          originalIndex: wordIndex++,
-          verseIndex: verseIndex
-        });
-
-        // Add verse words (removing punctuation and filtering empty)
-        const verseWords = verse.text.split(' ')
-          .map(word => word.replace(/[^A-Z]/g, ''))
-          .filter(word => word.length > 0);
-
-        verseWords.forEach(word => {
-          wordItems.push({
-            text: word,
-            isVerseNumber: false,
-            originalIndex: wordIndex++,
-            verseIndex: verseIndex
-          });
-        });
-      });
-    } else {
-      // Regular mode - process all verses in the chapter
-      currentChapter.verses.forEach((verse, verseIndex) => {
-        // Add verse number
-        const verseNumber = extractVerseNumber(verse.reference);
-        wordItems.push({
-          text: verseNumber,
-          isVerseNumber: true,
-          originalIndex: wordIndex++,
-          verseIndex: verseIndex
-        });
-
-        // Add verse words (removing punctuation and filtering empty)
-        const verseWords = verse.text.split(' ')
-          .map(word => word.replace(/[^A-Z]/g, ''))
-          .filter(word => word.length > 0);
-
-        verseWords.forEach(word => {
-          wordItems.push({
-            text: word,
-            isVerseNumber: false,
-            originalIndex: wordIndex++,
-            verseIndex: verseIndex
-          });
-        });
-      });
-    }
-
-    setChapterWords(wordItems);
+    const versesWithErrors = reviewMode ? 
+      getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors) : [];
     
-    // Set up revealed words
-    const initialRevealedWords = new Array(wordItems.length).fill(false);
-    let isFirstVerseNumber = true;
+    const wordItems = generateWordItems(currentVerse, reviewMode, versesWithErrors);
+    const revealedWords = initializeRevealedWords(wordItems, reviewMode);
+    const wordsWithErrors = reviewMode ? 
+      new Array(wordItems.length).fill(false) : 
+      new Array(wordItems.length).fill(false);
     
-    wordItems.forEach((wordItem, index) => {
-      if (wordItem.isVerseNumber) {
-        if (reviewMode) {
-          // In review mode, reveal all verse numbers
-          initialRevealedWords[index] = true;
-        } else if (isFirstVerseNumber) {
-          // In regular mode, only reveal the first verse number
-          initialRevealedWords[index] = true;
-          isFirstVerseNumber = false;
-        }
+    const firstUnrevealedIndex = findFirstUnrevealedIndex(revealedWords);
+    
+    dispatch({
+      type: 'INITIALIZE_GAME',
+      payload: {
+        chapterWords: wordItems,
+        revealedWords,
+        wordsWithErrors,
+        currentWordIndex: reviewMode ? firstUnrevealedIndex : 0,
+        isReviewMode: reviewMode
       }
     });
-    
-    // Find the first unrevealed word
-    let firstUnrevealedIndex = 0;
-    for (let i = 0; i < initialRevealedWords.length; i++) {
-      if (!initialRevealedWords[i]) {
-        firstUnrevealedIndex = i;
-        break;
-      }
-    }
-    
-    setRevealedWords(initialRevealedWords);
-    
-    if (!reviewMode) {
-      setWordsWithErrors(new Array(wordItems.length).fill(false));
-    } else {
-      // In review mode, start fresh with error tracking
-      setWordsWithErrors(new Array(wordItems.length).fill(false));
-    }
-    
-    setIsSolved(false);
-    setCurrentWordIndex(reviewMode ? firstUnrevealedIndex : 0);
-    setHasError(false);
-    setPartialVerseInput(''); // Reset partial verse input for new game
   };
 
-  useEffect(() => {
-    generateNewGame();
-  }, [currentVerse]);
-
-  // Check for game completion whenever revealed words change
-  useEffect(() => {
-    if (chapterWords.length > 0 && revealedWords.length > 0) {
-      const allRevealed = revealedWords.every(revealed => revealed);
-      if (allRevealed && !isSolved) {
-        setIsSolved(true);
-        // Blur the hidden input so Enter key can be handled by main event handler
-        if (hiddenInputRef.current) {
-          hiddenInputRef.current.blur();
-        }
-      }
-    }
-  }, [revealedWords, chapterWords, isSolved]);
-
-  // Find the next unrevealed word
-  const findNextUnrevealedWord = (startIndex: number = 0): number => {
-    for (let i = startIndex; i < chapterWords.length; i++) {
-      if (!revealedWords[i]) {
-        return i;
-      }
-    }
-    // If no unrevealed words found from startIndex, search from beginning
-    for (let i = 0; i < startIndex; i++) {
-      if (!revealedWords[i]) {
-        return i;
-      }
-    }
-    return -1; // All words revealed
-  };
-
-  // Focus the hidden input when component mounts or game resets
-  useEffect(() => {
-    if (hiddenInputRef.current && !isSolved) {
-      hiddenInputRef.current.focus();
-    }
-  }, [isSolved, currentVerse]);
-
-
-
-  // Function to handle character input (works for both desktop and mobile)
+  // Handle character input
   const handleCharacterInput = (key: string) => {
-    if (isSolved) return;
+    if (state.isSolved) return;
 
-    // Handle numbers and letters
     if (/^[A-Z0-9]$/i.test(key)) {
-      const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
-      if (nextWordIndex === -1) return; // All words revealed
+      const nextWordIndex = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex);
+      if (nextWordIndex === -1) return;
 
-      const targetWordItem = chapterWords[nextWordIndex];
-      const inputKey = key.toUpperCase();
-      
+      const targetWordItem = state.chapterWords[nextWordIndex];
       let isCorrect = false;
       
       if (targetWordItem.isVerseNumber) {
-        // For verse numbers, build up the input digit by digit
-        if (/^[0-9]$/.test(key)) {
-          const newPartialInput = partialVerseInput + key;
-          
-          // Check if the new partial input matches the beginning of the target verse number
-          if (targetWordItem.text.startsWith(newPartialInput)) {
-            setPartialVerseInput(newPartialInput);
-            
-            // Check if we've completed the verse number
-            if (newPartialInput === targetWordItem.text) {
-              isCorrect = true;
-              setPartialVerseInput(''); // Reset for next verse number
-            } else {
-              // Partial match - don't advance yet, but don't show error
-              return; // Exit early without showing error or advancing
-            }
-          } else {
-            // Wrong digit - reset partial input and show error
-            setPartialVerseInput('');
-            isCorrect = false;
-          }
+        const result = processVerseNumberInput(key, state.partialVerseInput, targetWordItem.text);
+        
+        if (result.isComplete) {
+          isCorrect = true;
+          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
+        } else if (result.isCorrect && !result.isComplete) {
+          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: result.newPartialInput });
+          return;
         } else {
-          // Non-digit key pressed for verse number
+          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
           isCorrect = false;
         }
       } else {
-        // For regular words, check if the key matches the first letter
-        isCorrect = inputKey === targetWordItem.text[0];
+        isCorrect = processWordInput(key, targetWordItem.text);
       }
       
       if (isCorrect) {
-        // Correct input - clear error and reveal the word
-        setHasError(false);
-        const newRevealedWords = [...revealedWords];
-        newRevealedWords[nextWordIndex] = true;
-        setRevealedWords(newRevealedWords);
+        dispatch({ type: 'REVEAL_WORD', payload: { wordIndex: nextWordIndex } });
         
-        // Move to next unrevealed word
-        const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
+        const nextUnrevealedIndex = findNextUnrevealedWord(state.revealedWords, nextWordIndex + 1);
         if (nextUnrevealedIndex === -1) {
-          // All words revealed - game complete!
-          setIsSolved(true);
+          dispatch({ type: 'SET_SOLVED', payload: true });
         } else {
-          setCurrentWordIndex(nextUnrevealedIndex);
+          dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
         }
       } else {
-        // Wrong input - show error and mark word as having had an error
-        setHasError(true);
-        const newWordsWithErrors = [...wordsWithErrors];
-        newWordsWithErrors[nextWordIndex] = true;
-        setWordsWithErrors(newWordsWithErrors);
+        dispatch({ type: 'SET_ERROR', payload: { wordIndex: nextWordIndex, hasError: true } });
         
-        // Clear error after animation duration
         setTimeout(() => {
-          setHasError(false);
+          dispatch({ type: 'CLEAR_ERROR' });
         }, 500);
       }
     }
   };
-
-  // Handle keyboard input for desktop
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Only skip input handling if it's the hidden input AND the game is not solved
-      if (event.target === hiddenInputRef.current && !isSolved) return;
-      
-      // Handle Enter key when game is solved
-      if (event.key === 'Enter' && isSolved) {
-        event.preventDefault();
-        
-        // Get the primary action using the existing function
-        const primaryAction = getPrimaryAction();
-        
-        if (primaryAction) {
-          primaryAction();
-        }
-        return;
-      }
-      
-      // Handle regular game input
-      if (!isSolved) {
-        event.preventDefault();
-        handleCharacterInput(event.key);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [chapterWords, revealedWords, wordsWithErrors, currentWordIndex, isSolved, hasError, partialVerseInput, isReviewMode]);
 
   // Handle input events for mobile
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -329,85 +134,55 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     if (value.length > 0) {
       const lastChar = value[value.length - 1];
       handleCharacterInput(lastChar);
-      // Clear the input to allow continuous typing
       event.target.value = '';
     }
   };
 
-  // Handle clicking on the game area to focus the input (mobile)
-  const handleGameAreaClick = () => {
-    if (hiddenInputRef.current && !isSolved) {
-      hiddenInputRef.current.focus();
-    }
-  };
-
+  // Handle game actions
   const handleReset = () => {
-    generateNewGame(isReviewMode);
-    // Refocus input after reset for mobile
-    refocusInput();
-  };
-
-  const handleReviewErrors = () => {
-    // Store the original errors before switching to review mode
-    setOriginalWordsWithErrors([...wordsWithErrors]);
-    setIsReviewMode(true);
-    generateNewGame(true);
-    // Refocus input after entering review mode for mobile
-    refocusInput();
-  };
-
-  const handleExitReview = () => {
-    setIsReviewMode(false);
-    // Restore original errors and regenerate full game
-    setWordsWithErrors([...originalWordsWithErrors]);
-    generateNewGame(false);
-    // Refocus input after exiting review mode for mobile
+    generateNewGame(state.isReviewMode);
     refocusInput();
   };
 
   const handleHint = () => {
-    if (isSolved) return;
+    if (state.isSolved) return;
     
-    const nextWordIndex = findNextUnrevealedWord(currentWordIndex);
-    if (nextWordIndex === -1) return; // All words revealed
+    const nextWordIndex = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex);
+    if (nextWordIndex === -1) return;
     
-    // Reveal the current word and mark it as having had an error (since a hint was needed)
-    const newRevealedWords = [...revealedWords];
-    newRevealedWords[nextWordIndex] = true;
-    setRevealedWords(newRevealedWords);
+    dispatch({ type: 'REVEAL_WORD', payload: { wordIndex: nextWordIndex } });
+    dispatch({ type: 'SET_ERROR', payload: { wordIndex: nextWordIndex, hasError: true } });
     
-    const newWordsWithErrors = [...wordsWithErrors];
-    newWordsWithErrors[nextWordIndex] = true;
-    setWordsWithErrors(newWordsWithErrors);
-    
-    // Move to next unrevealed word
-    const nextUnrevealedIndex = findNextUnrevealedWord(nextWordIndex + 1);
+    const nextUnrevealedIndex = findNextUnrevealedWord(state.revealedWords, nextWordIndex + 1);
     if (nextUnrevealedIndex === -1) {
-      // All words revealed - game complete!
-      setIsSolved(true);
+      dispatch({ type: 'SET_SOLVED', payload: true });
     } else {
-      setCurrentWordIndex(nextUnrevealedIndex);
+      dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
     }
     
-    // Refocus input after hint for mobile
     refocusInput();
   };
 
-  // Removed handleVerseChange wrapper - using onVerseChange directly
+  const handleReviewErrors = () => {
+    dispatch({ 
+      type: 'SET_REVIEW_MODE', 
+      payload: { 
+        isReviewMode: true, 
+        originalWordsWithErrors: [...state.wordsWithErrors] 
+      } 
+    });
+    generateNewGame(true);
+    refocusInput();
+  };
 
-  // Function to get the next verse reference
-  const getNextChapterReference = () => {
-    const currentChapter = getCurrentChapter();
-    if (!currentChapter) return '';
-    
-    const currentChapterIndex = BIBLE_CHAPTERS.findIndex(chapter => 
-      chapter.chapterReference === currentChapter.chapterReference);
-    const nextChapterIndex = (currentChapterIndex + 1) % BIBLE_CHAPTERS.length;
-    return BIBLE_CHAPTERS[nextChapterIndex].chapterReference;
+  const handleExitReview = () => {
+    dispatch({ type: 'SET_REVIEW_MODE', payload: { isReviewMode: false } });
+    generateNewGame(false);
+    refocusInput();
   };
 
   const handleNextChapter = () => {
-    const currentChapter = getCurrentChapter();
+    const currentChapter = getCurrentChapter(currentVerse);
     if (!currentChapter) return;
     
     const currentChapterIndex = BIBLE_CHAPTERS.findIndex(chapter => 
@@ -415,172 +190,111 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     const nextChapterIndex = (currentChapterIndex + 1) % BIBLE_CHAPTERS.length;
     const nextChapter = BIBLE_CHAPTERS[nextChapterIndex];
     
-    // Select the first verse of the next chapter
     if (nextChapter.verses.length > 0) {
       onVerseChange(nextChapter.verses[0]);
-      // Refocus input after changing chapter for mobile
       refocusInput();
     }
   };
 
-  // Get verses that had errors (at least one red word)
-  const getVersesWithErrors = () => {
-    if (!currentChapter) return [];
-    
-    const verseHasError = new Array(currentChapter.verses.length).fill(false);
-    
-    chapterWords.forEach((wordItem, wordIndex) => {
-      if (wordsWithErrors[wordIndex]) {
-        verseHasError[wordItem.verseIndex] = true;
-      }
-    });
-    
-    return currentChapter.verses.filter((_, index) => verseHasError[index]);
-  };
-
-  // Render a verse with error words highlighted
-  const renderVerseWithErrors = (verse: any, verseIndex: number) => {
-    const verseWords = chapterWords.filter(wordItem => wordItem.verseIndex === verseIndex);
-    const originalText = verse.text;
-    const words = originalText.split(' ');
-    
-    let wordItemIndex = 0;
-    let renderedElements: React.ReactElement[] = [];
-    
-    // Add verse number first
-    const verseNumberWordItem = verseWords.find(w => w.isVerseNumber);
-    if (verseNumberWordItem) {
-      const wordIndex = chapterWords.indexOf(verseNumberWordItem);
-      const hasError = wordsWithErrors[wordIndex];
-      
-      renderedElements.push(
-        <span key={`verse-num-${verseIndex}`} className={hasError ? 'first-letter-test-error-word' : ''}>
-          {verseNumberWordItem.text}
-        </span>
-      );
-      renderedElements.push(<span key={`space-after-num-${verseIndex}`}> </span>);
-      wordItemIndex++;
+  const handleGameAreaClick = () => {
+    if (hiddenInputRef.current && !state.isSolved) {
+      hiddenInputRef.current.focus();
     }
-    
-    // Process each word in the original text
-    words.forEach((originalWord: string, originalWordIndex: number) => {
-      // Extract just the letters for matching
-      const cleanWord = originalWord.replace(/[^A-Z]/g, '');
-      
-      if (cleanWord.length > 0) {
-        // Find the corresponding word item
-        const wordItem = verseWords.find((w, idx) => 
-          !w.isVerseNumber && idx === wordItemIndex
-        );
-        
-        if (wordItem) {
-          const wordIndex = chapterWords.indexOf(wordItem);
-          const hasError = wordsWithErrors[wordIndex];
-          
-          renderedElements.push(
-            <span key={`word-${verseIndex}-${originalWordIndex}`} className={hasError ? 'first-letter-test-error-word' : ''}>
-              {originalWord}
-            </span>
-          );
-          wordItemIndex++;
-        } else {
-          // Fallback for words that don't match
-          renderedElements.push(
-            <span key={`word-fallback-${verseIndex}-${originalWordIndex}`}>
-              {originalWord}
-            </span>
-          );
-        }
-      } else {
-        // Handle punctuation-only "words"
-        renderedElements.push(
-          <span key={`punct-${verseIndex}-${originalWordIndex}`}>
-            {originalWord}
-          </span>
-        );
-      }
-      
-      // Add space after word (except for last word)
-      if (originalWordIndex < words.length - 1) {
-        renderedElements.push(
-          <span key={`space-${verseIndex}-${originalWordIndex}`}> </span>
-        );
-      }
-    });
-    
-    return (
-      <div key={verseIndex} className="first-letter-test-verse-line">
-        {renderedElements}
-      </div>
-    );
   };
 
-  // Get minimum words to display (ensure first verse number + current word are always visible)
-  const getMinimumDisplayWords = () => {
-    // Always show at least 2 words to ensure first verse number and current position are visible
-    return Math.max(2, currentWordIndex + 1);
+  // Simplified button state logic
+  const getButtonState = (): ButtonState => {
+    if (!state.isSolved) return { action: null, buttonType: null };
+    
+    const hasErrors = state.wordsWithErrors.some(hasError => hasError);
+    
+    const buttonStates: Record<string, ButtonState> = {
+      'normal-with-errors': { action: handleReviewErrors, buttonType: 'review' },
+      'normal-no-errors': { action: handleNextChapter, buttonType: 'next-chapter' },
+      'review-with-errors': { action: handleReset, buttonType: 'retry' },
+      'review-no-errors': { action: handleExitReview, buttonType: 'exit-review' },
+    };
+    
+    const key = `${state.isReviewMode ? 'review' : 'normal'}-${hasErrors ? 'with-errors' : 'no-errors'}`;
+    return buttonStates[key] || { action: null, buttonType: null };
   };
 
-  // Calculate percentage correct
-  const calculatePercentageCorrect = () => {
-    if (chapterWords.length === 0) return 100;
-    
-    const totalWords = chapterWords.length;
-    const errorWords = wordsWithErrors.filter(hasError => hasError).length;
-    const correctWords = totalWords - errorWords;
-    const percentage = (correctWords / totalWords) * 100;
-    
-    return Math.round(percentage);
-  };
-
-  // Get current chapter info for display
-  const currentChapter = getCurrentChapter();
-  const chapterTitle = currentChapter ? currentChapter.chapterTitle : '';
-  const versesWithErrors = getVersesWithErrors();
-  const percentageCorrect = calculatePercentageCorrect();
-
-  // Apply high score gradient to body when game is solved
+  // Handle keyboard input for desktop
   useEffect(() => {
-    if (isSolved) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target === hiddenInputRef.current && !state.isSolved) return;
+      
+      if (event.key === 'Enter' && state.isSolved) {
+        event.preventDefault();
+        
+        const buttonState = getButtonState();
+        if (buttonState.action) {
+          buttonState.action();
+        }
+        return;
+      }
+      
+      if (!state.isSolved) {
+        event.preventDefault();
+        handleCharacterInput(event.key);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [state]);
+
+  // Initialize game and focus input
+  useEffect(() => {
+    generateNewGame();
+  }, [currentVerse]);
+
+  useEffect(() => {
+    if (hiddenInputRef.current && !state.isSolved) {
+      hiddenInputRef.current.focus();
+    }
+  }, [state.isSolved, currentVerse]);
+
+  // Check for game completion
+  useEffect(() => {
+    if (state.chapterWords.length > 0 && state.revealedWords.length > 0) {
+      const allRevealed = state.revealedWords.every(revealed => revealed);
+      if (allRevealed && !state.isSolved) {
+        dispatch({ type: 'SET_SOLVED', payload: true });
+        if (hiddenInputRef.current) {
+          hiddenInputRef.current.blur();
+        }
+      }
+    }
+  }, [state.revealedWords, state.chapterWords, state.isSolved]);
+
+  // Apply high score gradient
+  useEffect(() => {
+    if (state.isSolved) {
       document.body.classList.add('first-letter-test-high-score');
     } else {
       document.body.classList.remove('first-letter-test-high-score');
     }
 
-    // Cleanup on unmount
     return () => {
       document.body.classList.remove('first-letter-test-high-score');
     };
-  }, [isSolved]);
+  }, [state.isSolved]);
 
-  // Function to determine primary button info (action and type) - consolidated logic
-  const getPrimaryButtonInfo = (): { action: (() => void) | null; buttonType: string | null } => {
-    if (!isSolved) return { action: null, buttonType: null };
-    
-    const hasErrors = wordsWithErrors.some(hasError => hasError);
-    
-    if (!isReviewMode && hasErrors) {
-      return { action: handleReviewErrors, buttonType: 'review' };
-    } else if (!isReviewMode && !hasErrors) {
-      return { action: handleNextChapter, buttonType: 'next-chapter' };
-    } else if (isReviewMode && hasErrors) {
-      return { action: handleReset, buttonType: 'retry' };
-    } else if (isReviewMode && !hasErrors) {
-      return { action: handleExitReview, buttonType: 'exit-review' };
-    }
-    
-    return { action: null, buttonType: null };
-  };
-
-  // Helper functions for backward compatibility
-  const getPrimaryAction = () => getPrimaryButtonInfo().action;
-  const getPrimaryButtonType = () => getPrimaryButtonInfo().buttonType;
+  // Computed values
+  const currentChapter = getCurrentChapter(currentVerse);
+  const chapterTitle = currentChapter ? currentChapter.chapterTitle : '';
+  const versesWithErrors = getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors);
+  const percentageCorrect = calculatePercentageCorrect(state.chapterWords, state.wordsWithErrors);
+  const buttonState = getButtonState();
+  const displayCount = Math.max(state.currentWordIndex + 1, getMinimumDisplayWords(state.currentWordIndex));
+  const isHintDisabled = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex) === -1;
 
   return (
     <>
       <GameHeader 
-        wordStatsEnabled={wordStatsEnabled}
-        onToggleWordStats={() => setWordStatsEnabled(!wordStatsEnabled)}
+        wordStatsEnabled={state.wordStatsEnabled}
+        onToggleWordStats={() => dispatch({ type: 'TOGGLE_WORD_STATS' })}
         currentVerse={currentVerse}
         onVerseChange={onVerseChange}
         gameType={gameType}
@@ -612,121 +326,50 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           rows={1}
           cols={1}
         />
-        {wordStatsEnabled && <WordStats />}
+        
+        {state.wordStatsEnabled && <WordStats />}
         
         <div className="first-letter-test-chapter-title">
-          {chapterTitle} {isReviewMode && '(Review Mode - Verses with Errors)'}
+          {chapterTitle} {state.isReviewMode && '(Review Mode - Verses with Errors)'}
         </div>
         
-        {!isSolved && (
-          <div className="controls-container">
-            <button onClick={handleReset}>
-              <FontAwesomeIcon icon={faUndo} />
-              Reset
-            </button>
-            <button 
-              onClick={findNextUnrevealedWord(currentWordIndex) === -1 ? undefined : handleHint} 
-              className={findNextUnrevealedWord(currentWordIndex) === -1 ? 'disabled' : ''}
-            >
-              <FontAwesomeIcon icon={faLightbulb} />
-              Hint
-            </button>
-          </div>
+        {!state.isSolved && (
+          <GameControls
+            onReset={handleReset}
+            onHint={handleHint}
+            isHintDisabled={isHintDisabled}
+          />
         )}
         
-        <div className="first-letter-test-verse-text">
-          {chapterWords.slice(0, Math.max(currentWordIndex + 1, getMinimumDisplayWords())).map((wordItem, wordIndex) => (
-            <span key={wordIndex}>
-              <span 
-                className={`first-letter-test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
-                  wordIndex === currentWordIndex && hasError ? 'error' : ''
-                } ${wordsWithErrors[wordIndex] ? 'error' : ''}`}
-              >
-                {revealedWords[wordIndex] 
-                  ? wordItem.text 
-                  : (wordItem.isVerseNumber && wordIndex === currentWordIndex && partialVerseInput.length > 0)
-                    ? partialVerseInput + '_'.repeat(wordItem.text.length - partialVerseInput.length)
-                    : '__'
-                }
-              </span>
-              {wordIndex < Math.max(currentWordIndex, getMinimumDisplayWords() - 1) ? ' ' : ''}
-            </span>
-          ))}
-        </div>
+        <WordDisplay
+          chapterWords={state.chapterWords}
+          revealedWords={state.revealedWords}
+          wordsWithErrors={state.wordsWithErrors}
+          currentWordIndex={state.currentWordIndex}
+          hasError={state.hasError}
+          partialVerseInput={state.partialVerseInput}
+          displayCount={displayCount}
+        />
         
-        {!isSolved && (
-          <div className="first-letter-test-instruction-text">
-            {isReviewMode 
-              ? 'Review mode: Verse numbers are shown - type first letters of words to complete these verses'
-              : 'Type verse numbers and first letters of words to reveal the chapter (first verse number is shown)'
-            }
-          </div>
+        {!state.isSolved && (
+          <InstructionText isReviewMode={state.isReviewMode} />
         )}
         
-        {isSolved && (
-          <div className="first-letter-test-solved-message">
-            <h2>Excellent! You completed the entire chapter! ({percentageCorrect}% correct)</h2>
-            <div className="first-letter-test-revealed-chapter">
-              {versesWithErrors.length > 0 ? (
-                <>
-                  <h3>Verses with errors:</h3>
-                  {versesWithErrors.map((verse) => {
-                    const originalVerseIndex = currentChapter!.verses.indexOf(verse);
-                    return renderVerseWithErrors(verse, originalVerseIndex);
-                  })}
-                </>
-              ) : (
-                <h3>Perfect! No errors in any verse!</h3>
-              )}
-            </div>
-            <div className="first-letter-test-solved-buttons">
-              {!isReviewMode && versesWithErrors.length > 0 ? (
-                <>
-                  <button onClick={handleReset} className="retry-btn solved-button-base">
-                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                  </button>
-                  <button 
-                    onClick={handleReviewErrors} 
-                    className={`review-btn solved-button-base ${getPrimaryButtonType() === 'review' ? 'primary-button' : ''}`}
-                  >
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    Review errors
-                  </button>
-                </>
-              ) : isReviewMode ? (
-                <>
-                  <button 
-                    onClick={handleExitReview} 
-                    className={`exit-review-btn solved-button-base ${getPrimaryButtonType() === 'exit-review' ? 'primary-button' : ''}`}
-                  >
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                    Back to full passage
-                  </button>
-                  {versesWithErrors.length > 0 && (
-                    <button 
-                      onClick={handleReset} 
-                      className={`retry-btn solved-button-base ${getPrimaryButtonType() === 'retry' ? 'primary-button' : ''}`}
-                    >
-                      <FontAwesomeIcon icon={faMagnifyingGlass} />
-                      Review errors
-                    </button>
-                  )}
-                </>
-              ) : (
-                <>
-                  <button onClick={handleReset} className="retry-btn solved-button-base">
-                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                  </button>
-                  <button 
-                    onClick={handleNextChapter} 
-                    className={`next-chapter-btn solved-button-base ${getPrimaryButtonType() === 'next-chapter' ? 'primary-button' : ''}`}
-                  >
-                    {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
+        {state.isSolved && (
+          <SolvedMessage
+            percentageCorrect={percentageCorrect}
+            versesWithErrors={versesWithErrors}
+            chapterWords={state.chapterWords}
+            wordsWithErrors={state.wordsWithErrors}
+            isReviewMode={state.isReviewMode}
+            primaryButtonType={buttonState.buttonType}
+            onReset={handleReset}
+            onReviewErrors={handleReviewErrors}
+            onExitReview={handleExitReview}
+            onNextChapter={handleNextChapter}
+            nextChapterReference={getNextChapterReference(currentVerse)}
+            currentChapter={currentChapter}
+          />
         )}
         
         <div className="first-letter-test-citation">
