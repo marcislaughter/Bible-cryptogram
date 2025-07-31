@@ -44,6 +44,15 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   // Ref for hidden input to handle mobile keyboard
   const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Utility function to refocus the hidden input for mobile
+  const refocusInput = (checkSolved = false) => {
+    setTimeout(() => {
+      if (hiddenInputRef.current && (!checkSolved || !isSolved)) {
+        hiddenInputRef.current.focus();
+      }
+    }, 100);
+  };
+
   // Get the current chapter based on the selected verse
   const getCurrentChapter = () => {
     const chapterRef = currentVerse.reference.includes(':') 
@@ -335,11 +344,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const handleReset = () => {
     generateNewGame(isReviewMode);
     // Refocus input after reset for mobile
-    setTimeout(() => {
-      if (hiddenInputRef.current) {
-        hiddenInputRef.current.focus();
-      }
-    }, 100);
+    refocusInput();
   };
 
   const handleReviewErrors = () => {
@@ -348,11 +353,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     setIsReviewMode(true);
     generateNewGame(true);
     // Refocus input after entering review mode for mobile
-    setTimeout(() => {
-      if (hiddenInputRef.current) {
-        hiddenInputRef.current.focus();
-      }
-    }, 100);
+    refocusInput();
   };
 
   const handleExitReview = () => {
@@ -361,11 +362,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     setWordsWithErrors([...originalWordsWithErrors]);
     generateNewGame(false);
     // Refocus input after exiting review mode for mobile
-    setTimeout(() => {
-      if (hiddenInputRef.current) {
-        hiddenInputRef.current.focus();
-      }
-    }, 100);
+    refocusInput();
   };
 
   const handleHint = () => {
@@ -393,11 +390,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     }
     
     // Refocus input after hint for mobile
-    setTimeout(() => {
-      if (hiddenInputRef.current && !isSolved) {
-        hiddenInputRef.current.focus();
-      }
-    }, 100);
+    refocusInput(true);
   };
 
   const handleVerseChange = (verse: BibleVerse) => {
@@ -428,11 +421,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     if (nextChapter.verses.length > 0) {
       onVerseChange(nextChapter.verses[0]);
       // Refocus input after changing chapter for mobile
-      setTimeout(() => {
-        if (hiddenInputRef.current) {
-          hiddenInputRef.current.focus();
-        }
-      }, 100);
+      refocusInput();
     }
   };
 
