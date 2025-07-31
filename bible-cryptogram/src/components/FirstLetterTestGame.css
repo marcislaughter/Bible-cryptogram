@@ -55,10 +55,6 @@ body.first-letter-test-high-score .citation {
   transition: all 0.3s ease;
 }
 
-.test-word.hidden {
-  color: #000000;
-}
-
 .test-word.revealed {
   color: #a3a3a3;
   animation: revealAnimation 0.5s ease;
@@ -107,6 +103,17 @@ body.first-letter-test-high-score .citation {
   }
   75% { 
     transform: translateY(-5px); 
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -173,12 +180,6 @@ body.first-letter-test-high-score .citation {
 .verse-line {
   margin-bottom: 15px;
   line-height: 1.6;
-}
-
-.verse-reference {
-  font-style: italic;
-  color: #cccccc;
-  font-size: 0.9rem;
 }
 
 .solved-buttons {
