@@ -89,6 +89,45 @@
   padding: 12px 24px;
 }
 
+/* Primary button highlighting - used across games */
+.primary-button {
+  border: 4px solid white !important;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Base styles for solved message buttons - used across games */
+.solved-button-base {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+}
+
+.solved-button-base:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific button variants */
+.retry-btn.solved-button-base {
+  padding: 15px;
+  min-width: 50px;
+  gap: 0;
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .controls-container {

@@ -45,9 +45,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
 
   // Utility function to refocus the hidden input for mobile
-  const refocusInput = (checkSolved = false) => {
+  const refocusInput = () => {
     setTimeout(() => {
-      if (hiddenInputRef.current && (!checkSolved || !isSolved)) {
+      if (hiddenInputRef.current && !isSolved) {
         hiddenInputRef.current.focus();
       }
     }, 100);
@@ -390,12 +390,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     }
     
     // Refocus input after hint for mobile
-    refocusInput(true);
+    refocusInput();
   };
 
-  const handleVerseChange = (verse: BibleVerse) => {
-    onVerseChange(verse);
-  };
+  // Removed handleVerseChange wrapper - using onVerseChange directly
 
   // Function to get the next verse reference
   const getNextChapterReference = () => {
@@ -555,42 +553,28 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     };
   }, [isSolved]);
 
-  // Function to determine which action should be primary (highlighted and triggered by Enter)
-  const getPrimaryAction = () => {
-    if (!isSolved) return null;
-    
-    if (!isReviewMode && versesWithErrors.length > 0) {
-      // Has errors to review - highlight review errors button
-      return handleReviewErrors;
-    } else if (!isReviewMode && versesWithErrors.length === 0) {
-      // No errors - highlight next chapter button
-      return handleNextChapter;
-    } else if (isReviewMode) {
-      // In review mode - highlight back to full chapter button
-      return handleExitReview;
-    }
-    
-    return null;
-  };
-
-  // Function to determine which button should have primary styling
-  const getPrimaryButtonType = (): 'review' | 'next-chapter' | 'exit-review' | 'retry' | null => {
-    if (!isSolved) return null;
+  // Function to determine primary button info (action and type) - consolidated logic
+  const getPrimaryButtonInfo = (): { action: (() => void) | null; buttonType: string | null } => {
+    if (!isSolved) return { action: null, buttonType: null };
     
     const hasErrors = wordsWithErrors.some(hasError => hasError);
     
     if (!isReviewMode && hasErrors) {
-      return 'review';
+      return { action: handleReviewErrors, buttonType: 'review' };
     } else if (!isReviewMode && !hasErrors) {
-      return 'next-chapter';
+      return { action: handleNextChapter, buttonType: 'next-chapter' };
     } else if (isReviewMode && hasErrors) {
-      return 'retry';
+      return { action: handleReset, buttonType: 'retry' };
     } else if (isReviewMode && !hasErrors) {
-      return 'exit-review';
+      return { action: handleExitReview, buttonType: 'exit-review' };
     }
     
-    return null;
+    return { action: null, buttonType: null };
   };
+
+  // Helper functions for backward compatibility
+  const getPrimaryAction = () => getPrimaryButtonInfo().action;
+  const getPrimaryButtonType = () => getPrimaryButtonInfo().buttonType;
 
   return (
     <>
@@ -598,7 +582,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         wordStatsEnabled={wordStatsEnabled}
         onToggleWordStats={() => setWordStatsEnabled(!wordStatsEnabled)}
         currentVerse={currentVerse}
-        onVerseChange={handleVerseChange}
+        onVerseChange={onVerseChange}
         gameType={gameType}
         onGameTypeChange={onGameTypeChange}
       />
@@ -698,12 +682,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
             <div className="solved-buttons">
               {!isReviewMode && versesWithErrors.length > 0 ? (
                 <>
-                  <button onClick={handleReset} className="retry-btn">
+                  <button onClick={handleReset} className="retry-btn solved-button-base">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                   </button>
                   <button 
                     onClick={handleReviewErrors} 
-                    className={`review-btn ${getPrimaryButtonType() === 'review' ? 'primary-button' : ''}`}
+                    className={`review-btn solved-button-base ${getPrimaryButtonType() === 'review' ? 'primary-button' : ''}`}
                   >
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                     Review errors
@@ -713,7 +697,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                 <>
                   <button 
                     onClick={handleExitReview} 
-                    className={`exit-review-btn ${getPrimaryButtonType() === 'exit-review' ? 'primary-button' : ''}`}
+                    className={`exit-review-btn solved-button-base ${getPrimaryButtonType() === 'exit-review' ? 'primary-button' : ''}`}
                   >
                     <FontAwesomeIcon icon={faArrowLeft} />
                     Back to full passage
@@ -721,7 +705,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                   {versesWithErrors.length > 0 && (
                     <button 
                       onClick={handleReset} 
-                      className={`retry-btn ${getPrimaryButtonType() === 'retry' ? 'primary-button' : ''}`}
+                      className={`retry-btn solved-button-base ${getPrimaryButtonType() === 'retry' ? 'primary-button' : ''}`}
                     >
                       <FontAwesomeIcon icon={faMagnifyingGlass} />
                       Review errors
@@ -730,12 +714,12 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
                 </>
               ) : (
                 <>
-                  <button onClick={handleReset} className="retry-btn">
+                  <button onClick={handleReset} className="retry-btn solved-button-base">
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                   </button>
                   <button 
                     onClick={handleNextChapter} 
-                    className={`next-chapter-btn ${getPrimaryButtonType() === 'next-chapter' ? 'primary-button' : ''}`}
+                    className={`next-chapter-btn solved-button-base ${getPrimaryButtonType() === 'next-chapter' ? 'primary-button' : ''}`}
                   >
                     {getNextChapterReference()} <FontAwesomeIcon icon={faArrowRight} />
                   </button>
