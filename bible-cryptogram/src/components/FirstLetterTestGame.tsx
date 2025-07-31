@@ -6,6 +6,7 @@ import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowRotateLeft, faLightbulb, faUndo, faMagnifyingGlass, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterTestGame.css';
+import './Controls.css';
 
 interface FirstLetterTestGameProps {
   gameType?: import('./GameHeader').GameType;
@@ -645,15 +646,14 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         </div>
         
         {!isSolved && (
-          <div className="top-controls">
-            <button onClick={handleReset} className="reset-btn">
+          <div className="controls-container">
+            <button onClick={handleReset}>
               <FontAwesomeIcon icon={faUndo} />
               Reset
             </button>
             <button 
-              onClick={handleHint} 
-              className="hint-btn"
-              disabled={findNextUnrevealedWord(currentWordIndex) === -1}
+              onClick={findNextUnrevealedWord(currentWordIndex) === -1 ? undefined : handleHint} 
+              className={findNextUnrevealedWord(currentWordIndex) === -1 ? 'disabled' : ''}
             >
               <FontAwesomeIcon icon={faLightbulb} />
               Hint

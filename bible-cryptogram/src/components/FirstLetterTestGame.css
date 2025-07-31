@@ -34,14 +34,6 @@ body.first-letter-test-high-score .citation {
   color: #000000;
 }
 
-.top-controls {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
 /* Button styles are now handled by the centralized Controls.css */
 
 .chapter-title {
