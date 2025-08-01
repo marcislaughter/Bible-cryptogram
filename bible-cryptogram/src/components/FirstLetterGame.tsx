@@ -600,14 +600,15 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               <button onClick={handleRepeatVerse} className="solved-button-base retry-btn">
                 <FontAwesomeIcon icon={faArrowRotateLeft} />
               </button>
-              {difficultyLevel < 5 && (
+              {difficultyLevel < 5 ? (
                 <button onClick={handleNextLevel} className="solved-button-base">
                   Next Level <FontAwesomeIcon icon={faArrowUp} />
                 </button>
+              ) : (
+                <button onClick={handleNextVerse} className="solved-button-base">
+                  {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
+                </button>
               )}
-              <button onClick={handleNextVerse} className="solved-button-base">
-                {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
-              </button>
             </div>
           </div>
         )}
