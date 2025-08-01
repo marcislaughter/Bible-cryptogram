@@ -678,7 +678,7 @@ const ReferenceMatchGame: React.FC<ReferenceMatchGameProps> = ({
             </div>
             
             <div className="solved-buttons">
-              <button onClick={handleNextVerse} className="next-verse-btn">
+              <button onClick={handleNextVerse} className="next-verse-btn solved-button-base">
                 Next Game <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>

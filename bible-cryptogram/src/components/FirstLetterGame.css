@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* Changed back to 'center' to center all child elements */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-mono);
   position: relative;
   padding: 0 10px;
 }
@@ -215,9 +215,9 @@ body.first-letter-win-gradient .first-letter-citation {
 .first-letter-difficulty-label {
   font-size: 1rem;
   font-weight: bold;
-  color: #800080;
+  color: var(--color-purple);
   margin-bottom: 15px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-mono);
 }
 
 .first-letter-stepper-container {
@@ -230,14 +230,14 @@ body.first-letter-win-gradient .first-letter-citation {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #800080;
+  border: 2px solid var(--color-purple);
   background-color: white;
-  color: #800080;
+  color: var(--color-purple);
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
+  transition: var(--transition-smooth);
+  font-family: var(--font-mono);
   display: flex;
   align-items: center;
   justify-content: center;

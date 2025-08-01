@@ -351,15 +351,15 @@ const UnscrambleGame: React.FC<UnscrambleGameProps> = ({
                 
                 return (
                   <>
-                                         <button 
-                       onClick={handleRepeatVerse} 
-                       className={`repeat-verse-btn ${!isPrimaryNext ? 'primary-button' : ''}`}
-                     >
-                       <FontAwesomeIcon icon={faRotateLeft} />
-                     </button>
+                                                             <button 
+                      onClick={handleRepeatVerse} 
+                      className={`repeat-verse-btn solved-button-base ${!isPrimaryNext ? 'primary-button' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faRotateLeft} />
+                    </button>
                     <button 
                       onClick={handleNextVerse} 
-                      className={`next-verse-btn ${isPrimaryNext ? 'primary-button' : ''}`}
+                      className={`next-verse-btn solved-button-base ${isPrimaryNext ? 'primary-button' : ''}`}
                     >
                       {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
                     </button>

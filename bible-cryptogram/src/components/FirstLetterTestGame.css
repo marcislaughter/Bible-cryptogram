@@ -5,7 +5,7 @@
   font-size: 1.2rem;
   text-align: left;
   padding: 20px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-mono);
   position: relative;
   background-color: #000000;
   min-height: 100vh;

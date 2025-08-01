@@ -1,3 +1,40 @@
+:root {
+  /* Colors */
+  --color-purple: #800080;
+  --color-light-purple: #e6ccff;
+  --color-success: #3da542;
+  --color-error: #ff0000;
+  --color-gray: #808080;
+  --color-dark-gray: #666666;
+  --color-text-muted: #999999;
+  
+  /* Glass effect backgrounds */
+  --glass-bg-light: rgba(255, 255, 255, 0.1);
+  --glass-bg-medium: rgba(255, 255, 255, 0.2);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.3);
+  --purple-bg: rgba(128, 0, 128, 0.2);
+  
+  /* Typography */
+  --font-mono: 'Courier New', Courier, monospace;
+  
+  /* Effects */
+  --blur-effect: blur(5px);
+  --hover-transform: translateY(-2px);
+  --transition-smooth: all 0.3s ease;
+  --transition-fast: all 0.2s ease;
+  
+  /* Spacing */
+  --border-radius-small: 8px;
+  --border-radius-medium: 15px;
+  --border-radius-large: 20px;
+  --border-radius-pill: 25px;
+  
+  /* Shadows */
+  --shadow-purple: 0 4px 12px rgba(128, 0, 128, 0.3);
+  --shadow-white: 0 0 15px rgba(255, 255, 255, 0.5);
+  --shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 body {
   min-height: 100vh;
   min-width: 100vw;
