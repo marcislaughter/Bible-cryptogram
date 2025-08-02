@@ -1,5 +1,3 @@
-import type { BibleVerse } from '../data/bibleVerses';
-
 export interface WordItem {
   text: string;
   isVerseNumber: boolean;
