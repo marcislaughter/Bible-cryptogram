@@ -128,9 +128,11 @@
   left: auto;
 }
 
-.cryptogram-dropdown .menu-dropdown {
+.gametype-dropdown .menu-dropdown {
   left: 0;
   right: auto;
+  width: max-content;
+  max-width: 200px;
 }
 
 .verse-dropdown .menu-dropdown {
