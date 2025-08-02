@@ -448,6 +448,21 @@ const Game: React.FC<CryptogramGameProps> = ({
     };
   }, [isSolved]);
 
+  // Handle Enter key for primary button (Next Verse)
+  useEffect(() => {
+    if (!isSolved) return;
+    
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleNextVerse();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [isSolved]);
+
   return (
     <>
       <GameHeader 
@@ -539,7 +554,7 @@ const Game: React.FC<CryptogramGameProps> = ({
               <button onClick={handleRandomVerse} className="next-verse-btn solved-button-base">
                 Random Verse
               </button>
-              <button onClick={handleNextVerse} className="next-verse-btn solved-button-base">
+              <button onClick={handleNextVerse} className="next-verse-btn solved-button-base primary-button">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>
