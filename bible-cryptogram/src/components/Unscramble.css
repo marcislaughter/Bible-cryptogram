@@ -6,9 +6,9 @@
   font-family: var(--font-mono);
   position: relative;
   padding: 0 10px;
-  background: #121212;
+  background: var(--color-bg-dark);
   min-height: 100vh;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
 }
 
 body.unscramble-win-gradient .unscramble-container {
@@ -25,7 +25,7 @@ body.unscramble-win-gradient .unscramble-container {
 
 .word-item {
   background: transparent;
-  border: 2px solid #800080;
+  border: 2px solid var(--color-purple);
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -35,20 +35,20 @@ body.unscramble-win-gradient .unscramble-container {
 }
 
 .word-item.current-word {
-  border-color: #800080;
+  border-color: var(--color-purple);
   box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
   border-width: 5px;
 }
 
 .word-item.solved-word {
   background: rgba(61, 165, 66, 0.1);
-  border-color: #3da542;
+  border-color: var(--color-success);
   animation: solveAnimation 0.5s ease;
 }
 
 .word-item.hint-revealed {
   background: rgba(255, 152, 0, 0.1);
-  border-color: #ff9800;
+  border-color: var(--color-orange-hint);
 }
 
 @keyframes solveAnimation {
@@ -67,7 +67,7 @@ body.unscramble-win-gradient .unscramble-container {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   letter-spacing: 1px;
   user-select: none;
 }
@@ -90,12 +90,12 @@ body.unscramble-win-gradient .unscramble-container {
   height: 40px;
   text-align: center;
   font-size: 1.1rem;
-  border: 1px solid #800080;
+  border: 1px solid var(--color-purple);
   text-transform: uppercase;
-  background-color: #e6ccff;
+  background-color: var(--color-light-purple);
   cursor: pointer;
-  caret-color: white;
-  color: #800080;
+  caret-color: var(--color-white);
+  color: var(--color-purple);
   transition: all 0.2s ease;
   font-weight: bold;
   border-radius: 3px;
@@ -103,12 +103,12 @@ body.unscramble-win-gradient .unscramble-container {
 }
 
 .word-input:focus {
-  background-color: #3da542;
-  border-color: #3da542;
-  color: white;
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-white);
   outline: none;
   user-select: none;
-  caret-color: white;
+  caret-color: var(--color-white);
   position: relative;
 }
 
@@ -119,9 +119,9 @@ body.unscramble-win-gradient .unscramble-container {
 
 
 .word-input.incorrect {
-  background-color: #e6ccff;
-  border-color: #800080;
-  color: #ff0000;
+  background-color: var(--color-light-purple);
+  border-color: var(--color-purple);
+  color: var(--color-error);
   animation: shake 0.3s ease;
 }
 
@@ -134,11 +134,11 @@ body.unscramble-win-gradient .unscramble-container {
 .solved-word-display {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #3da542;
+  color: var(--color-success);
   padding: 10px;
   background: rgba(61, 165, 66, 0.1);
   border-radius: 5px;
-  border: 1px solid #3da542;
+  border: 1px solid var(--color-success);
   min-height: 20px;
   display: flex;
   align-items: center;
@@ -148,7 +148,7 @@ body.unscramble-win-gradient .unscramble-container {
 
 .word-placeholder {
   font-size: 1.5rem;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   font-weight: bold;
   user-select: none;
 }
@@ -157,8 +157,8 @@ body.unscramble-win-gradient .unscramble-container {
   text-align: center;
   margin: 20px 0;
   padding: 20px;
-  background: linear-gradient(135deg, #800080 0%, #3da542 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-success) 100%);
+  color: var(--color-white);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
@@ -184,7 +184,7 @@ body.unscramble-win-gradient .unscramble-container {
   font-size: 1.1rem;
   margin: 15px 0;
   font-weight: bold;
-  color: white;
+  color: var(--color-white);
 }
 
 .reference {
@@ -221,7 +221,7 @@ body.unscramble-win-gradient .unscramble-container {
 
 /* Unscramble win gradient - static purple to green */
 body.unscramble-win-gradient {
-  background: linear-gradient(45deg, #800080, #3da542) !important;
+  background: linear-gradient(45deg, var(--color-purple), var(--color-success)) !important;
   background-attachment: fixed;
 }
 
@@ -229,7 +229,7 @@ body.unscramble-win-gradient {
   margin: 40px 0 20px 0;
   text-align: center;
   font-size: 0.8rem;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   line-height: 1.4;
   max-width: 600px;
 }
@@ -237,7 +237,7 @@ body.unscramble-win-gradient {
 /* Ensure citation is visible on purple/green gradient */
 body.unscramble-win-gradient .citation,
 .citation.dark-text {
-  color: #000000;
+  color: var(--color-black);
 }
 
 @media screen and (max-width: 768px) {

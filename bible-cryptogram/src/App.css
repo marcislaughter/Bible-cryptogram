@@ -1,12 +1,65 @@
 :root {
   /* Colors */
+  /* Primary Theme Colors */
   --color-purple: #800080;
+  --color-purple-light: #9c1a9c;
+  --color-purple-hover: #9900cc;
   --color-light-purple: #e6ccff;
   --color-success: #3da542;
+  --color-success-light: #a7d379;
   --color-error: #ff0000;
+  --color-error-light: #ff9999;
+  --color-stepper-hover: #f0e6ff;
+  
+  /* Basic Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  /* Gray Scale */
   --color-gray: #808080;
   --color-dark-gray: #666666;
+  --color-light-gray: #a3a3a3;
   --color-text-muted: #999999;
+  --color-text-light: #e0e0e0;
+  
+  /* Additional Gray Shades for UI Elements */
+  --color-gray-darker: #2a2a2a;
+  --color-gray-dark-medium: #3a3a3a;
+  --color-gray-medium: #444444;
+  --color-gray-light-medium: #4a4a4a;
+  --color-gray-lighter: #555555;
+  --color-border-medium: #444;
+  
+  /* Link Colors */
+  --color-link-blue: #66b3ff;
+  --color-link-blue-hover: #4da6ff;
+  --color-link-visited: #b399ff;
+  
+  /* Background Colors */
+  --color-bg-dark: #121212;
+  --color-bg-dark-primary: #2c2c2c;
+  --color-bg-dark-secondary: #1a1a1a;
+  --color-dropdown-bg: #333333;
+  --color-input-bg: #333;
+  
+  /* Color Wheel Colors (from theme.ts) */
+  --color-dark-blue: #00008B;
+  --color-red: #8B0000;
+  --color-green: #006400;
+  --color-orange: #FF8C00;
+  --color-orange-hint: #ff9800;
+  --color-purple-wheel: #9370DB;
+  --color-cyan: #00FFFF;
+  --color-brown: #8B4513;
+  --color-lime: #00FF00;
+  --color-yellow: #FFFF00;
+  --color-pink: #FF69B4;
+  
+  /* Transparent Color Variations */
+  --color-dark-blue-transparent: rgba(0, 0, 139, 0.3);
+  --color-success-transparent: rgba(61, 165, 66, 0.1);
+  --color-orange-transparent: rgba(255, 152, 0, 0.1);
+  --color-light-gray-transparent: rgba(163, 163, 163, 0.1);
   
   /* Glass effect backgrounds */
   --glass-bg-light: rgba(255, 255, 255, 0.1);
@@ -43,7 +96,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #121212;
+  background: var(--color-bg-dark);
   transition: background 0.5s ease;
 }
 
@@ -53,8 +106,8 @@ body {
   text-align: center;
   margin: 20px 0;
   padding: 20px;
-  background: linear-gradient(135deg, #800080 0%, #3da542 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-success) 100%);
+  color: var(--color-white);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
@@ -86,7 +139,7 @@ body {
 
 .citation {
   text-align: center;
-  color: #666666;
+  color: var(--color-dark-gray);
   font-size: 0.8rem;
   margin-top: 40px;
   margin-bottom: 20px;
@@ -98,8 +151,8 @@ body {
 /* words stats - shared by multiple games */
 
 .word-stats {
-  background: #e6ccff;
-  border: 2px solid #800080;
+  background: var(--color-light-purple);
+  border: 2px solid var(--color-purple);
   border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
@@ -108,7 +161,7 @@ body {
 }
 
 .word-stats h3 {
-  color: #800080;
+  color: var(--color-purple);
   text-align: center;
   margin-bottom: 15px;
   font-size: 1.4rem;
@@ -116,7 +169,7 @@ body {
 }
 
 .stats-content {
-  color: #333;
+  color: var(--color-input-bg);
   line-height: 1.4;
   padding-left: 20px;
 }
@@ -124,7 +177,7 @@ body {
 .stats-content div {
   margin-bottom: 5px;
   padding: 5px;
-  background-color: #e6ccff;
+  background-color: var(--color-light-purple);
   border-radius: 6px;
   padding-left: 1em;
   text-indent: -1em;
@@ -132,7 +185,7 @@ body {
 }
 
 .stats-content strong {
-  color: #800080;
+  color: var(--color-purple);
 }
 
 /* top menu - shared by all games */
@@ -143,7 +196,7 @@ body {
   left: 0;
   right: 0;
   height: 50px;
-  background-color: #800080;
+  background-color: var(--color-purple);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
@@ -166,7 +219,7 @@ body {
 }
 
 .help-btn {
-  color: #e6ccff;
+  color: var(--color-light-purple);
   font-size: 1.2rem;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -188,7 +241,7 @@ body {
 .hamburger-button {
   background: none;
   border: none;
-  color: #e6ccff;
+  color: var(--color-light-purple);
   font-size: 20px;
   padding: 0px;
   cursor: pointer;
@@ -199,5 +252,5 @@ body {
 }
 
 .hamburger-button:hover {
-  color: white;
+  color: var(--color-white);
 }

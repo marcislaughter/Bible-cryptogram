@@ -15,7 +15,7 @@
   gap: 15px;
   row-gap: 8px;
   padding: 10px;
-  border: 2px solid #800080;
+  border: 2px solid var(--color-purple);
   border-radius: 10px;
   margin: 0 auto; /* Changed back to '0 auto' for centering */
   max-width: 95%;
@@ -40,12 +40,12 @@
   height: 40px;
   text-align: center;
   font-size: 1.1rem;
-  border: 2px solid #800080;
+  border: 2px solid var(--color-purple);
   text-transform: uppercase;
-  background-color: #e6ccff;
+  background-color: var(--color-light-purple);
   cursor: pointer;
   caret-color: transparent;
-  color: #800080;
+  color: var(--color-purple);
   transition: all 0.2s ease;
   font-weight: bold;
   border-radius: 5px;
@@ -53,16 +53,16 @@
 }
 
 .first-letter-input:focus {
-  background-color: #3da542;
-  border-color: #3da542;
-  color: white;
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-white);
   outline: none;
 }
 
 .first-letter-input.incorrect {
-  background-color: #ff9999;
-  border-color: #ff0000;
-  color: #ff0000;
+  background-color: var(--color-error-light);
+  border-color: var(--color-error);
+  color: var(--color-error);
   animation: shake 0.3s ease;
 }
 
@@ -86,14 +86,14 @@
 .word-display.hidden {
   background-color: transparent;
   border: none;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   font-size: 1rem;
 }
 
 .word-display.revealed {
   background-color: transparent;
   border: none;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   font-size: 1rem;
   animation: revealAnimation 0.5s ease;
 }
@@ -101,14 +101,14 @@
 .word-display.always-visible {
   background-color: transparent;
   border: none;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   font-size: 1rem;
 }
 
 .word-display.correct-word-red {
   background-color: transparent;
   border: none;
-  color: #ff0000;
+  color: var(--color-error);
   font-size: 1rem;
   font-weight: bold;
   animation: correctWordFlash 1s ease;
@@ -118,31 +118,31 @@
   0% {
     transform: scale(1);
     background-color: transparent;
-    color: #a3a3a3;
+    color: var(--color-light-gray);
   }
   50% {
     transform: scale(1.1);
     background-color: transparent;
-    color: #a3a3a3;
+    color: var(--color-light-gray);
   }
   100% {
     transform: scale(1);
     background-color: transparent;
-    color: #a3a3a3;
+    color: var(--color-light-gray);
   }
 }
 
 @keyframes correctWordFlash {
   0% {
-    color: #ff0000;
+    color: var(--color-error);
     transform: scale(1);
   }
   50% {
-    color: #ff0000;
+    color: var(--color-error);
     transform: scale(1.1);
   }
   100% {
-    color: #ff0000;
+    color: var(--color-error);
     transform: scale(1);
   }
 }
@@ -151,8 +151,8 @@
   text-align: center;
   margin: 20px auto;
   padding: 10px;
-  background: linear-gradient(135deg, #800080 0%, #3da542 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-success) 100%);
+  color: var(--color-white);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
@@ -179,7 +179,7 @@
   font-size: 1.1rem;
   margin: 15px 0;
   font-weight: bold;
-  color: white;
+  color: var(--color-white);
 }
 
 .first-letter-reference {
@@ -207,13 +207,13 @@
 
 /* First Letter win gradient */
 body.first-letter-win-gradient {
-  background: linear-gradient(45deg, #800080, #3da542);
+  background: linear-gradient(45deg, var(--color-purple), var(--color-success));
   background-attachment: fixed;
 }
 
 /* Ensure citation remains black when win message is displayed */
 body.first-letter-win-gradient .first-letter-citation {
-  color: #000000;
+  color: var(--color-black);
 }
 
 /* Style difficulty stepper when win screen is showing */
@@ -222,18 +222,18 @@ body.first-letter-win-gradient .first-letter-difficulty-stepper {
 }
 
 body.first-letter-win-gradient .first-letter-difficulty-label {
-  color: white;
+  color: var(--color-white);
 }
 
 body.first-letter-win-gradient .first-letter-error-label {
-  color: white;
+  color: var(--color-white);
 }
 
 .first-letter-citation {
   margin: 40px 0 20px 0;
   text-align: center;
   font-size: 0.8rem;
-  color: #a3a3a3;
+  color: var(--color-light-gray);
   line-height: 1.4;
   max-width: 600px;
 }
@@ -278,7 +278,7 @@ body.first-letter-win-gradient .first-letter-error-label {
   height: 40px;
   border-radius: 50%;
   border: 2px solid var(--color-purple);
-  background-color: white;
+  background-color: var(--color-white);
   color: var(--color-purple);
   font-size: 1.1rem;
   font-weight: bold;
@@ -291,19 +291,19 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-stepper-button:hover {
-  background-color: #f0e6ff;
+  background-color: var(--color-stepper-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(128, 0, 128, 0.2);
 }
 
 .first-letter-stepper-button.active {
-  background-color: #800080;
-  color: white;
+  background-color: var(--color-purple);
+  color: var(--color-white);
   box-shadow: 0 4px 15px rgba(128, 0, 128, 0.3);
 }
 
 .first-letter-stepper-button.active:hover {
-  background-color: #9900cc;
+  background-color: var(--color-purple-hover);
   transform: translateY(-2px);
 }
 
@@ -332,8 +332,8 @@ body.first-letter-win-gradient .first-letter-error-label {
   padding: 8px 15px;
   border: none;
   border-radius: 8px;
-  background-color: #800080;
-  color: #e6ccff;
+  background-color: var(--color-purple);
+  color: var(--color-light-purple);
   font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
@@ -348,13 +348,13 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-error-dropdown:hover {
-  background-color: #9900cc;
-  color: #e6ccff;
+  background-color: var(--color-purple-hover);
+  color: var(--color-light-purple);
 }
 
 .first-letter-error-dropdown:focus {
   outline: none;
-  background-color: #9900cc;
+  background-color: var(--color-purple-hover);
   box-shadow: 0 2px 8px rgba(128, 0, 128, 0.3);
 }
 
@@ -363,7 +363,7 @@ body.first-letter-win-gradient .first-letter-error-label {
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #333333;
+  background-color: var(--color-dropdown-bg);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -372,7 +372,7 @@ body.first-letter-win-gradient .first-letter-error-label {
 
 .first-letter-error-dropdown-item {
   padding: 12px 15px;
-  color: #e6ccff;
+  color: var(--color-light-purple);
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 0.9rem;
@@ -389,12 +389,12 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-error-dropdown-item:hover {
-  background-color: #666666;
+  background-color: var(--color-dark-gray);
 }
 
 .first-letter-error-dropdown-item.selected {
-  background-color: #800080;
-  color: #e6ccff;
+  background-color: var(--color-purple);
+  color: var(--color-light-purple);
 }
 
 /* Tablet sizing (1024px and below) */
@@ -431,27 +431,27 @@ body.first-letter-win-gradient .first-letter-error-label {
     font-size: 16px;
     
     /* Ensure consistent text color on mobile */
-    -webkit-text-fill-color: #800080;
+    -webkit-text-fill-color: var(--color-purple);
     -webkit-appearance: none;
     appearance: none;
   }
   
   .first-letter-input:focus {
     /* Force white text color on focus for mobile */
-    color: white !important;
-    -webkit-text-fill-color: white !important;
+    color: var(--color-white) !important;
+    -webkit-text-fill-color: var(--color-white) !important;
     
     /* Ensure focus background is visible */
-    background-color: #3da542 !important;
-    border-color: #3da542 !important;
+    background-color: var(--color-success) !important;
+    border-color: var(--color-success) !important;
   }
   
   /* Ensure incorrect state overrides focus state on mobile */
   .first-letter-input.incorrect:focus {
-    background-color: #ff9999 !important;
-    border-color: #ff0000 !important;
-    color: #ff0000 !important;
-    -webkit-text-fill-color: #ff0000 !important;
+    background-color: var(--color-error-light) !important;
+    border-color: var(--color-error) !important;
+    color: var(--color-error) !important;
+    -webkit-text-fill-color: var(--color-error) !important;
   }
   
   .word-display {

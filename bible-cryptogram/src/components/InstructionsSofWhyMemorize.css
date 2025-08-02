@@ -1,7 +1,7 @@
 /* Instructions Panel Styles */
 .instructions-panel {
-  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-  border: 2px solid #a3a3a3;
+  background: linear-gradient(135deg, var(--color-bg-dark-primary) 0%, var(--color-bg-dark-secondary) 100%);
+  border: 2px solid var(--color-light-gray);
   border-radius: 15px;
   padding: 25px;
   margin: 20px 0;
@@ -11,7 +11,7 @@
 }
 
 .instructions-panel h2 {
-  color: #800080;
+  color: var(--color-purple);
   text-align: center;
   margin-bottom: 20px;
   font-size: 1.8rem;
@@ -19,17 +19,17 @@
 }
 
 .instructions-content h3 {
-  color: #800080;
+  color: var(--color-purple);
   margin: 20px 0 10px 0;
   font-size: 1.3rem;
-  border-bottom: 2px solid #a3a3a3;
+  border-bottom: 2px solid var(--color-light-gray);
   padding-bottom: 5px;
 }
 
 .instructions-content p {
   line-height: 1.6;
   margin-bottom: 15px;
-  color: #e0e0e0;
+  color: var(--color-text-light);
 }
 
 .instructions-content ul {
@@ -39,18 +39,18 @@
 
 .instructions-content li {
   margin-bottom: 8px;
-  color: #e0e0e0;
+  color: var(--color-text-light);
 }
 
 .instructions-content strong {
-  color: #800080;
+  color: var(--color-purple);
   font-weight: bold;
 }
 
 /* Instructions Page Styles */
 .instructions-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  background: linear-gradient(135deg, var(--color-bg-dark-secondary) 0%, var(--color-bg-dark-primary) 100%);
   padding: 20px;
   font-family: var(--font-mono);
 }
@@ -58,15 +58,15 @@
 .instructions-container {
   max-width: 1600px;
   margin: 0 auto;
-  background: #2c2c2c;
-  border: 1px solid #444;
+  background: var(--color-bg-dark-primary);
+  border: 1px solid var(--color-border-medium);
   border-radius: 15px;
   padding: 40px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .instructions-container h1 {
-  color: #800080;
+  color: var(--color-purple);
   text-align: center;
   margin-bottom: 30px;
   font-size: 2.5rem;
@@ -74,17 +74,17 @@
 }
 
 .instructions-content h2 {
-  color: #800080;
+  color: var(--color-purple);
   margin: 30px 0 15px 0;
   font-size: 1.5rem;
-  border-bottom: 2px solid #a3a3a3;
+  border-bottom: 2px solid var(--color-light-gray);
   padding-bottom: 8px;
 }
 
 .instructions-content p {
   line-height: 1.6;
   margin-bottom: 20px;
-  color: #e0e0e0;
+  color: var(--color-text-light);
   font-size: 1.1rem;
 }
 
@@ -95,12 +95,12 @@
 
 .instructions-content li {
   margin-bottom: 10px;
-  color: #e0e0e0;
+  color: var(--color-text-light);
   font-size: 1.1rem;
 }
 
 .instructions-content strong {
-  color: #800080;
+  color: var(--color-purple);
   font-weight: bold;
 }
 
@@ -108,16 +108,16 @@
   text-align: center;
   margin-top: 40px;
   padding-top: 30px;
-  border-top: 2px solid #a3a3a3;
+  border-top: 2px solid var(--color-light-gray);
 }
 
 .back-btn {
   padding: 12px 24px;
   font-size: 1.1rem;
   font-weight: bold;
-  background: #800080;
-  color: white;
-  border: 2px solid #a3a3a3;
+  background: var(--color-purple);
+  color: var(--color-white);
+  border: 2px solid var(--color-light-gray);
   border-radius: 35px;
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -127,10 +127,10 @@
 }
 
 .back-btn:hover {
-  background: #9c1a9c;
+  background: var(--color-purple-light);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  color: white;
+  color: var(--color-white);
   text-decoration: none;
 }
 
@@ -143,8 +143,8 @@
   font-size: 1rem;
   font-weight: bold;
   background: var(--color-purple);
-  color: white;
-  border: 2px solid #a3a3a3;
+  color: var(--color-white);
+  border: 2px solid var(--color-light-gray);
   border-radius: var(--border-radius-pill);
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -155,34 +155,34 @@
 }
 
 .top-back-btn:hover {
-  background: #9c1a9c;
+  background: var(--color-purple-light);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  color: white;
+  color: var(--color-white);
   text-decoration: none;
 }
 
 /* Link styles for better readability */
 .instructions-content a {
-  color: #66b3ff;
+  color: var(--color-link-blue);
   text-decoration: underline;
-  text-decoration-color: #800080;
+  text-decoration-color: var(--color-purple);
   transition: color 0.3s ease;
 }
 
 .instructions-content a:hover {
-  color: #4da6ff;
+  color: var(--color-link-blue-hover);
   text-decoration: none;
 }
 
 .instructions-content a:visited {
-  color: #b399ff;
+  color: var(--color-link-visited);
 }
 
 /* Color Wheel Styles */
 .color-wheel-container {
-  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-  border: 2px solid #a3a3a3;
+  background: linear-gradient(135deg, var(--color-bg-dark-primary) 0%, var(--color-bg-dark-secondary) 100%);
+  border: 2px solid var(--color-light-gray);
   border-radius: 15px;
   padding: 25px;
   margin: 30px 0;
@@ -190,7 +190,7 @@
 }
 
 .color-wheel-container h2 {
-  color: #800080;
+  color: var(--color-purple);
   text-align: center;
   margin-bottom: 25px;
   font-size: 1.8rem;
@@ -220,7 +220,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #a3a3a3;
+  border: 3px solid var(--color-light-gray);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
   position: relative;
@@ -228,20 +228,20 @@
 
 .color-circle:hover {
   transform: scale(1.1);
-  border-color: #800080;
+  border-color: var(--color-purple);
   box-shadow: 0 6px 15px rgba(128, 0, 128, 0.4);
 }
 
 .color-number {
   font-size: 1.6rem;
   font-weight: bold;
-  color: white;
+  color: var(--color-white);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   z-index: 1;
 }
 
 .color-name {
-  color: #e0e0e0;
+  color: var(--color-text-light);
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
@@ -256,7 +256,7 @@
 .color-segment:nth-child(6) .color-number, /* light purple */
 .color-segment:nth-child(7) .color-number, /* light pink */
 .color-segment:nth-child(10) .color-number /* silver */ {
-  color: #000000;
+  color: var(--color-black);
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
 }
 
