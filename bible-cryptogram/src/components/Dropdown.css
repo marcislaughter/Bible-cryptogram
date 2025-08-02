@@ -1,3 +1,10 @@
+/* ===== GENERAL DROPDOWN STYLES ===== */
+/* These styles apply to all dropdown types (gametype, verses, hamburger) */
+
+.general-dropdown {
+  position: relative;
+}
+
 .dropdown-left {
   left: 0;
   right: auto;
@@ -66,7 +73,26 @@
   color: var(--color-light-purple);
 }
 
-/* Gametype dropdown styles */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hamburger menu positioning (applies to all dropdown types) */
+.hamburger-menu .menu-dropdown {
+  right: 0;
+  left: auto;
+}
+
+/* ===== GAMETYPE DROPDOWN STYLES ===== */
+/* These styles apply only to the gametype dropdown */
+
 .gametype-dropdown {
   margin-left: 0px;
 }
@@ -97,7 +123,26 @@
   transform: translateY(2px);
 }
 
-/* Hierarchical dropdown styles */
+.gametype-dropdown .menu-dropdown {
+  left: 0;
+  right: auto;
+  width: max-content;
+  max-width: 200px;
+}
+
+/* ===== VERSES DROPDOWN STYLES ===== */
+/* These styles apply only to the verses dropdown (hierarchical structure) */
+
+.verses-dropdown {
+  position: relative;
+}
+
+.verses-dropdown .menu-dropdown {
+  left: auto;
+  right: auto;
+}
+
+/* Chapter-specific styles */
 .chapter-item {
   display: flex;
   align-items: center;
@@ -117,6 +162,7 @@
   transition: transform 0.2s ease;
 }
 
+/* Verse-specific styles */
 .verse-list {
   background-color: var(--color-bg-dark-primary);
 }
@@ -141,34 +187,3 @@
 .verse-item.current-verse:hover {
   background-color: var(--color-purple);
 }
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Update dropdown positioning for hamburger menu */
-.hamburger-menu .menu-dropdown {
-  right: 0;
-  left: auto;
-}
-
-.gametype-dropdown .menu-dropdown {
-  left: 0;
-  right: auto;
-  width: max-content;
-  max-width: 200px;
-}
-
-.verse-dropdown .menu-dropdown {
-  left: auto;
-  right: auto;
-}
-
- 
