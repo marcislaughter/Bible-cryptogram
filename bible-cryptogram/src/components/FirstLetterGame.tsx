@@ -37,6 +37,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
   const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
+  const [lastFocusedWordIndex, setLastFocusedWordIndex] = useState<number | null>(null);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -103,6 +104,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setHintsUsed(0);
     setIncorrectGuesses(0);
     setShowingCorrectWord(null);
+    setLastFocusedWordIndex(null);
   };
 
   useEffect(() => {
@@ -384,6 +386,10 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
   // Focus handler
   const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Track the last focused word index
+    const wordIndex = parseInt(e.target.dataset.wordIndex!);
+    setLastFocusedWordIndex(wordIndex);
+    
     // Mobile keyboard compatibility
     e.target.value = '';
     setTimeout(() => {
@@ -398,6 +404,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setHintsUsed(0);
     setIncorrectGuesses(0);
     setShowingCorrectWord(null);
+    setLastFocusedWordIndex(null);
     isAdvancingFocus.current = false;
     generateNewGame();
   };
@@ -405,10 +412,22 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const handleHint = () => {
     if (isSolved) return;
     
-    // Find the first word that hasn't been guessed correctly yet
-    const nextWordIndex = originalWords.findIndex((word, index) => {
-      return hiddenWordIndices.includes(index) && guesses[index] !== word[0];
-    });
+    let nextWordIndex = -1;
+    
+    // First, check if we have a tracked last focused word that needs a hint
+    if (lastFocusedWordIndex !== null && 
+        lastFocusedWordIndex >= 0 && 
+        lastFocusedWordIndex < originalWords.length &&
+        guesses[lastFocusedWordIndex] !== originalWords[lastFocusedWordIndex][0]) {
+      nextWordIndex = lastFocusedWordIndex;
+    }
+    
+    // If no valid last focused word, fall back to finding the first unguessed hidden word
+    if (nextWordIndex === -1) {
+      nextWordIndex = originalWords.findIndex((word, index) => {
+        return hiddenWordIndices.includes(index) && guesses[index] !== word[0];
+      });
+    }
     
     if (nextWordIndex === -1) return; // All words are already correctly guessed
     
