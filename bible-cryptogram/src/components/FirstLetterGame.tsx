@@ -436,16 +436,20 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       setIsSolved(true);
     }
     
-    // Focus the next input that needs attention
+    // Focus the next sequential input after the hint
     setTimeout(() => {
-      const allInputs = getAllInputs();
-      const nextInput = allInputs.find(input => {
-        const wordIndex = parseInt(input.dataset.wordIndex!);
-        return hiddenWordIndices.includes(wordIndex) && guesses[wordIndex] !== originalWords[wordIndex][0];
-      });
-      
-      if (nextInput) {
-        nextInput.focus();
+      const nextSequentialIndex = nextWordIndex + 1;
+      if (nextSequentialIndex < originalWords.length) {
+        // Focus the next sequential input
+        const allInputs = getAllInputs();
+        const nextInput = allInputs.find(input => {
+          const wordIndex = parseInt(input.dataset.wordIndex!);
+          return wordIndex === nextSequentialIndex;
+        });
+        
+        if (nextInput) {
+          nextInput.focus();
+        }
       }
     }, 100);
   };
