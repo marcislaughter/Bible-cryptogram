@@ -13,20 +13,9 @@
   --color-white: #ffffff;
   --color-bg-dark: #121212;
   
-  /* Gray Scale */
-  --color-gray: #808080;
+    /* Gray Scale - Consolidated */
   --color-dark-gray: #666666;
   --color-light-gray: #a3a3a3;
-  --color-text-muted: #999999;
-  --color-text-light: #e0e0e0;
-  
-  /* Additional Gray Shades for UI Elements */
-  --color-gray-darker: #2a2a2a;
-  --color-gray-dark-medium: #3a3a3a;
-  --color-gray-medium: #444444;
-  --color-gray-light-medium: #4a4a4a;
-  --color-gray-lighter: #555555;
-  --color-border-medium: #444;
   
   /* Link Colors */
   --color-link-blue: #66b3ff;
@@ -56,7 +45,7 @@
   --color-dark-blue-transparent: rgba(0, 0, 139, 0.3);
   --color-success-transparent: rgba(61, 165, 66, 0.1);
   --color-orange-transparent: rgba(255, 152, 0, 0.1);
-  --color-light-gray-transparent: rgba(163, 163, 163, 0.1);
+
   
   /* Glass effect backgrounds */
   --glass-bg-light: rgba(255, 255, 255, 0.1);

@@ -71,12 +71,12 @@
   display: flex;
   align-items: center;
   font-weight: 600;
-  background-color: var(--color-gray-medium);
-  border-bottom: 1px solid var(--color-gray-lighter);
+  background-color: var(--color-dropdown-bg);
+  border-bottom: 1px solid var(--color-dropdown-bg);
 }
 
 .chapter-item:hover {
-  background-color: var(--color-gray-lighter);
+  background-color: var(--color-dropdown-bg);
 }
 
 .chapter-icon {
@@ -87,18 +87,18 @@
 }
 
 .verse-list {
-  background-color: var(--color-gray-darker);
+  background-color: var(--color-bg-dark-primary);
 }
 
 .verse-item {
   padding-left: 35px;
   font-size: 14px;
-  background-color: var(--color-gray-darker);
-  border-bottom: 1px solid var(--color-gray-dark-medium);
+  background-color: var(--color-bg-dark-primary);
+  border-bottom: 1px solid var(--color-dropdown-bg);
 }
 
 .verse-item:hover {
-  background-color: var(--color-gray-light-medium);
+  background-color: var(--color-dropdown-bg);
 }
 
 .verse-item.current-verse {
