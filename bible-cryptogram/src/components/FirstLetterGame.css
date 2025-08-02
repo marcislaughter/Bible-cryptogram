@@ -289,14 +289,13 @@ body.first-letter-win-gradient .first-letter-error-label {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .first-letter-error-label {
   font-size: 1rem;
   font-weight: bold;
   color: var(--color-purple);
-  margin-bottom: 15px;
   font-family: var(--font-mono);
 }
 
