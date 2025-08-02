@@ -575,21 +575,23 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           {originalWords.map((word, wordIndex) => (
             <div key={wordIndex} className="first-letter-word-container">
               <div className="first-letter-input-container">
-                <input
-                  type="text"
-                  maxLength={1}
-                  className={`first-letter-input ${getInputClass(wordIndex)}`}
-                  style={{ width: getInputWidth(wordIndex) }}
-                  value={guesses[wordIndex] || ''}
-                  onChange={(e) => handleInputChangeEvent(e, wordIndex)}
-                  onFocus={handleInputFocus}
-                  data-word-index={wordIndex}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="characters"
-                  spellCheck="false"
-                  inputMode="text"
-                />
+                {!isSolved && (
+                  <input
+                    type="text"
+                    maxLength={1}
+                    className={`first-letter-input ${getInputClass(wordIndex)}`}
+                    style={{ width: getInputWidth(wordIndex) }}
+                    value={guesses[wordIndex] || ''}
+                    onChange={(e) => handleInputChangeEvent(e, wordIndex)}
+                    onFocus={handleInputFocus}
+                    data-word-index={wordIndex}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="characters"
+                    spellCheck="false"
+                    inputMode="text"
+                  />
+                )}
               </div>
               <div className={`word-display ${
                 hiddenWordIndices.includes(wordIndex) 
