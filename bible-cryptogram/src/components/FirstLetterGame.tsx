@@ -4,7 +4,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 import './Controls.css';
 
@@ -38,9 +38,11 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
   const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
   const [lastFocusedWordIndex, setLastFocusedWordIndex] = useState<number | null>(null);
+  const [errorDropdownOpen, setErrorDropdownOpen] = useState(false);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
+  const errorDropdownRef = useRef<HTMLDivElement>(null);
 
   // Function to calculate which words should be hidden based on difficulty level
   const calculateHiddenWords = (words: string[], difficulty: number): number[] => {
@@ -599,6 +601,23 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     };
   }, [isSolved]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (errorDropdownRef.current && !errorDropdownRef.current.contains(event.target as Node)) {
+        setErrorDropdownOpen(false);
+      }
+    };
+
+    if (errorDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [errorDropdownOpen]);
+
   // Handle Enter key on completion screen
   useEffect(() => {
     const handleCompletionKeyDown = (event: KeyboardEvent) => {
@@ -708,14 +727,37 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           </div>
           <div className="first-letter-error-handling">
             <div className="first-letter-error-label">When incorrect:</div>
-            <select 
-              className="first-letter-error-dropdown"
-              value={errorHandlingMode}
-              onChange={(e) => setErrorHandlingMode(e.target.value as 'restart-word' | 'restart-verse')}
-            >
-              <option value="restart-word">Restart word</option>
-              <option value="restart-verse">Restart verse</option>
-            </select>
+            <div className="first-letter-error-dropdown-container" ref={errorDropdownRef}>
+              <button 
+                className="first-letter-error-dropdown"
+                onClick={() => setErrorDropdownOpen(!errorDropdownOpen)}
+              >
+                {errorHandlingMode === 'restart-word' ? 'Restart word' : 'Restart verse'}
+                <FontAwesomeIcon icon={faChevronDown} />
+              </button>
+              {errorDropdownOpen && (
+                <div className="first-letter-error-dropdown-menu">
+                  <div 
+                    className={`first-letter-error-dropdown-item ${errorHandlingMode === 'restart-word' ? 'selected' : ''}`}
+                    onClick={() => {
+                      setErrorHandlingMode('restart-word');
+                      setErrorDropdownOpen(false);
+                    }}
+                  >
+                    Restart word
+                  </div>
+                  <div 
+                    className={`first-letter-error-dropdown-item ${errorHandlingMode === 'restart-verse' ? 'selected' : ''}`}
+                    onClick={() => {
+                      setErrorHandlingMode('restart-verse');
+                      setErrorDropdownOpen(false);
+                    }}
+                  >
+                    Restart verse
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         
