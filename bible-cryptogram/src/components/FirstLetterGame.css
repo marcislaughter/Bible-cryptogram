@@ -201,6 +201,10 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   color: white;
 }
 
+body.first-letter-win-gradient .first-letter-error-label {
+  color: white;
+}
+
 .first-letter-citation {
   margin: 40px 0 20px 0;
   text-align: center;
