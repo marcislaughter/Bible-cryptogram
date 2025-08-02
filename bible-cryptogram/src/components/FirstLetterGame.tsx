@@ -607,7 +607,28 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         
         {isSolved && (
           <div className="solved-message">
-            <h2>Excellent! You got all the first letters!</h2>
+            {(() => {
+              const totalHiddenWords = hiddenWordIndices.length;
+              const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+              
+              if (score === 100) {
+                return <h2>Perfect! You got all the first letters!</h2>;
+              } else if (score >= 80) {
+                return <h2>Excellent! You got all the first letters!</h2>;
+              } else if (score >= 60) {
+                return <h2>Good job! You got all the first letters!</h2>;
+              } else {
+                return <h2>Nice effort! You got all the first letters!</h2>;
+              }
+            })()}
+            <div className="score-display">
+              <p className="score-text">
+                Score: {(() => {
+                  const totalHiddenWords = hiddenWordIndices.length;
+                  return totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+                })()}%
+              </p>
+            </div>
             <div className="first-letter-revealed-verse">
               {currentVerse.text}
             </div>
