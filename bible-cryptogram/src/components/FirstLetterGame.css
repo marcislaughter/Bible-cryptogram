@@ -105,6 +105,15 @@
   font-size: 1rem;
 }
 
+.word-display.correct-word-red {
+  background-color: transparent;
+  border: none;
+  color: #ff0000;
+  font-size: 1rem;
+  font-weight: bold;
+  animation: correctWordFlash 1s ease;
+}
+
 @keyframes revealAnimation {
   0% {
     transform: scale(1);
@@ -120,6 +129,21 @@
     transform: scale(1);
     background-color: transparent;
     color: #a3a3a3;
+  }
+}
+
+@keyframes correctWordFlash {
+  0% {
+    color: #ff0000;
+    transform: scale(1);
+  }
+  50% {
+    color: #ff0000;
+    transform: scale(1.1);
+  }
+  100% {
+    color: #ff0000;
+    transform: scale(1);
   }
 }
 

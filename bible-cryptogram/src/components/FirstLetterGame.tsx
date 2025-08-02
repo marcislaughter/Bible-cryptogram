@@ -36,6 +36,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [hintsUsed, setHintsUsed] = useState(0);
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
+  const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -101,6 +102,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setErrorInputs([]);
     setHintsUsed(0);
     setIncorrectGuesses(0);
+    setShowingCorrectWord(null);
   };
 
   useEffect(() => {
@@ -234,17 +236,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       
       // Handle error based on selected mode
       if (errorHandlingMode === 'restart-verse') {
-        // Clear all guesses and restart the verse
+        // Show the correct word in red for 1 second
+        setShowingCorrectWord(wordIndex);
+        
         setTimeout(() => {
+          // Clear all guesses and restart the verse
           setGuesses(new Array(originalWords.length).fill(''));
           setErrorInputs([]);
           setIncorrectGuesses(0);
+          setShowingCorrectWord(null);
           // Focus first input
           const allInputs = getAllInputs();
           if (allInputs.length > 0) {
             allInputs[0].focus();
           }
-        }, 500);
+        }, 1000);
       } else {
         // Clear the error state after the shake animation (500ms)
         setTimeout(() => {
@@ -279,17 +285,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       } else {
         // Incorrect guess - handle based on error mode
         if (errorHandlingMode === 'restart-verse') {
-          // Clear all guesses and restart the verse
-          setGuesses(new Array(originalWords.length).fill(''));
-          setErrorInputs([]);
-          setIncorrectGuesses(0);
-          // Focus first input
+          // Show the correct word in red for 1 second
+          setShowingCorrectWord(wordIndex);
+          
           setTimeout(() => {
+            // Clear all guesses and restart the verse
+            setGuesses(new Array(originalWords.length).fill(''));
+            setErrorInputs([]);
+            setIncorrectGuesses(0);
+            setShowingCorrectWord(null);
+            // Focus first input
             const allInputs = getAllInputs();
             if (allInputs.length > 0) {
               allInputs[0].focus();
             }
-          }, 100);
+          }, 1000);
         } else {
           // Clear the stored guess and blur briefly to reset state
           const newGuesses = [...guesses];
@@ -327,17 +337,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         } else {
           // Incorrect guess - handle based on error mode
           if (errorHandlingMode === 'restart-verse') {
-            // Clear all guesses and restart the verse
-            setGuesses(new Array(originalWords.length).fill(''));
-            setErrorInputs([]);
-            setIncorrectGuesses(0);
-            // Focus first input
+            // Show the correct word in red for 1 second
+            setShowingCorrectWord(wordIndex);
+            
             setTimeout(() => {
+              // Clear all guesses and restart the verse
+              setGuesses(new Array(originalWords.length).fill(''));
+              setErrorInputs([]);
+              setIncorrectGuesses(0);
+              setShowingCorrectWord(null);
+              // Focus first input
               const allInputs = getAllInputs();
               if (allInputs.length > 0) {
                 allInputs[0].focus();
               }
-            }, 100);
+            }, 1000);
           } else {
             // Clear the stored guess and reset input state
             const newGuesses = [...guesses];
@@ -383,6 +397,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setErrorInputs([]);
     setHintsUsed(0);
     setIncorrectGuesses(0);
+    setShowingCorrectWord(null);
     isAdvancingFocus.current = false;
     generateNewGame();
   };
@@ -640,13 +655,17 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                 )}
               </div>
               <div className={`word-display ${
-                hiddenWordIndices.includes(wordIndex) 
-                  ? (guesses[wordIndex] === word[0] ? 'revealed' : 'hidden')
-                  : 'always-visible'
+                showingCorrectWord === wordIndex
+                  ? 'correct-word-red'
+                  : hiddenWordIndices.includes(wordIndex) 
+                    ? (guesses[wordIndex] === word[0] ? 'revealed' : 'hidden')
+                    : 'always-visible'
               }`}>
-                {hiddenWordIndices.includes(wordIndex) 
-                  ? (guesses[wordIndex] === word[0] ? word : '_'.repeat(word.length))
-                  : word
+                {showingCorrectWord === wordIndex
+                  ? word
+                  : hiddenWordIndices.includes(wordIndex) 
+                    ? (guesses[wordIndex] === word[0] ? word : '_'.repeat(word.length))
+                    : word
                 }
               </div>
             </div>
