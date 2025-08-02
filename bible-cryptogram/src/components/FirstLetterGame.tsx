@@ -33,6 +33,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
   const [hasManuallySelectedLevel, setHasManuallySelectedLevel] = useState(false);
   const [preferredLevel, setPreferredLevel] = useState(2);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -96,6 +98,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setGuesses(new Array(words.length).fill(''));
     setIsSolved(false);
     setErrorInputs([]);
+    setHintsUsed(0);
+    setIncorrectGuesses(0);
   };
 
   useEffect(() => {
@@ -224,7 +228,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         setErrorInputs(prev => [...prev, wordIndex]);
       }
       
-
+      // Increment incorrect guesses counter
+      setIncorrectGuesses(prev => prev + 1);
       
       // Clear the error state after the shake animation (500ms)
       setTimeout(() => {
@@ -330,6 +335,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setGuesses(new Array(originalWords.length).fill(''));
     setIsSolved(false);
     setErrorInputs([]);
+    setHintsUsed(0);
+    setIncorrectGuesses(0);
     isAdvancingFocus.current = false;
     generateNewGame();
   };
@@ -349,6 +356,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     const newGuesses = [...guesses];
     newGuesses[nextWordIndex] = correctFirstLetter;
     setGuesses(newGuesses);
+    
+    // Increment hints used counter
+    setHintsUsed(prev => prev + 1);
     
     // Mark this word as having had an error (since a hint was needed)
     if (!errorInputs.includes(nextWordIndex)) {
@@ -510,17 +520,23 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     const handleCompletionKeyDown = (event: KeyboardEvent) => {
       if (isSolved && event.key === 'Enter') {
         event.preventDefault();
-        if (difficultyLevel < 5) {
-          handleNextLevel();
+        const totalHiddenWords = hiddenWordIndices.length;
+        const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+        if (score > 95) {
+          if (difficultyLevel < 5) {
+            handleNextLevel();
+          } else {
+            handleNextVerse();
+          }
         } else {
-          handleNextVerse();
+          handleRepeatVerse();
         }
       }
     };
 
     window.addEventListener('keydown', handleCompletionKeyDown);
     return () => window.removeEventListener('keydown', handleCompletionKeyDown);
-  }, [isSolved, difficultyLevel]);
+  }, [isSolved, difficultyLevel, hiddenWordIndices.length, hintsUsed, incorrectGuesses]);
 
   return (
     <>
@@ -597,18 +613,37 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             </div>
             <p className="first-letter-reference">— {currentVerse.reference}</p>
             <div className="first-letter-solved-buttons">
-              <button onClick={handleRepeatVerse} className="solved-button-base retry-btn">
-                <FontAwesomeIcon icon={faArrowRotateLeft} />
-              </button>
-              {difficultyLevel < 5 ? (
-                <button onClick={handleNextLevel} className="solved-button-base">
-                  Next Level <FontAwesomeIcon icon={faArrowUp} />
-                </button>
-              ) : (
-                <button onClick={handleNextVerse} className="solved-button-base">
-                  {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
-                </button>
-              )}
+              {(() => {
+                const totalHiddenWords = hiddenWordIndices.length;
+                const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+                const isPrimaryNext = score > 95;
+                
+                return (
+                  <>
+                    <button 
+                      onClick={handleRepeatVerse} 
+                      className={`solved-button-base retry-btn ${!isPrimaryNext ? 'primary-button' : ''}`}
+                    >
+                      <FontAwesomeIcon icon={faArrowRotateLeft} />
+                    </button>
+                    {difficultyLevel < 5 ? (
+                      <button 
+                        onClick={handleNextLevel} 
+                        className={`solved-button-base ${isPrimaryNext ? 'primary-button' : ''}`}
+                      >
+                        Next Level <FontAwesomeIcon icon={faArrowUp} />
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={handleNextVerse} 
+                        className={`solved-button-base ${isPrimaryNext ? 'primary-button' : ''}`}
+                      >
+                        {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
+                      </button>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         )}
