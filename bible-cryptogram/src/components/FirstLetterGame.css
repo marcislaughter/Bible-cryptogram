@@ -125,13 +125,14 @@
 
 .solved-message {
   text-align: center;
-  margin: 20px 0;
-  padding: 20px;
+  margin: 20px auto;
+  padding: 10px;
   background: linear-gradient(135deg, #800080 0%, #3da542 100%);
   color: white;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.5s ease-in;
+  max-width: 95%;
 }
 
 .solved-message h2 {
@@ -221,14 +222,13 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
 /* Button styles now handled by Controls.css - removed custom button styles */
 
 .first-letter-difficulty-stepper {
-  margin-top: 30px;
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   background-color: rgba(128, 0, 128, 0.05);
   border-radius: 15px;
   border: 1px solid rgba(128, 0, 128, 0.2);
-  width: 100%;
-  max-width: 400px;
+  margin: 30px auto 0 auto;
+  max-width: 95%;
 }
 
 .first-letter-difficulty-label {
@@ -343,7 +343,7 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   }
   
   .solved-message {
-    padding: 15px;
+    padding: 10px;
   }
   
   .solved-buttons {
@@ -356,7 +356,7 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   
   .first-letter-difficulty-stepper {
     margin-top: 20px;
-    padding: 15px;
+    padding: 10px;
   }
   
   .first-letter-stepper-button {
@@ -398,7 +398,7 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   
   .first-letter-difficulty-stepper {
     margin-top: 15px;
-    padding: 12px;
+    padding: 8px;
   }
   
   .first-letter-stepper-container {
