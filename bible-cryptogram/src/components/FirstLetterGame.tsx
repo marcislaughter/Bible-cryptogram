@@ -35,7 +35,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [preferredLevel, setPreferredLevel] = useState(2);
 
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
-  const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
+  const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse' | 'go-back-one-verse'>('restart-word');
   const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
   const [lastFocusedWordIndex, setLastFocusedWordIndex] = useState<number | null>(null);
   const [errorDropdownOpen, setErrorDropdownOpen] = useState(false);
@@ -43,6 +43,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
   const errorDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Function to find the previous verse (for verses > 1)
+  const findPreviousVerse = (currentReference: string): BibleVerse | null => {
+    // Parse the current reference (e.g., "1 Cor 11:5" -> chapter: 11, verse: 5)
+    const match = currentReference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+    if (!match) return null;
+    
+    const [, book, chapter, verse] = match;
+    const currentChapter = parseInt(chapter);
+    const currentVerse = parseInt(verse);
+    
+    // Find the previous verse in the same chapter (caller should handle verse 1 case)
+    const previousReference = `${book} Cor ${currentChapter}:${currentVerse - 1}`;
+    return BIBLE_VERSES.find(v => v.reference === previousReference) || null;
+  };
 
   // Function to calculate which words should be hidden based on difficulty level
   const calculateHiddenWords = (words: string[], difficulty: number): number[] => {
@@ -255,6 +270,37 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             allInputs[0].focus();
           }
         }, 1000);
+      } else if (errorHandlingMode === 'go-back-one-verse') {
+        // Show the correct word in red for 1 second
+        setShowingCorrectWord(wordIndex);
+        
+        setTimeout(() => {
+          // Check if we're on verse 1 of any chapter
+          const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+          if (match) {
+            const currentVerseNum = parseInt(match[3]);
+            
+            if (currentVerseNum === 1) {
+              // If we're on verse 1, restart the current verse
+              setGuesses(new Array(originalWords.length).fill(''));
+              setErrorInputs([]);
+              setIncorrectGuesses(0);
+              setShowingCorrectWord(null);
+              // Focus first input
+              const allInputs = getAllInputs();
+              if (allInputs.length > 0) {
+                allInputs[0].focus();
+              }
+            } else {
+              // Find the previous verse and navigate to it
+              const previousVerse = findPreviousVerse(currentVerse.reference);
+              if (previousVerse) {
+                onVerseChange(previousVerse);
+              }
+              setShowingCorrectWord(null);
+            }
+          }
+        }, 1000);
       } else {
         // Clear the error state after the shake animation (500ms)
         setTimeout(() => {
@@ -302,6 +348,37 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             const allInputs = getAllInputs();
             if (allInputs.length > 0) {
               allInputs[0].focus();
+            }
+          }, 1000);
+        } else if (errorHandlingMode === 'go-back-one-verse') {
+          // Show the correct word in red for 1 second
+          setShowingCorrectWord(wordIndex);
+          
+          setTimeout(() => {
+            // Check if we're on verse 1 of any chapter
+            const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+            if (match) {
+              const currentVerseNum = parseInt(match[3]);
+              
+              if (currentVerseNum === 1) {
+                // If we're on verse 1, restart the current verse
+                setGuesses(new Array(originalWords.length).fill(''));
+                setErrorInputs([]);
+                setIncorrectGuesses(0);
+                setShowingCorrectWord(null);
+                // Focus first input
+                const allInputs = getAllInputs();
+                if (allInputs.length > 0) {
+                  allInputs[0].focus();
+                }
+              } else {
+                // Find the previous verse and navigate to it
+                const previousVerse = findPreviousVerse(currentVerse.reference);
+                if (previousVerse) {
+                  onVerseChange(previousVerse);
+                }
+                setShowingCorrectWord(null);
+              }
             }
           }, 1000);
         } else {
@@ -354,6 +431,37 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               const allInputs = getAllInputs();
               if (allInputs.length > 0) {
                 allInputs[0].focus();
+              }
+            }, 1000);
+          } else if (errorHandlingMode === 'go-back-one-verse') {
+            // Show the correct word in red for 1 second
+            setShowingCorrectWord(wordIndex);
+            
+            setTimeout(() => {
+              // Check if we're on verse 1 of any chapter
+              const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+              if (match) {
+                const currentVerseNum = parseInt(match[3]);
+                
+                if (currentVerseNum === 1) {
+                  // If we're on verse 1, restart the current verse
+                  setGuesses(new Array(originalWords.length).fill(''));
+                  setErrorInputs([]);
+                  setIncorrectGuesses(0);
+                  setShowingCorrectWord(null);
+                  // Focus first input
+                  const allInputs = getAllInputs();
+                  if (allInputs.length > 0) {
+                    allInputs[0].focus();
+                  }
+                } else {
+                  // Find the previous verse and navigate to it
+                  const previousVerse = findPreviousVerse(currentVerse.reference);
+                  if (previousVerse) {
+                    onVerseChange(previousVerse);
+                  }
+                  setShowingCorrectWord(null);
+                }
               }
             }, 1000);
           } else {
@@ -732,7 +840,11 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                 className="first-letter-error-dropdown"
                 onClick={() => setErrorDropdownOpen(!errorDropdownOpen)}
               >
-                {errorHandlingMode === 'restart-word' ? 'Restart word' : 'Restart verse'}
+                {errorHandlingMode === 'restart-word' 
+                  ? 'Restart word' 
+                  : errorHandlingMode === 'restart-verse' 
+                    ? 'Restart verse' 
+                    : 'Go back one verse'}
                 <FontAwesomeIcon icon={faChevronDown} />
               </button>
               {errorDropdownOpen && (
@@ -754,6 +866,15 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                     }}
                   >
                     Restart verse
+                  </div>
+                  <div 
+                    className={`first-letter-error-dropdown-item ${errorHandlingMode === 'go-back-one-verse' ? 'selected' : ''}`}
+                    onClick={() => {
+                      setErrorHandlingMode('go-back-one-verse');
+                      setErrorDropdownOpen(false);
+                    }}
+                  >
+                    Go back one verse
                   </div>
                 </div>
               )}
