@@ -422,10 +422,10 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       nextWordIndex = lastFocusedWordIndex;
     }
     
-    // If no valid last focused word, fall back to finding the first unguessed hidden word
+    // If no valid last focused word, fall back to finding the first unguessed word (any word)
     if (nextWordIndex === -1) {
       nextWordIndex = originalWords.findIndex((word, index) => {
-        return hiddenWordIndices.includes(index) && guesses[index] !== word[0];
+        return guesses[index] !== word[0];
       });
     }
     
@@ -645,8 +645,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               </button>
               <button 
                 onClick={handleHint}
-                className={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0]) ? 'disabled' : ''}
-                disabled={hiddenWordIndices.every(index => guesses[index] === originalWords[index][0])}
               >
                 <FontAwesomeIcon icon={faLightbulb} />
                 Hint
