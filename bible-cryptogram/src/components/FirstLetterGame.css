@@ -213,7 +213,7 @@ body.first-letter-win-gradient {
 
 /* Ensure citation remains black when win message is displayed */
 body.first-letter-win-gradient .first-letter-citation {
-  color: var(--color-black);
+  color: var(--color-bg-dark);
 }
 
 /* Style difficulty stepper when win screen is showing */

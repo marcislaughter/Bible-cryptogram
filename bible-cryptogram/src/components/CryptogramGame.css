@@ -146,7 +146,7 @@ body.cryptogram-win-gradient {
 
 /* Ensure citation remains black when cryptogram win message is displayed */
 body.cryptogram-win-gradient .citation {
-  color: var(--color-black);
+  color: var(--color-bg-dark);
 }
 
 .cryptogram-dropdown {

@@ -256,7 +256,7 @@
 .color-segment:nth-child(6) .color-number, /* light purple */
 .color-segment:nth-child(7) .color-number, /* light pink */
 .color-segment:nth-child(10) .color-number /* silver */ {
-  color: var(--color-black);
+  color: var(--color-bg-dark);
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
 }
 

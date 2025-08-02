@@ -237,7 +237,7 @@ body.unscramble-win-gradient {
 /* Ensure citation is visible on purple/green gradient */
 body.unscramble-win-gradient .citation,
 .citation.dark-text {
-  color: var(--color-black);
+  color: var(--color-bg-dark);
 }
 
 @media screen and (max-width: 768px) {

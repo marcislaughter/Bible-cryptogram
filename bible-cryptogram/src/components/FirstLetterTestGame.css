@@ -7,7 +7,7 @@
   padding: 20px;
   font-family: var(--font-mono);
   position: relative;
-  background-color: #000000;
+  background-color: var(--color-bg-dark);
   min-height: 100vh;
   color: #a3a3a3;
   display: flex;
@@ -31,7 +31,7 @@ body.first-letter-test-high-score .first-letter-test-container {
 }
 
 body.first-letter-test-high-score .first-letter-test-citation {
-  color: #000000;
+  color: var(--color-bg-dark);
 }
 
 .first-letter-test-chapter-title {
@@ -74,7 +74,7 @@ body.first-letter-test-high-score .first-letter-test-citation {
 
 @keyframes revealAnimation {
   0% {
-    color: #000000;
+    color: var(--color-bg-dark);
     transform: scale(1);
   }
   50% {
