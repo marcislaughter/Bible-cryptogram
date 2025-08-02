@@ -607,6 +607,21 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           ))}
         </div>
         
+        <div className="first-letter-difficulty-stepper">
+          <div className="first-letter-difficulty-label">Difficulty Level:</div>
+          <div className="first-letter-stepper-container">
+            {[1, 2, 3, 4, 5].map((level) => (
+              <button
+                key={level}
+                className={`first-letter-stepper-button ${difficultyLevel === level ? 'active' : ''}`}
+                onClick={() => handleStepperClick(level)}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+        </div>
+        
         {isSolved && (
           <div className="solved-message">
             {(() => {
@@ -670,21 +685,6 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             </div>
           </div>
         )}
-        
-        <div className="first-letter-difficulty-stepper">
-          <div className="first-letter-difficulty-label">Difficulty Level:</div>
-          <div className="first-letter-stepper-container">
-            {[1, 2, 3, 4, 5].map((level) => (
-              <button
-                key={level}
-                className={`first-letter-stepper-button ${difficultyLevel === level ? 'active' : ''}`}
-                onClick={() => handleStepperClick(level)}
-              >
-                {level}
-              </button>
-            ))}
-          </div>
-        </div>
         
         <div className="first-letter-citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
