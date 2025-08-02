@@ -279,6 +279,44 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   transform: translateY(-2px);
 }
 
+.first-letter-error-handling {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.first-letter-error-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-purple);
+  font-family: var(--font-mono);
+}
+
+.first-letter-error-dropdown {
+  padding: 5px 10px;
+  border: 2px solid var(--color-purple);
+  border-radius: 5px;
+  background-color: white;
+  color: var(--color-purple);
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: var(--font-mono);
+}
+
+.first-letter-error-dropdown:hover {
+  background-color: #f0e6ff;
+}
+
+.first-letter-error-dropdown:focus {
+  outline: none;
+  background-color: #f0e6ff;
+  box-shadow: 0 0 0 2px rgba(128, 0, 128, 0.2);
+}
+
 /* Tablet sizing (1024px and below) */
 @media (max-width: 1024px) {
   .first-letter-input {
@@ -366,7 +404,21 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   }
   
   .first-letter-difficulty-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+  
+  .first-letter-error-handling {
+    margin-top: 12px;
+    gap: 8px;
+  }
+  
+  .first-letter-error-label {
+    font-size: 1rem;
+  }
+  
+  .first-letter-error-dropdown {
+    padding: 4px 8px;
+    font-size: 0.8rem;
   }
   
   .first-letter-top-controls {
@@ -412,8 +464,23 @@ body.first-letter-win-gradient .first-letter-difficulty-label {
   }
   
   .first-letter-difficulty-label {
-    font-size: 0.8rem;
+    font-size: 1rem;
     margin-bottom: 10px;
+  }
+  
+  .first-letter-error-handling {
+    margin-top: 10px;
+    gap: 6px;
+    flex-direction: column;
+  }
+  
+  .first-letter-error-label {
+    font-size: 1rem;
+  }
+  
+  .first-letter-error-dropdown {
+    padding: 3px 6px;
+    font-size: 0.7rem;
   }
   
   .first-letter-top-controls {

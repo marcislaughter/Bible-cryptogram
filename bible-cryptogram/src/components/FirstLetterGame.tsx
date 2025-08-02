@@ -35,6 +35,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [preferredLevel, setPreferredLevel] = useState(2);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
+  const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -223,7 +224,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       // Return true to indicate success (can advance focus)
       return true;
     } else if (upperValue && upperValue !== correctFirstLetter) {
-      // Wrong guess - add to error inputs and show red shake animation
+      // Wrong guess - handle based on error mode
       if (!errorInputs.includes(wordIndex)) {
         setErrorInputs(prev => [...prev, wordIndex]);
       }
@@ -231,10 +232,25 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       // Increment incorrect guesses counter
       setIncorrectGuesses(prev => prev + 1);
       
-      // Clear the error state after the shake animation (500ms)
-      setTimeout(() => {
-        setErrorInputs(prev => prev.filter(i => i !== wordIndex));
-      }, 500);
+      // Handle error based on selected mode
+      if (errorHandlingMode === 'restart-verse') {
+        // Clear all guesses and restart the verse
+        setTimeout(() => {
+          setGuesses(new Array(originalWords.length).fill(''));
+          setErrorInputs([]);
+          setIncorrectGuesses(0);
+          // Focus first input
+          const allInputs = getAllInputs();
+          if (allInputs.length > 0) {
+            allInputs[0].focus();
+          }
+        }, 500);
+      } else {
+        // Clear the error state after the shake animation (500ms)
+        setTimeout(() => {
+          setErrorInputs(prev => prev.filter(i => i !== wordIndex));
+        }, 500);
+      }
       
       // Return false to indicate failure (cannot advance focus)
       return false;
@@ -261,16 +277,31 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         // Correct guess - advance focus
         advanceFocus(e.target);
       } else {
-        // Incorrect guess - clear the stored guess and blur briefly to reset state
-        const newGuesses = [...guesses];
-        newGuesses[wordIndex] = '';
-        setGuesses(newGuesses);
-        
-        // Blur and refocus to reset the input state on mobile
-        e.target.blur();
-        setTimeout(() => {
-          e.target.focus();
-        }, 100);
+        // Incorrect guess - handle based on error mode
+        if (errorHandlingMode === 'restart-verse') {
+          // Clear all guesses and restart the verse
+          setGuesses(new Array(originalWords.length).fill(''));
+          setErrorInputs([]);
+          setIncorrectGuesses(0);
+          // Focus first input
+          setTimeout(() => {
+            const allInputs = getAllInputs();
+            if (allInputs.length > 0) {
+              allInputs[0].focus();
+            }
+          }, 100);
+        } else {
+          // Clear the stored guess and blur briefly to reset state
+          const newGuesses = [...guesses];
+          newGuesses[wordIndex] = '';
+          setGuesses(newGuesses);
+          
+          // Blur and refocus to reset the input state on mobile
+          e.target.blur();
+          setTimeout(() => {
+            e.target.focus();
+          }, 100);
+        }
       }
     } else if (value === '') {
       handleInputChange(wordIndex, '');
@@ -294,16 +325,31 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           // Correct guess - advance focus
           advanceFocus(activeElement);
         } else {
-          // Incorrect guess - clear the stored guess and reset input state
-          const newGuesses = [...guesses];
-          newGuesses[wordIndex] = '';
-          setGuesses(newGuesses);
-          
-          // Brief blur/refocus to reset state for consistency with mobile
-          activeElement.blur();
-          setTimeout(() => {
-            activeElement.focus();
-          }, 100);
+          // Incorrect guess - handle based on error mode
+          if (errorHandlingMode === 'restart-verse') {
+            // Clear all guesses and restart the verse
+            setGuesses(new Array(originalWords.length).fill(''));
+            setErrorInputs([]);
+            setIncorrectGuesses(0);
+            // Focus first input
+            setTimeout(() => {
+              const allInputs = getAllInputs();
+              if (allInputs.length > 0) {
+                allInputs[0].focus();
+              }
+            }, 100);
+          } else {
+            // Clear the stored guess and reset input state
+            const newGuesses = [...guesses];
+            newGuesses[wordIndex] = '';
+            setGuesses(newGuesses);
+            
+            // Brief blur/refocus to reset state for consistency with mobile
+            activeElement.blur();
+            setTimeout(() => {
+              activeElement.focus();
+            }, 100);
+          }
         }
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         event.preventDefault();
@@ -619,6 +665,17 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
                 {level}
               </button>
             ))}
+          </div>
+          <div className="first-letter-error-handling">
+            <div className="first-letter-error-label">On error:</div>
+            <select 
+              className="first-letter-error-dropdown"
+              value={errorHandlingMode}
+              onChange={(e) => setErrorHandlingMode(e.target.value as 'restart-word' | 'restart-verse')}
+            >
+              <option value="restart-word">Restart word</option>
+              <option value="restart-verse">Restart verse</option>
+            </select>
           </div>
         </div>
         
