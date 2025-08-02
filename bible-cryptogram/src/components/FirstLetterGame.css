@@ -181,6 +181,15 @@ body.first-letter-win-gradient .first-letter-citation {
   color: #000000;
 }
 
+/* Style difficulty stepper when win screen is showing */
+body.first-letter-win-gradient .first-letter-difficulty-stepper {
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+body.first-letter-win-gradient .first-letter-difficulty-label {
+  color: white;
+}
+
 .first-letter-citation {
   margin: 40px 0 20px 0;
   text-align: center;
