@@ -66,6 +66,37 @@
   color: var(--color-light-purple);
 }
 
+/* Gametype dropdown styles */
+.gametype-dropdown {
+  margin-left: 0px;
+}
+
+.gametype-button {
+  background: none;
+  border: none;
+  color: var(--color-light-purple);
+  font-size: 18px;
+  padding: 0px 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s ease;
+}
+
+.gametype-button:hover {
+  color: var(--color-white);
+}
+
+.gametype-button svg {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.gametype-button:hover svg {
+  transform: translateY(2px);
+}
+
 /* Hierarchical dropdown styles */
 .chapter-item {
   display: flex;
