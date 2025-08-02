@@ -303,7 +303,7 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-stepper-button.active:hover {
-  background-color: var(--color-purple-hover);
+  background-color: var(--color-purple);
   transform: translateY(-2px);
 }
 
@@ -348,13 +348,13 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-error-dropdown:hover {
-  background-color: var(--color-purple-hover);
+  background-color: var(--color-purple);
   color: var(--color-light-purple);
 }
 
 .first-letter-error-dropdown:focus {
   outline: none;
-  background-color: var(--color-purple-hover);
+  background-color: var(--color-purple);
   box-shadow: 0 2px 8px rgba(128, 0, 128, 0.3);
 }
 

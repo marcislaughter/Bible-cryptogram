@@ -127,7 +127,7 @@
 }
 
 .back-btn:hover {
-  background: var(--color-purple-light);
+  background: var(--color-purple);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: var(--color-white);
@@ -155,7 +155,7 @@
 }
 
 .top-back-btn:hover {
-  background: var(--color-purple-light);
+  background: var(--color-purple);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   color: var(--color-white);

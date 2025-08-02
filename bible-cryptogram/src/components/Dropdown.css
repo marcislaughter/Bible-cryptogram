@@ -41,7 +41,7 @@
 }
 
 .menu-dropdown::-webkit-scrollbar-thumb:hover {
-  background: var(--color-purple-light);
+  background: var(--color-purple);
 }
 
 .menu-item {
@@ -108,7 +108,7 @@
 }
 
 .verse-item.current-verse:hover {
-  background-color: var(--color-purple-light);
+  background-color: var(--color-purple);
 }
 
 @keyframes slideDown {
