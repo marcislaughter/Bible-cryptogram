@@ -149,11 +149,11 @@ body.cryptogram-win-gradient .citation {
   color: var(--color-bg-dark);
 }
 
-.cryptogram-dropdown {
+.gametype-dropdown {
   margin-left: 0px;
 }
 
-.cryptogram-button {
+.gametype-button {
   background: none;
   border: none;
   color: var(--color-light-purple);
@@ -166,16 +166,16 @@ body.cryptogram-win-gradient .citation {
   transition: color 0.2s ease;
 }
 
-.cryptogram-button:hover {
+.gametype-button:hover {
   color: var(--color-white);
 }
 
-.cryptogram-button svg {
+.gametype-button svg {
   font-size: 14px;
   transition: transform 0.2s ease;
 }
 
-.cryptogram-button:hover svg {
+.gametype-button:hover svg {
   transform: translateY(2px);
 }
 

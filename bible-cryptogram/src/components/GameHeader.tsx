@@ -84,7 +84,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                       <Dropdown
             trigger={
-              <button className="cryptogram-button">
+              <button className="gametype-button">
                 {gameType === 'cryptogram' ? 'Cryptogram' : 
                  gameType === 'unscramble' ? 'Unscramble' : 
                  gameType === 'first-letter' ? 'First Letter' : 
@@ -94,12 +94,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({
             }
             items={gameTypeItems}
             align="left"
-            className="cryptogram-dropdown"
+            className="gametype-dropdown"
           />
           
           <HierarchicalDropdown
             trigger={
-              <button className="cryptogram-button">
+              <button className="gametype-button">
                 {currentVerse.reference} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
