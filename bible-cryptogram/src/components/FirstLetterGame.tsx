@@ -33,7 +33,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [difficultyLevel, setDifficultyLevel] = useState(2); // Default to level 2 (1/4 missing)
   const [hasManuallySelectedLevel, setHasManuallySelectedLevel] = useState(false);
   const [preferredLevel, setPreferredLevel] = useState(2);
-  const [hintsUsed, setHintsUsed] = useState(0);
+
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [errorHandlingMode, setErrorHandlingMode] = useState<'restart-word' | 'restart-verse'>('restart-word');
   const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
@@ -101,7 +101,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setGuesses(new Array(words.length).fill(''));
     setIsSolved(false);
     setErrorInputs([]);
-    setHintsUsed(0);
+
     setIncorrectGuesses(0);
     setShowingCorrectWord(null);
     setLastFocusedWordIndex(null);
@@ -401,7 +401,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     setGuesses(new Array(originalWords.length).fill(''));
     setIsSolved(false);
     setErrorInputs([]);
-    setHintsUsed(0);
+
     setIncorrectGuesses(0);
     setShowingCorrectWord(null);
     setLastFocusedWordIndex(null);
@@ -437,8 +437,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     newGuesses[nextWordIndex] = correctFirstLetter;
     setGuesses(newGuesses);
     
-    // Increment hints used counter
-    setHintsUsed(prev => prev + 1);
+    // Count hint as an incorrect guess for scoring purposes
+    setIncorrectGuesses(prev => prev + 1);
     
     // Mark this word as having had an error (since a hint was needed)
     if (!errorInputs.includes(nextWordIndex)) {
@@ -604,8 +604,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     const handleCompletionKeyDown = (event: KeyboardEvent) => {
       if (isSolved && event.key === 'Enter') {
         event.preventDefault();
-        const totalHiddenWords = hiddenWordIndices.length;
-        const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+        const totalWords = originalWords.length;
+        const score = totalWords > 0 ? Math.round(((totalWords - incorrectGuesses) / totalWords) * 100) : 100;
         if (score > 95) {
           if (difficultyLevel < 5) {
             handleNextLevel();
@@ -620,7 +620,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
     window.addEventListener('keydown', handleCompletionKeyDown);
     return () => window.removeEventListener('keydown', handleCompletionKeyDown);
-  }, [isSolved, difficultyLevel, hiddenWordIndices.length, hintsUsed, incorrectGuesses]);
+  }, [isSolved, difficultyLevel, originalWords.length, incorrectGuesses]);
 
   return (
     <>
@@ -722,8 +722,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         {isSolved && (
           <div className="solved-message">
             {(() => {
-              const totalHiddenWords = hiddenWordIndices.length;
-              const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+              const totalWords = originalWords.length;
+              const score = totalWords > 0 ? Math.round(((totalWords - incorrectGuesses) / totalWords) * 100) : 100;
               
               if (score === 100) {
                 return <h2>Perfect! You got all the first letters!</h2>;
@@ -738,8 +738,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             <div className="score-display">
               <p className="score-text">
                 Score: {(() => {
-                  const totalHiddenWords = hiddenWordIndices.length;
-                  return totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+                  const totalWords = originalWords.length;
+                  return totalWords > 0 ? Math.round(((totalWords - incorrectGuesses) / totalWords) * 100) : 100;
                 })()}%
               </p>
             </div>
@@ -749,8 +749,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             <p className="first-letter-reference">— {currentVerse.reference}</p>
             <div className="first-letter-solved-buttons">
               {(() => {
-                const totalHiddenWords = hiddenWordIndices.length;
-                const score = totalHiddenWords > 0 ? Math.round(((totalHiddenWords - hintsUsed - incorrectGuesses) / totalHiddenWords) * 100) : 100;
+                const totalWords = originalWords.length;
+                const score = totalWords > 0 ? Math.round(((totalWords - incorrectGuesses) / totalWords) * 100) : 100;
                 const isPrimaryNext = score > 95;
                 
                 return (
