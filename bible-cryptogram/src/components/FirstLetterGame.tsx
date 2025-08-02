@@ -667,7 +667,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             ))}
           </div>
           <div className="first-letter-error-handling">
-            <div className="first-letter-error-label">On error:</div>
+            <div className="first-letter-error-label">When incorrect:</div>
             <select 
               className="first-letter-error-dropdown"
               value={errorHandlingMode}
