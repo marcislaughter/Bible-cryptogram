@@ -38,7 +38,6 @@
   --color-bg-dark-primary: #2c2c2c;
   --color-bg-dark-secondary: #1a1a1a;
   --color-dropdown-bg: #333333;
-  --color-input-bg: #333;
   
   /* Color Wheel Colors (from theme.ts) */
   --color-dark-blue: #00008B;
@@ -167,7 +166,7 @@ body {
 }
 
 .stats-content {
-  color: var(--color-input-bg);
+  color: var(--color-bg-dark);
   line-height: 1.4;
   padding-left: 20px;
 }

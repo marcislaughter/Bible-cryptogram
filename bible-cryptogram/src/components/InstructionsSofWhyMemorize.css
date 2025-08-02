@@ -1,6 +1,6 @@
 /* Instructions Panel Styles */
 .instructions-panel {
-  background: linear-gradient(135deg, var(--color-bg-dark-primary) 0%, var(--color-bg-dark-secondary) 100%);
+  background: var(--color-bg-dark);
   border: 2px solid var(--color-light-gray);
   border-radius: 15px;
   padding: 25px;
@@ -50,7 +50,7 @@
 /* Instructions Page Styles */
 .instructions-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-bg-dark-secondary) 0%, var(--color-bg-dark-primary) 100%);
+  background: var(--color-bg-dark);
   padding: 20px;
   font-family: var(--font-mono);
 }
@@ -58,7 +58,7 @@
 .instructions-container {
   max-width: 1600px;
   margin: 0 auto;
-  background: var(--color-bg-dark-primary);
+  background: var(--color-bg-dark);
   border: 1px solid var(--color-border-medium);
   border-radius: 15px;
   padding: 40px;
@@ -181,7 +181,7 @@
 
 /* Color Wheel Styles */
 .color-wheel-container {
-  background: linear-gradient(135deg, var(--color-bg-dark-primary) 0%, var(--color-bg-dark-secondary) 100%);
+  background: var(--color-bg-dark);
   border: 2px solid var(--color-light-gray);
   border-radius: 15px;
   padding: 25px;
