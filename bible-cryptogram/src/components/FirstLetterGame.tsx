@@ -46,16 +46,16 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
   // Function to find the previous verse (for verses > 1)
   const findPreviousVerse = (currentReference: string): BibleVerse | null => {
-    // Parse the current reference (e.g., "1 Cor 11:5" -> chapter: 11, verse: 5)
-    const match = currentReference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+    // Parse the current reference (e.g., "1 Cor 11:5" or "Rom 1:5" -> chapter: 11/1, verse: 5)
+    const match = currentReference.match(/^((\d+)\s+)?([A-Za-z]+)\s+(\d+):(\d+)$/);
     if (!match) return null;
     
-    const [, book, chapter, verse] = match;
+    const [, , bookNumber, bookName, chapter, verse] = match;
     const currentChapter = parseInt(chapter);
     const currentVerse = parseInt(verse);
     
     // Find the previous verse in the same chapter (caller should handle verse 1 case)
-    const previousReference = `${book} Cor ${currentChapter}:${currentVerse - 1}`;
+    const previousReference = bookNumber ? `${bookNumber} ${bookName} ${currentChapter}:${currentVerse - 1}` : `${bookName} ${currentChapter}:${currentVerse - 1}`;
     return BIBLE_VERSES.find(v => v.reference === previousReference) || null;
   };
 
@@ -224,6 +224,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   // Handle input change for first letter guessing
   const handleInputChange = (wordIndex: number, value: string, shouldAdvanceFocus: boolean = false) => {
     if (isSolved) return;
+    if (showingCorrectWord !== null) return; // Prevent input during feedback period
     
     const upperValue = value.toUpperCase();
     const correctFirstLetter = originalWords[wordIndex][0];
@@ -276,9 +277,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         
         setTimeout(() => {
           // Check if we're on verse 1 of any chapter
-          const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+          const match = currentVerse.reference.match(/^((\d+)\s+)?([A-Za-z]+)\s+(\d+):(\d+)$/);
           if (match) {
-            const currentVerseNum = parseInt(match[3]);
+            const currentVerseNum = parseInt(match[5]);
             
             if (currentVerseNum === 1) {
               // If we're on verse 1, restart the current verse
@@ -356,9 +357,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           
           setTimeout(() => {
             // Check if we're on verse 1 of any chapter
-            const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+            const match = currentVerse.reference.match(/^((\d+)\s+)?([A-Za-z]+)\s+(\d+):(\d+)$/);
             if (match) {
-              const currentVerseNum = parseInt(match[3]);
+              const currentVerseNum = parseInt(match[5]);
               
               if (currentVerseNum === 1) {
                 // If we're on verse 1, restart the current verse
@@ -439,9 +440,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
             
             setTimeout(() => {
               // Check if we're on verse 1 of any chapter
-              const match = currentVerse.reference.match(/(\d+)\s+Cor\s+(\d+):(\d+)/);
+              const match = currentVerse.reference.match(/^((\d+)\s+)?([A-Za-z]+)\s+(\d+):(\d+)$/);
               if (match) {
-                const currentVerseNum = parseInt(match[3]);
+                const currentVerseNum = parseInt(match[5]);
                 
                 if (currentVerseNum === 1) {
                   // If we're on verse 1, restart the current verse
