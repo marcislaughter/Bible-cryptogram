@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect, useRef, useMemo } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
-import { BIBLE_VERSES, BIBLE_CHAPTERS } from '../data/bibleVerses';
+import { BIBLE_VERSES, ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './FirstLetterTestGame.css';
 import './Controls.css';
@@ -182,10 +182,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     const currentChapter = getCurrentChapter(currentVerse);
     if (!currentChapter) return;
     
-    const currentChapterIndex = BIBLE_CHAPTERS.findIndex(chapter => 
+    const currentChapterIndex = ALL_CONTENT_CHAPTERS.findIndex(chapter => 
       chapter.chapterReference === currentChapter.chapterReference);
-    const nextChapterIndex = (currentChapterIndex + 1) % BIBLE_CHAPTERS.length;
-    const nextChapter = BIBLE_CHAPTERS[nextChapterIndex];
+    const nextChapterIndex = (currentChapterIndex + 1) % ALL_CONTENT_CHAPTERS.length;
+    const nextChapter = ALL_CONTENT_CHAPTERS[nextChapterIndex];
     
     if (nextChapter.verses.length > 0) {
       onVerseChange(nextChapter.verses[0]);

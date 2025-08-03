@@ -1,5 +1,5 @@
 import type { WordItem } from './FirstLetterTestGameTypes';
-import { BIBLE_CHAPTERS } from '../data/bibleVerses';
+import { ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 
 export const extractVerseNumber = (reference: string): string => {
@@ -12,7 +12,7 @@ export const getCurrentChapter = (currentVerse: BibleVerse) => {
     ? currentVerse.reference.split(':')[0]  // "1 Cor 11:1" -> "1 Cor 11"
     : currentVerse.reference;
   
-  return BIBLE_CHAPTERS.find(chapter => chapter.chapterReference === chapterRef);
+  return ALL_CONTENT_CHAPTERS.find(chapter => chapter.chapterReference === chapterRef);
 };
 
 export const generateWordItems = (
@@ -178,10 +178,10 @@ export const getNextChapterReference = (currentVerse: BibleVerse): string => {
   const currentChapter = getCurrentChapter(currentVerse);
   if (!currentChapter) return '';
   
-  const currentChapterIndex = BIBLE_CHAPTERS.findIndex(chapter => 
+  const currentChapterIndex = ALL_CONTENT_CHAPTERS.findIndex(chapter => 
     chapter.chapterReference === currentChapter.chapterReference);
-  const nextChapterIndex = (currentChapterIndex + 1) % BIBLE_CHAPTERS.length;
-  return BIBLE_CHAPTERS[nextChapterIndex].chapterReference;
+  const nextChapterIndex = (currentChapterIndex + 1) % ALL_CONTENT_CHAPTERS.length;
+  return ALL_CONTENT_CHAPTERS[nextChapterIndex].chapterReference;
 };
 
 export const getMinimumDisplayWords = (currentWordIndex: number): number => {

@@ -5,7 +5,7 @@ import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import Dropdown, { type DropdownItem } from './Dropdown';
 import HierarchicalDropdown from './HierarchicalDropdown';
-import { BIBLE_CHAPTERS } from '../data/bibleVerses';
+import { ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import './Dropdown.css';
 
@@ -103,7 +103,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
                 {currentVerse.reference} <FontAwesomeIcon icon={faChevronDown} />
               </button>
             }
-            chapters={BIBLE_CHAPTERS}
+            chapters={ALL_CONTENT_CHAPTERS}
             currentVerse={currentVerse}
             onVerseChange={onVerseChange}
             align="left"
