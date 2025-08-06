@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
@@ -246,9 +246,6 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       const allRevealed = state.revealedWords.every(revealed => revealed);
       if (allRevealed && !state.isSolved) {
         dispatch({ type: 'SET_SOLVED', payload: true });
-        if (hiddenInputRef.current) {
-          hiddenInputRef.current.blur();
-        }
       }
     }
   }, [state.revealedWords, state.chapterWords, state.isSolved]);
@@ -272,10 +269,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     [currentVerse]
   );
   
-  const chapterTitle = useMemo(() => 
-    currentChapter ? currentChapter.chapterTitle : '', 
-    [currentChapter]
-  );
+
   
   const versesWithErrors = useMemo(() => 
     getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors),
