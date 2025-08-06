@@ -189,7 +189,6 @@ body {
 
 .banner-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 100%;
   padding: 0 10px;
@@ -202,6 +201,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .help-btn {
