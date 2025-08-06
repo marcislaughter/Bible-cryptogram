@@ -140,6 +140,16 @@
 .verses-dropdown .menu-dropdown {
   left: auto;
   right: auto;
+  width: max-content;
+  max-width: 300px; /* Add this line - adjust the width as needed */
+}
+
+/* Also add styles for the verse-dropdown class name used in GameHeader */
+.verse-dropdown .menu-dropdown {
+  left: auto;
+  right: auto;
+  width: max-content;
+  max-width: 300px; /* Add this line - adjust the width as needed */
 }
 
 /* Chapter-specific styles */
