@@ -1,5 +1,5 @@
 .first-letter-test-container {
-  margin-top: 70px;
+  margin-top: 50px; /* Reduced from 70px to match banner height exactly */
   width: 100vw;
   max-width: 100%;
   line-height: 2;
@@ -10,7 +10,7 @@
   font-family: var(--font-mono);
   position: relative;
   background-color: var(--color-bg-dark);
-  min-height: calc(100vh - 70px); /* Account for margin-top */
+  min-height: calc(100vh - 50px); /* Account for margin-top */
   color: #a3a3a3;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
 /* Sticky controls section */
 .first-letter-test-sticky-controls {
   position: sticky;
-  top: 60px; /* More space below the fixed header to avoid covering banner */
+  top: 10px; /* Moved closer to top to avoid covering input area */
   background-color: var(--color-bg-dark);
   padding: 10px 0;
   margin-bottom: 20px;
