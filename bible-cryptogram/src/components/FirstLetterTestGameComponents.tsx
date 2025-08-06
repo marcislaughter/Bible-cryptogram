@@ -128,7 +128,7 @@ const WordInput: React.FC<WordInputProps> = React.memo(({
 
   if (isRevealed) {
     return (
-      <span className="first-letter-test-word revealed">
+      <span className={`first-letter-test-word revealed ${isError ? 'error' : ''}`}>
         {wordItem.text}
       </span>
     );

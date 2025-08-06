@@ -27,6 +27,7 @@ export type GameAction =
     }}
   | { type: 'REVEAL_WORD'; payload: { wordIndex: number }}
   | { type: 'SET_ERROR'; payload: { wordIndex: number; hasError: boolean }}
+  | { type: 'CLEAR_WORD_ERROR'; payload: { wordIndex: number }}
   | { type: 'SET_CURRENT_WORD_INDEX'; payload: number }
   | { type: 'SET_PARTIAL_VERSE_INPUT'; payload: string }
   | { type: 'SET_SOLVED'; payload: boolean }

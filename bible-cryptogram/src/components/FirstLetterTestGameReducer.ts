@@ -45,6 +45,14 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         hasError: action.payload.hasError,
       };
 
+    case 'CLEAR_WORD_ERROR':
+      const clearedWordsWithErrors = [...state.wordsWithErrors];
+      clearedWordsWithErrors[action.payload.wordIndex] = false;
+      return {
+        ...state,
+        wordsWithErrors: clearedWordsWithErrors,
+      };
+
     case 'SET_CURRENT_WORD_INDEX':
       return {
         ...state,

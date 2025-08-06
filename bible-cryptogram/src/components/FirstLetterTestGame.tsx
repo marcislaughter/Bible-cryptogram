@@ -99,6 +99,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     if (isCorrect) {
       dispatch({ type: 'REVEAL_WORD', payload: { wordIndex } });
       
+      // Don't clear errors - let incorrect words stay red even when answered correctly
+      
       const nextUnrevealedIndex = findNextUnrevealedWord(state.revealedWords, wordIndex + 1);
       if (nextUnrevealedIndex === -1) {
         dispatch({ type: 'SET_SOLVED', payload: true });
@@ -106,8 +108,10 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
       }
     } else {
+      // Mark word as having an error (persistent) and show temporary error animation
       dispatch({ type: 'SET_ERROR', payload: { wordIndex, hasError: true } });
       
+      // Clear the temporary error animation after 500ms, but keep the word marked as wrong
       setTimeout(() => {
         dispatch({ type: 'CLEAR_ERROR' });
       }, 500);
