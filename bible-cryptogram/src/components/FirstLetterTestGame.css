@@ -1,7 +1,7 @@
 .first-letter-test-container {
   margin-top: 50px; /* Reduced from 70px to match banner height exactly */
-  width: 100vw;
-  max-width: 100%;
+  width: 100%;
+  max-width: 100vw;
   line-height: 2;
   font-size: 1.2rem;
   text-align: left;
@@ -12,8 +12,7 @@
   background-color: var(--color-bg-dark);
   min-height: calc(100vh - 50px); /* Account for margin-top */
   color: #a3a3a3;
-  display: flex;
-  flex-direction: column;
+  /* Remove flex layout that was interfering with sticky positioning */
   cursor: pointer;
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
@@ -22,18 +21,22 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  /* Use width constraints instead of overflow hidden to prevent horizontal scroll */
 }
 
-/* Sticky controls section */
+/* Controls section - always visible and sticky */
 .first-letter-test-sticky-controls {
   position: sticky;
-  top: 10px; /* Moved closer to top to avoid covering input area */
+  top: 50px; /* Align with bottom of header */
   background-color: var(--color-bg-dark);
   padding: 10px 0;
   margin-bottom: 20px;
   z-index: 100;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Add background extension to cover the gap */
+  margin-top: -10px; /* Pull up to eliminate gap */
+  padding-top: 20px; /* Add padding to maintain button spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 body.first-letter-test-high-score {
@@ -146,6 +149,8 @@ body.first-letter-test-high-score .first-letter-test-citation {
   .first-letter-test-verse-text {
     line-height: 1.8; /* Adjust line height for mobile */
   }
+
+
 }
 
 @keyframes revealAnimation {

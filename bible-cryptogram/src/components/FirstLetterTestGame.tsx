@@ -240,6 +240,8 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
 
 
 
+
+
   // Check for game completion
   useEffect(() => {
     if (state.chapterWords.length > 0 && state.revealedWords.length > 0) {
