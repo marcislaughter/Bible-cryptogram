@@ -200,17 +200,6 @@ body.first-letter-test-high-score .first-letter-test-citation {
   align-self: center;
 }
 
-/* Mobile touch instruction */
-@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
-  .first-letter-test-instruction-text::after {
-    content: " (Tap anywhere to start typing)";
-    display: block;
-    font-size: 0.8rem;
-    color: #999999;
-    margin-top: 5px;
-  }
-}
-
 .first-letter-test-solved-message {
   text-align: center;
   margin: 40px 0;
