@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, useMemo } from 'react';
+import React, { useReducer, useEffect, useRef, useMemo, useCallback } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
 import { BIBLE_VERSES, ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
@@ -45,19 +45,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
-  const hiddenInputRef = useRef<HTMLTextAreaElement>(null);
-
-  // Utility function to refocus the hidden input for mobile
-  const refocusInput = () => {
-    setTimeout(() => {
-      if (hiddenInputRef.current && !state.isSolved) {
-        hiddenInputRef.current.focus();
-      }
-    }, 100);
-  };
 
   // Generate new game
-  const generateNewGame = (reviewMode = false) => {
+  const generateNewGame = useCallback((reviewMode = false) => {
     const versesWithErrors = reviewMode ? 
       getVersesWithErrors(currentVerse, state.chapterWords, state.wordsWithErrors) : [];
     
@@ -77,72 +67,66 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         isReviewMode: reviewMode
       }
     });
-  };
+  }, [currentVerse, state.chapterWords, state.wordsWithErrors]);
 
-  // Handle character input
-  const handleCharacterInput = (key: string) => {
+  // Handle word input from individual input fields
+  const handleWordInput = useCallback((wordIndex: number, input: string) => {
     if (state.isSolved) return;
 
-    if (/^[A-Z0-9]$/i.test(key)) {
-      const nextWordIndex = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex);
-      if (nextWordIndex === -1) return;
+    const targetWordItem = state.chapterWords[wordIndex];
+    if (!targetWordItem) return;
 
-      const targetWordItem = state.chapterWords[nextWordIndex];
-      let isCorrect = false;
+    let isCorrect = false;
+    
+    if (targetWordItem.isVerseNumber) {
+      const result = processVerseNumberInput(input.slice(-1), input.slice(0, -1), targetWordItem.text);
       
-      if (targetWordItem.isVerseNumber) {
-        const result = processVerseNumberInput(key, state.partialVerseInput, targetWordItem.text);
-        
-        if (result.isComplete) {
-          isCorrect = true;
-          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
-        } else if (result.isCorrect && !result.isComplete) {
-          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: result.newPartialInput });
-          return;
-        } else {
-          dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
-          isCorrect = false;
-        }
+      if (result.isComplete) {
+        isCorrect = true;
+        dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
+      } else if (result.isCorrect && !result.isComplete) {
+        dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: result.newPartialInput });
+        return;
       } else {
-        isCorrect = processWordInput(key, targetWordItem.text);
+        dispatch({ type: 'SET_PARTIAL_VERSE_INPUT', payload: '' });
+        isCorrect = false;
       }
-      
-      if (isCorrect) {
-        dispatch({ type: 'REVEAL_WORD', payload: { wordIndex: nextWordIndex } });
-        
-        const nextUnrevealedIndex = findNextUnrevealedWord(state.revealedWords, nextWordIndex + 1);
-        if (nextUnrevealedIndex === -1) {
-          dispatch({ type: 'SET_SOLVED', payload: true });
-        } else {
-          dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
-        }
-      } else {
-        dispatch({ type: 'SET_ERROR', payload: { wordIndex: nextWordIndex, hasError: true } });
-        
-        setTimeout(() => {
-          dispatch({ type: 'CLEAR_ERROR' });
-        }, 500);
-      }
+    } else {
+      // For regular words, check if input matches first letter
+      isCorrect = input.length > 0 && processWordInput(input.slice(-1), targetWordItem.text);
     }
-  };
+    
+    if (isCorrect) {
+      dispatch({ type: 'REVEAL_WORD', payload: { wordIndex } });
+      
+      const nextUnrevealedIndex = findNextUnrevealedWord(state.revealedWords, wordIndex + 1);
+      if (nextUnrevealedIndex === -1) {
+        dispatch({ type: 'SET_SOLVED', payload: true });
+      } else {
+        dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
+      }
+    } else {
+      dispatch({ type: 'SET_ERROR', payload: { wordIndex, hasError: true } });
+      
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_ERROR' });
+      }, 500);
+    }
+  }, [state.isSolved, state.revealedWords, state.chapterWords, state.partialVerseInput]);
 
-  // Handle input events for mobile
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
-    if (value.length > 0) {
-      const lastChar = value[value.length - 1];
-      handleCharacterInput(lastChar);
-      event.target.value = '';
+  // Handle word focus
+  const handleWordFocus = useCallback((wordIndex: number) => {
+    if (!state.isSolved && !state.revealedWords[wordIndex]) {
+      dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: wordIndex });
     }
-  };
+  }, [state.isSolved, state.revealedWords]);
 
   // Handle game actions
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     generateNewGame(state.isReviewMode);
-    refocusInput();
-  };
+  }, [generateNewGame, state.isReviewMode]);
 
-  const handleHint = () => {
+  const handleHint = useCallback(() => {
     if (state.isSolved) return;
     
     const nextWordIndex = findNextUnrevealedWord(state.revealedWords, state.currentWordIndex);
@@ -157,11 +141,9 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     } else {
       dispatch({ type: 'SET_CURRENT_WORD_INDEX', payload: nextUnrevealedIndex });
     }
-    
-    refocusInput();
-  };
+  }, [state.isSolved, state.revealedWords, state.currentWordIndex]);
 
-  const handleReviewErrors = () => {
+  const handleReviewErrors = useCallback(() => {
     dispatch({ 
       type: 'SET_REVIEW_MODE', 
       payload: { 
@@ -169,16 +151,14 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
       } 
     });
     generateNewGame(true);
-    refocusInput();
-  };
+  }, [generateNewGame]);
 
-  const handleExitReview = () => {
+  const handleExitReview = useCallback(() => {
     dispatch({ type: 'SET_REVIEW_MODE', payload: { isReviewMode: false } });
     generateNewGame(false);
-    refocusInput();
-  };
+  }, [generateNewGame]);
 
-  const handleNextChapter = () => {
+  const handleNextChapter = useCallback(() => {
     const currentChapter = getCurrentChapter(currentVerse);
     if (!currentChapter) return;
     
@@ -189,18 +169,11 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     
     if (nextChapter.verses.length > 0) {
       onVerseChange(nextChapter.verses[0]);
-      refocusInput();
     }
-  };
-
-  const handleGameAreaClick = () => {
-    if (hiddenInputRef.current && !state.isSolved) {
-      hiddenInputRef.current.focus();
-    }
-  };
+  }, [currentVerse, onVerseChange]);
 
   // Simplified button state logic
-  const getButtonState = (): ButtonState => {
+  const getButtonState = useCallback((): ButtonState => {
     if (!state.isSolved) return { action: null, buttonType: null };
     
     const hasErrors = state.wordsWithErrors.some(hasError => hasError);
@@ -214,13 +187,21 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     
     const key = `${state.isReviewMode ? 'review' : 'normal'}-${hasErrors ? 'with-errors' : 'no-errors'}`;
     return buttonStates[key] || { action: null, buttonType: null };
-  };
+  }, [state.isSolved, state.wordsWithErrors, state.isReviewMode, handleReviewErrors, handleNextChapter, handleReset, handleExitReview]);
 
-  // Handle keyboard input for desktop
+  // Handle custom events from word inputs
   useEffect(() => {
+    const handleWordInputEvent = (event: CustomEvent) => {
+      const { wordIndex, input } = event.detail;
+      handleWordInput(wordIndex, input);
+    };
+
+    const handleWordFocusEvent = (event: CustomEvent) => {
+      const { wordIndex } = event.detail;
+      handleWordFocus(wordIndex);
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.target === hiddenInputRef.current && !state.isSolved) return;
-      
       if (event.key === 'Enter' && state.isSolved) {
         event.preventDefault();
         
@@ -230,27 +211,25 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         }
         return;
       }
-      
-      if (!state.isSolved) {
-        event.preventDefault();
-        handleCharacterInput(event.key);
-      }
     };
 
+    window.addEventListener('wordInput', handleWordInputEvent as EventListener);
+    window.addEventListener('wordFocus', handleWordFocusEvent as EventListener);
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [state]);
+    
+    return () => {
+      window.removeEventListener('wordInput', handleWordInputEvent as EventListener);
+      window.removeEventListener('wordFocus', handleWordFocusEvent as EventListener);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleWordInput, handleWordFocus, state.isSolved, getButtonState]);
 
   // Initialize game and focus input
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
 
-  useEffect(() => {
-    if (hiddenInputRef.current && !state.isSolved) {
-      hiddenInputRef.current.focus();
-    }
-  }, [state.isSolved, currentVerse]);
+
 
   // Check for game completion
   useEffect(() => {
@@ -319,31 +298,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         onGameTypeChange={onGameTypeChange}
       />
 
-      <div className="first-letter-test-container" onClick={handleGameAreaClick}>
-        {/* Hidden input for mobile keyboard support */}
-        <textarea
-          ref={hiddenInputRef}
-          style={{
-            position: 'absolute',
-            left: '-9999px',
-            opacity: 0,
-            pointerEvents: 'none',
-            resize: 'none'
-          }}
-          onChange={handleInputChange}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"
-          inputMode="text"
-          enterKeyHint="done"
-          name="game-input"
-          id="game-input-hidden"
-          role="textbox"
-          aria-label="Game input"
-          rows={1}
-          cols={1}
-        />
+      <div className="first-letter-test-container">
         
         {state.wordStatsEnabled && <WordStats />}
         

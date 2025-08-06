@@ -17,7 +17,7 @@ interface GameControlsProps {
   isHintDisabled: boolean;
 }
 
-export const GameControls: React.FC<GameControlsProps> = ({ 
+export const GameControls: React.FC<GameControlsProps> = React.memo(({ 
   onReset, 
   onHint, 
   isHintDisabled 
@@ -35,7 +35,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
       Hint
     </button>
   </div>
-);
+));
 
 interface WordDisplayProps {
   chapterWords: WordItem[];
@@ -47,7 +47,113 @@ interface WordDisplayProps {
   displayCount: number;
 }
 
-export const WordDisplay: React.FC<WordDisplayProps> = ({
+// Custom comparison function for WordDisplay to prevent unnecessary re-renders
+const areWordDisplayPropsEqual = (prevProps: WordDisplayProps, nextProps: WordDisplayProps) => {
+  // Check if displayCount changed
+  if (prevProps.displayCount !== nextProps.displayCount) return false;
+  
+  // Check if current word index changed
+  if (prevProps.currentWordIndex !== nextProps.currentWordIndex) return false;
+  
+  // Check if error state changed
+  if (prevProps.hasError !== nextProps.hasError) return false;
+  
+  // Check if partial verse input changed
+  if (prevProps.partialVerseInput !== nextProps.partialVerseInput) return false;
+  
+  // Check if the visible portion of arrays changed
+  const visibleCount = Math.min(prevProps.displayCount, nextProps.displayCount);
+  
+  for (let i = 0; i < visibleCount; i++) {
+    if (prevProps.revealedWords[i] !== nextProps.revealedWords[i]) return false;
+    if (prevProps.wordsWithErrors[i] !== nextProps.wordsWithErrors[i]) return false;
+    if (prevProps.chapterWords[i]?.text !== nextProps.chapterWords[i]?.text) return false;
+    if (prevProps.chapterWords[i]?.isVerseNumber !== nextProps.chapterWords[i]?.isVerseNumber) return false;
+  }
+  
+  return true;
+};
+
+interface WordInputProps {
+  wordItem: WordItem;
+  wordIndex: number;
+  isRevealed: boolean;
+  isError: boolean;
+  isCurrent: boolean;
+  partialInput: string;
+  onInput: (wordIndex: number, input: string) => void;
+  onFocus: (wordIndex: number) => void;
+}
+
+const WordInput: React.FC<WordInputProps> = React.memo(({
+  wordItem,
+  wordIndex,
+  isRevealed,
+  isError,
+  isCurrent,
+  partialInput,
+  onInput,
+  onFocus
+}) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Auto-focus current word
+  React.useEffect(() => {
+    if (isCurrent && inputRef.current && !isRevealed) {
+      inputRef.current.focus();
+    }
+  }, [isCurrent, isRevealed]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase();
+    onInput(wordIndex, value);
+  };
+
+  const handleFocus = () => {
+    onFocus(wordIndex);
+  };
+
+  const getDisplayValue = () => {
+    if (isRevealed) return wordItem.text;
+    if (wordItem.isVerseNumber && isCurrent && partialInput.length > 0) {
+      return partialInput;
+    }
+    return '';
+  };
+
+  const getPlaceholder = () => {
+    if (isRevealed) return '';
+    return '_'.repeat(wordItem.text.length);
+  };
+
+  if (isRevealed) {
+    return (
+      <span className="first-letter-test-word revealed">
+        {wordItem.text}
+      </span>
+    );
+  }
+
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      className={`first-letter-test-word-input ${isCurrent ? 'current' : ''} ${isError ? 'error' : ''}`}
+      value={getDisplayValue()}
+      placeholder={getPlaceholder()}
+      onChange={handleInputChange}
+      onFocus={handleFocus}
+      maxLength={wordItem.text.length}
+      size={Math.max(wordItem.text.length, 2)}
+      autoComplete="off"
+      autoCorrect="off"
+      autoCapitalize="off"
+      spellCheck="false"
+    />
+  );
+});
+
+export const WordDisplay: React.FC<WordDisplayProps> = React.memo(({
   chapterWords,
   revealedWords,
   wordsWithErrors,
@@ -55,40 +161,54 @@ export const WordDisplay: React.FC<WordDisplayProps> = ({
   hasError,
   partialVerseInput,
   displayCount
-}) => (
-  <div className="first-letter-test-verse-text">
-    {chapterWords.slice(0, displayCount).map((wordItem, wordIndex) => (
-      <span key={wordIndex}>
-        <span 
-          className={`first-letter-test-word ${revealedWords[wordIndex] ? 'revealed' : 'current'} ${
-            wordIndex === currentWordIndex && hasError ? 'error' : ''
-          } ${wordsWithErrors[wordIndex] ? 'error' : ''}`}
-        >
-          {revealedWords[wordIndex] 
-            ? wordItem.text 
-            : (wordItem.isVerseNumber && wordIndex === currentWordIndex && partialVerseInput.length > 0)
-              ? partialVerseInput + '_'.repeat(wordItem.text.length - partialVerseInput.length)
-              : '__'
-          }
+}) => {
+  const handleWordInput = React.useCallback((wordIndex: number, input: string) => {
+    // This will be passed down from parent component
+    window.dispatchEvent(new CustomEvent('wordInput', { 
+      detail: { wordIndex, input } 
+    }));
+  }, []);
+
+  const handleWordFocus = React.useCallback((wordIndex: number) => {
+    // This will be passed down from parent component
+    window.dispatchEvent(new CustomEvent('wordFocus', { 
+      detail: { wordIndex } 
+    }));
+  }, []);
+
+  return (
+    <div className="first-letter-test-verse-text">
+      {chapterWords.slice(0, displayCount).map((wordItem, wordIndex) => (
+        <span key={wordIndex}>
+          <WordInput
+            wordItem={wordItem}
+            wordIndex={wordIndex}
+            isRevealed={revealedWords[wordIndex]}
+            isError={wordsWithErrors[wordIndex] || (wordIndex === currentWordIndex && hasError)}
+            isCurrent={wordIndex === currentWordIndex}
+            partialInput={wordItem.isVerseNumber && wordIndex === currentWordIndex ? partialVerseInput : ''}
+            onInput={handleWordInput}
+            onFocus={handleWordFocus}
+          />
+          {wordIndex < displayCount - 1 && <span> </span>}
         </span>
-        {wordIndex < displayCount - 1 ? ' ' : ''}
-      </span>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+}, areWordDisplayPropsEqual);
 
 interface InstructionTextProps {
   isReviewMode: boolean;
 }
 
-export const InstructionText: React.FC<InstructionTextProps> = ({ isReviewMode }) => (
+export const InstructionText: React.FC<InstructionTextProps> = React.memo(({ isReviewMode }) => (
   <div className="first-letter-test-instruction-text">
     {isReviewMode 
       ? 'Review mode: Verse numbers are shown - type first letters of words to complete these verses'
       : 'Type verse numbers and first letters of words to reveal the chapter (first verse number is shown)'
     }
   </div>
-);
+));
 
 interface VerseWithErrorsProps {
   verse: BibleVerse;
@@ -97,7 +217,7 @@ interface VerseWithErrorsProps {
   wordsWithErrors: boolean[];
 }
 
-export const VerseWithErrors: React.FC<VerseWithErrorsProps> = ({
+export const VerseWithErrors: React.FC<VerseWithErrorsProps> = React.memo(({
   verse,
   verseIndex,
   chapterWords,
@@ -176,7 +296,7 @@ export const VerseWithErrors: React.FC<VerseWithErrorsProps> = ({
       {renderedElements}
     </div>
   );
-};
+});
 
 interface SolvedMessageButtonsProps {
   isReviewMode: boolean;
@@ -189,7 +309,7 @@ interface SolvedMessageButtonsProps {
   nextChapterReference: string;
 }
 
-export const SolvedMessageButtons: React.FC<SolvedMessageButtonsProps> = ({
+export const SolvedMessageButtons: React.FC<SolvedMessageButtonsProps> = React.memo(({
   isReviewMode,
   hasErrors,
   primaryButtonType,
@@ -252,7 +372,7 @@ export const SolvedMessageButtons: React.FC<SolvedMessageButtonsProps> = ({
       </button>
     </>
   );
-};
+});
 
 interface SolvedMessageProps {
   percentageCorrect: number;
@@ -269,7 +389,7 @@ interface SolvedMessageProps {
   currentChapter: any;
 }
 
-export const SolvedMessage: React.FC<SolvedMessageProps> = ({
+export const SolvedMessage: React.FC<SolvedMessageProps> = React.memo(({
   percentageCorrect,
   versesWithErrors,
   chapterWords,
@@ -319,4 +439,4 @@ export const SolvedMessage: React.FC<SolvedMessageProps> = ({
       />
     </div>
   </div>
-); 
+)); 

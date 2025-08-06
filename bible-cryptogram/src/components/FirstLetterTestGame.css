@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -70,6 +71,57 @@ body.first-letter-test-high-score .first-letter-test-citation {
 
 .first-letter-test-word.revealed.error {
   color: #ff0000;
+}
+
+/* Input field styling to match word appearance */
+.first-letter-test-word-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #3da542;
+  color: #3da542;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 4px;
+  margin: 0;
+  outline: none;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px #3da542;
+  text-transform: uppercase;
+}
+
+.first-letter-test-word-input::placeholder {
+  color: #666666;
+  text-shadow: none;
+}
+
+.first-letter-test-word-input:focus {
+  border-bottom-color: #ffffff;
+  color: #ffffff;
+  text-shadow: 0 0 15px #3da542;
+}
+
+.first-letter-test-word-input.current {
+  border-bottom-color: #3da542;
+  color: #3da542;
+  text-shadow: 0 0 10px #3da542;
+}
+
+.first-letter-test-word-input.error {
+  border-bottom-color: #ff0000;
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+  animation: bounce 0.5s ease;
+}
+
+/* Mobile input styling */
+@media (max-width: 768px) {
+  .first-letter-test-word-input {
+    font-size: 1.1rem;
+    padding: 3px 2px;
+    min-width: 20px;
+  }
 }
 
 @keyframes revealAnimation {
