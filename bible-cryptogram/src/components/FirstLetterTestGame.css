@@ -22,6 +22,17 @@
   user-select: none;
 }
 
+/* Sticky controls section */
+.first-letter-test-sticky-controls {
+  position: sticky;
+  top: 50px; /* Below the fixed header */
+  background-color: var(--color-bg-dark);
+  padding: 10px 0;
+  margin-bottom: 20px;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 body.first-letter-test-high-score {
   background: linear-gradient(45deg, #800080, #3da542);
   background-attachment: fixed;

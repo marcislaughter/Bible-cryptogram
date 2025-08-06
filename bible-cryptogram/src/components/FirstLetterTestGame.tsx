@@ -307,11 +307,13 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         {state.wordStatsEnabled && <WordStats />}
         
         {!state.isSolved && (
-          <GameControls
-            onReset={handleReset}
-            onHint={handleHint}
-            isHintDisabled={isHintDisabled}
-          />
+          <div className="first-letter-test-sticky-controls">
+            <GameControls
+              onReset={handleReset}
+              onHint={handleHint}
+              isHintDisabled={isHintDisabled}
+            />
+          </div>
         )}
         
         <WordDisplay
