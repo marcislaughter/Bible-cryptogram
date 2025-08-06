@@ -100,7 +100,9 @@ body.first-letter-test-high-score .first-letter-test-citation {
   transition: all 0.3s ease;
   text-shadow: 0 0 10px #3da542;
   text-transform: uppercase;
-  max-width: 100%;
+  width: 40px; /* Fixed width for consistent underline length */
+  min-width: 40px; /* Ensure minimum width */
+  max-width: 40px; /* Prevent expansion */
   box-sizing: border-box;
 }
 

@@ -123,7 +123,7 @@ const WordInput: React.FC<WordInputProps> = React.memo(({
 
   const getPlaceholder = () => {
     if (isRevealed) return '';
-    return '_'.repeat(wordItem.text.length);
+    return ''; // Remove dashes, show only green underline
   };
 
   if (isRevealed) {
@@ -144,7 +144,7 @@ const WordInput: React.FC<WordInputProps> = React.memo(({
       onChange={handleInputChange}
       onFocus={handleFocus}
       maxLength={wordItem.text.length}
-      size={Math.max(wordItem.text.length, 2)}
+      size={3}
       autoComplete="off"
       autoCorrect="off"
       autoCapitalize="off"
