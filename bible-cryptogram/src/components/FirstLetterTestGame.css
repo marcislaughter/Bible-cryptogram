@@ -1,14 +1,16 @@
 .first-letter-test-container {
   margin-top: 70px;
-  width: 95vw;
+  width: 100vw;
+  max-width: 100%;
   line-height: 2;
   font-size: 1.2rem;
   text-align: left;
   padding: 20px;
+  box-sizing: border-box; /* Include padding in width calculation */
   font-family: var(--font-mono);
   position: relative;
   background-color: var(--color-bg-dark);
-  min-height: 100vh;
+  min-height: calc(100vh - 70px); /* Account for margin-top */
   color: #a3a3a3;
   display: flex;
   flex-direction: column;
@@ -20,12 +22,13 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Sticky controls section */
 .first-letter-test-sticky-controls {
   position: sticky;
-  top: 50px; /* Below the fixed header */
+  top: 60px; /* More space below the fixed header to avoid covering banner */
   background-color: var(--color-bg-dark);
   padding: 10px 0;
   margin-bottom: 20px;
@@ -51,6 +54,10 @@ body.first-letter-test-high-score .first-letter-test-citation {
 .first-letter-test-verse-text {
   display: inline;
   text-align: left;
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .first-letter-test-word {
@@ -93,6 +100,8 @@ body.first-letter-test-high-score .first-letter-test-citation {
   transition: all 0.3s ease;
   text-shadow: 0 0 10px #3da542;
   text-transform: uppercase;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .first-letter-test-word-input::placeholder {
@@ -125,6 +134,15 @@ body.first-letter-test-high-score .first-letter-test-citation {
     font-size: 1.1rem;
     padding: 3px 2px;
     min-width: 20px;
+  }
+  
+  .first-letter-test-container {
+    padding: 15px; /* Reduce padding on mobile */
+    font-size: 1.1rem; /* Slightly smaller font */
+  }
+  
+  .first-letter-test-verse-text {
+    line-height: 1.8; /* Adjust line height for mobile */
   }
 }
 
