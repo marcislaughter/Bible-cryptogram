@@ -35,14 +35,7 @@ body.first-letter-test-high-score .first-letter-test-citation {
   color: var(--color-bg-dark);
 }
 
-.first-letter-test-chapter-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 30px;
-  text-align: center;
-  align-self: center;
-}
+
 
 .first-letter-test-verse-text {
   display: inline;

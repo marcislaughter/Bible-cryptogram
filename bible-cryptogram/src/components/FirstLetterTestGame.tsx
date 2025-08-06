@@ -306,10 +306,6 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
         
         {state.wordStatsEnabled && <WordStats />}
         
-        <div className="first-letter-test-chapter-title">
-          {chapterTitle} {state.isReviewMode && '(Review Mode - Verses with Errors)'}
-        </div>
-        
         {!state.isSolved && (
           <GameControls
             onReset={handleReset}
