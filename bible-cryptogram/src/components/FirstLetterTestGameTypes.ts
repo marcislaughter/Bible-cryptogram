@@ -15,6 +15,7 @@ export interface GameState {
   hasError: boolean;
   isReviewMode: boolean;
   wordStatsEnabled: boolean;
+  hasStartedTyping: boolean;
 }
 
 export type GameAction =
@@ -35,7 +36,8 @@ export type GameAction =
   | { type: 'SET_REVIEW_MODE'; payload: { 
       isReviewMode: boolean; 
     }}
-  | { type: 'CLEAR_ERROR' };
+  | { type: 'CLEAR_ERROR' }
+  | { type: 'SET_HAS_STARTED_TYPING'; payload: boolean };
 
 export type ButtonAction = 'review' | 'next-chapter' | 'retry' | 'exit-review';
 

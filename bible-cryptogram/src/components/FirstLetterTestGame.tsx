@@ -73,6 +73,11 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
   const handleWordInput = useCallback((wordIndex: number, input: string) => {
     if (state.isSolved) return;
 
+    // Set hasStartedTyping flag on first input
+    if (!state.hasStartedTyping) {
+      dispatch({ type: 'SET_HAS_STARTED_TYPING', payload: true });
+    }
+
     const targetWordItem = state.chapterWords[wordIndex];
     if (!targetWordItem) return;
 
@@ -326,7 +331,7 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
           displayCount={displayCount}
         />
         
-        {!state.isSolved && (
+        {!state.isSolved && !state.hasStartedTyping && (
           <InstructionText isReviewMode={state.isReviewMode} />
         )}
         

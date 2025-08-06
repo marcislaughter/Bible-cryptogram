@@ -10,6 +10,7 @@ export const initialGameState: GameState = {
   hasError: false,
   isReviewMode: false,
   wordStatsEnabled: false,
+  hasStartedTyping: false,
 };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
@@ -25,6 +26,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         isSolved: false,
         hasError: false,
         partialVerseInput: '',
+        hasStartedTyping: false,
       };
 
     case 'REVEAL_WORD':
@@ -87,6 +89,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         hasError: false,
+      };
+
+    case 'SET_HAS_STARTED_TYPING':
+      return {
+        ...state,
+        hasStartedTyping: action.payload,
       };
 
     default:
