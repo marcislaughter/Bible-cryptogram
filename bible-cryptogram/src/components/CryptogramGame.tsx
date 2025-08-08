@@ -284,7 +284,10 @@ const Game: React.FC<CryptogramGameProps> = ({
     // Mobile keyboard compatibility
     e.target.value = '';
     setTimeout(() => {
-      e.target.select();
+      // Only select when there is no existing guess for this cell
+      if (!guesses[char]) {
+        e.target.select();
+      }
     }, 0);
   };
 
@@ -520,7 +523,6 @@ const Game: React.FC<CryptogramGameProps> = ({
                       ) : (
                         <input
                           type="text"
-                          maxLength={1}
                           className={`guess-input ${getInputClass(char)}`}
                           value={guesses[char] || ''}
                           onChange={(e) => handleInputChange(e, char)}
