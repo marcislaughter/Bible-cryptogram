@@ -281,14 +281,26 @@ const Game: React.FC<CryptogramGameProps> = ({
       setFocusedChar(char);
     }
     
+    const hasGuess = Boolean(guesses[char]);
+
     // Mobile keyboard compatibility
-    e.target.value = '';
-    setTimeout(() => {
-      // Only select when there is no existing guess for this cell
-      if (!guesses[char]) {
+    if (!hasGuess) {
+      // Empty cells: clear the DOM value to avoid odd mobile behaviors and select
+      e.target.value = '';
+      setTimeout(() => {
         e.target.select();
-      }
-    }, 0);
+      }, 0);
+    } else {
+      // Cells with an existing guess: keep the value and place caret at the start
+      // Do it in a timeout to run after focus/render
+      setTimeout(() => {
+        try {
+          e.target.setSelectionRange(0, 0);
+        } catch (_) {
+          /* noop */
+        }
+      }, 0);
+    }
   };
 
   // Blur handler
