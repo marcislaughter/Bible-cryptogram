@@ -461,6 +461,10 @@ const Game: React.FC<CryptogramGameProps> = ({
   useEffect(() => {
     if (isSolved) {
       document.body.classList.add('cryptogram-win-gradient');
+      // Blur any focused element to dismiss mobile keyboards
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
       
       // Cryptogram uses instant scroll to top of message
       setTimeout(() => {
@@ -563,7 +567,8 @@ const Game: React.FC<CryptogramGameProps> = ({
                           autoCorrect="off"
                           autoCapitalize="characters"
                           spellCheck="false"
-                          inputMode="text"
+                          readOnly={isSolved}
+                          inputMode={isSolved ? 'none' : 'text'}
                         />
                       )}
                       {isLetter && <div className="encrypted-char">{char}</div>}
@@ -593,7 +598,15 @@ const Game: React.FC<CryptogramGameProps> = ({
           </div>
         )}
         
-        <Keyboard onKeyPress={handleKeyPress} onBackspace={handleBackspace} onArrowLeft={handleArrowLeft} onArrowRight={handleArrowRight} guesses={guesses} />
+        {!isSolved && (
+          <Keyboard 
+            onKeyPress={handleKeyPress} 
+            onBackspace={handleBackspace} 
+            onArrowLeft={handleArrowLeft} 
+            onArrowRight={handleArrowRight} 
+            guesses={guesses} 
+          />
+        )}
         
         <div className="citation">
           Scripture quotations taken from the Holy Bible, New International Version®, NIV®.<br />
