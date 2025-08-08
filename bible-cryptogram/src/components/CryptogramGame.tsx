@@ -9,6 +9,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './CryptogramGame.css';
 
+// Heuristic to detect touch-capable devices (mobile/tablet)
+const isTouchDevice = (): boolean => {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+  return (
+    'ontouchstart' in window ||
+    (navigator as any).maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0
+  );
+};
+
 // Utility function to create a substitution cipher
 const createCipher = (): Record<string, string> => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -287,19 +297,25 @@ const Game: React.FC<CryptogramGameProps> = ({
     if (!hasGuess) {
       // Empty cells: clear the DOM value to avoid odd mobile behaviors and select
       e.target.value = '';
-      setTimeout(() => {
-        e.target.select();
-      }, 0);
+      // Avoid programmatic selection on touch devices to prevent paste/copy bubble
+      if (!isTouchDevice()) {
+        setTimeout(() => {
+          e.target.select();
+        }, 0);
+      }
     } else {
       // Cells with an existing guess: keep the value and place caret at the start
       // Do it in a timeout to run after focus/render
-      setTimeout(() => {
-        try {
-          e.target.setSelectionRange(0, 0);
-        } catch (_) {
-          /* noop */
-        }
-      }, 0);
+      // Avoid programmatic caret movement on touch devices to reduce paste/copy bubble
+      if (!isTouchDevice()) {
+        setTimeout(() => {
+          try {
+            e.target.setSelectionRange(0, 0);
+          } catch (_) {
+            /* noop */
+          }
+        }, 0);
+      }
     }
   };
 
