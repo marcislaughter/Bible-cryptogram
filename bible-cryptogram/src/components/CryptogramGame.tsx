@@ -408,20 +408,22 @@ const Game: React.FC<CryptogramGameProps> = ({
 
   // Function to get CSS class for input based on auto-check state
   const getInputClass = (char: string) => {
-    let baseClass = '';
-    
-    // Check if this character matches the currently focused character
+    const classNames: string[] = [];
+
     if (focusedChar === char) {
-      baseClass += 'same-letter';
+      classNames.push('same-letter');
     }
 
-    // Add auto-check styling if enabled and there's a guess
     if (autoCheckEnabled && guesses[char]) {
       const isCorrect = isGuessCorrect(char, guesses[char]);
-      baseClass += isCorrect ? ' correct' : ' incorrect';
+      classNames.push(isCorrect ? 'correct' : 'incorrect');
     }
 
-    return baseClass.trim();
+    if (guesses[char]) {
+      classNames.push('has-guess');
+    }
+
+    return classNames.join(' ').trim();
   };
 
   // Cryptogram-specific win message handler
