@@ -45,6 +45,8 @@
   --color-dark-blue-transparent: rgba(0, 0, 139, 0.3);
   --color-success-transparent: rgba(61, 165, 66, 0.1);
   --color-orange-transparent: rgba(255, 152, 0, 0.1);
+  --color-light-purple-transparent: rgba(230, 204, 255, 0.8);
+  --color-purple-transparent: rgba(128, 0, 128, 0.8);
 
   
   /* Glass effect backgrounds */

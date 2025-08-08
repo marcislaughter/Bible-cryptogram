@@ -20,10 +20,10 @@
 .arrow-key {
   flex: 1;
   height: 2.5rem;
-  border: 1px solid #800080;
+  border: 1px solid var(--color-purple);
   border-radius: 0.25rem;
-  background-color: #800080;
-  color: #e6ccff;
+  background-color: var(--color-purple-transparent);
+  color: var(--color-light-purple);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -37,7 +37,7 @@
 
 .arrow-key:hover {
   background-color: #6b0066;
-  text-shadow: 0 0 1px #e6ccff, 0 0 2px #e6ccff, 0 0 3px #e6ccff;
+  text-shadow: 0 0 1px var(--color-light-purple), 0 0 2px var(--color-light-purple), 0 0 3px var(--color-light-purple);
 }
 
 .arrow-key:active {
@@ -69,11 +69,11 @@
   /* Each key takes approximately 10% of available width */
   flex: 0 0 calc(10% - 0.225rem); /* 10% minus gap adjustment */
   height: 2.5rem;
-  border: 1px solid #800080;
+  border: 1px solid var(--color-purple);
   border-radius: 0.25rem;
-  background-color: #e6ccff;
-  color: #800080;
-  font-size: 0.875rem;
+  background-color: var(--color-light-purple-transparent);
+  color: var(--color-purple);
+  font-size: 1rem;
   font-weight: 900;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -86,8 +86,8 @@
 }
 
 .keyboard-key:hover {
-  background-color: #800080;
-  color: white;
+  background-color: var(--color-purple);
+  color: var(--color-white);
 }
 
 .keyboard-key:active {
@@ -95,15 +95,15 @@
 }
 
 .keyboard-key.guessed {
-  background-color: #121212;
-  color: #a3a3a3;
-  border-color: #a3a3a3;
+  background-color: var(--color-bg-dark);
+  color: var(--color-light-gray);
+  border-color: var(--color-light-gray);
 }
 
 .keyboard-key.backspace {
-  background-color: #800080;
-  color: white;
-  border-color: #800080;
+  background-color: var(--color-purple);
+  color: var(--color-white);
+  border-color: var(--color-purple);
   flex: 0 0 calc(15% - 0.225rem); /* Backspace key slightly larger */
   font-size: 1rem;
 }
@@ -127,13 +127,13 @@
   .keyboard-key {
     flex: 0 0 calc(10% - 0.1125rem);
     height: 2rem;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     border-radius: 0.125rem;
   }
 
   .keyboard-key.backspace {
     flex: 0 0 calc(15% - 0.1125rem);
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
 
   .arrow-navigation {
@@ -161,13 +161,13 @@
   .keyboard-key {
     flex: 0 0 calc(10% - 0.0563rem);
     height: 1.75rem;
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     font-weight: 800;
   }
 
   .keyboard-key.backspace {
     flex: 0 0 calc(15% - 0.0563rem);
-    font-size: 0.75rem;
+    font-size: 0.875rem;
   }
 
   .arrow-navigation {
@@ -185,11 +185,11 @@
 @media (min-width: 769px) {
   .keyboard-key {
     height: 3rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .keyboard-key.backspace {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -203,7 +203,7 @@
 
   .keyboard-key {
     height: 2.25rem;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     max-width: 2.25rem;
   }
 
@@ -221,7 +221,7 @@
 
   .keyboard-key {
     height: 2.5rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
     max-width: 2.5rem;
   }
 
@@ -240,12 +240,12 @@
 
   .keyboard-key {
     height: 3rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
     max-width: 3rem;
   }
 
   .keyboard-key.backspace {
     max-width: 4rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 } 
