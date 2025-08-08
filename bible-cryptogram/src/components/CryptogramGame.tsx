@@ -589,7 +589,7 @@ const Game: React.FC<CryptogramGameProps> = ({
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
               <button onClick={handleRandomVerse} className="next-verse-btn solved-button-base">
-                <FontAwesomeIcon icon={faShuffle} /> Random Verse
+                Random Verse <FontAwesomeIcon icon={faShuffle} />
               </button>
               <button onClick={handleNextVerse} className="next-verse-btn solved-button-base primary-button">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />
