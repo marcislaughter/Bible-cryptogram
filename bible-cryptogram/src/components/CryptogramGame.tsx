@@ -6,7 +6,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faShuffle } from '@fortawesome/free-solid-svg-icons';
 import './CryptogramGame.css';
 
 // Heuristic to detect touch-capable devices (mobile/tablet)
@@ -584,7 +584,7 @@ const Game: React.FC<CryptogramGameProps> = ({
             <p className="reference">— {currentVerse.reference}</p>
             <div className="solved-buttons">
               <button onClick={handleRandomVerse} className="next-verse-btn solved-button-base">
-                Random Verse
+                <FontAwesomeIcon icon={faShuffle} /> Random Verse
               </button>
               <button onClick={handleNextVerse} className="next-verse-btn solved-button-base primary-button">
                 {getNextVerseReference()} <FontAwesomeIcon icon={faArrowRight} />

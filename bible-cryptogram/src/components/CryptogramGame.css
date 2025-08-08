@@ -58,9 +58,9 @@
 }
 
 .guess-input:focus {
-  background: var(--purple-bg);
-  border-color: var(--color-purple);
-  color: var(--color-light-purple);
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-white);
   outline: none;
 }
 
@@ -222,18 +222,12 @@ body.cryptogram-win-gradient .citation {
   }
   
   .guess-input:focus {
-    /* Force white text color on focus for mobile */
+    /* Full dark green cell on mobile */
     color: var(--color-white) !important;
     -webkit-text-fill-color: var(--color-white) !important;
-    
-    /* Ensure focus background is visible */
     background-color: var(--color-success) !important;
     border-color: var(--color-success) !important;
-    
-    /* Override any mobile browser focus styles */
     outline: none !important;
-    
-    /* Ensure caret is visible */
     caret-color: var(--color-white) !important;
   }
   
