@@ -216,7 +216,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 30px;
     height: 38px;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }
 
@@ -265,7 +265,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 30px;
     height: 38px;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   
   .guess-input:focus {
@@ -374,7 +374,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 10px;
     height: 20px;
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
   
   .verse-container {
