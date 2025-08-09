@@ -7,18 +7,29 @@
   font-family: var(--font-mono);
   position: relative;
   padding: 70px 10px 0 10px; /* push content below fixed banner while keeping bg visible */
-  min-height: 100vh; /* fill viewport so photo can reach bottom */
+  min-height: calc(100vh - 70px); /* fill viewport minus top padding so no vertical overflow */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Add extra top padding on large desktop screens so buttons sit further from the banner */
 @media (min-width: 1280px) {
-  .cryptogram-container { padding-top: 100px; }
+  .cryptogram-container { 
+    padding-top: 100px; 
+    min-height: calc(100vh - 100px);
+  }
 }
 @media (min-width: 1600px) {
-  .cryptogram-container { padding-top: 120px; }
+  .cryptogram-container { 
+    padding-top: 120px; 
+    min-height: calc(100vh - 120px);
+  }
 }
 @media (min-width: 1920px) {
-  .cryptogram-container { padding-top: 140px; }
+  .cryptogram-container { 
+    padding-top: 140px; 
+    min-height: calc(100vh - 140px);
+  }
 }
 
 /* Photo mode: set background image similar to ReferenceMatch */
@@ -28,7 +39,7 @@
     linear-gradient(var(--glass-bg-heavy), var(--glass-bg-heavy)),
     var(--crypt-bg-image);
   background-size: cover, cover;
-  background-position: center, center;
+  background-position: center top;
   background-repeat: no-repeat, no-repeat;
   /* min-height already set on base container to keep image to bottom */
 }
