@@ -281,25 +281,7 @@ const Game: React.FC<CryptogramGameProps> = ({
     }
   };
 
-  // Additional input handler for mobile keyboard compatibility
-  const handleInputEvent = (e: React.FormEvent<HTMLInputElement>, char: string) => {
-    if (isAdvancingFocus.current) return;
-    
-    const target = e.target as HTMLInputElement;
-    const value = target.value.toUpperCase();
-    
-    if (value.length > 0) {
-      const newChar = value.slice(-1);
-      if (/^[A-Z]$/.test(newChar)) {
-        // Replace current guess
-        handleGuessChange(char, newChar);
-        
-        // Clear input and advance focus
-        target.value = '';
-        advanceFocus(target);
-      }
-    }
-  };
+  // (removed) Additional input handler for mobile keyboard compatibility
 
   // Focus handler
   const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>, char: string) => {
@@ -320,18 +302,14 @@ const Game: React.FC<CryptogramGameProps> = ({
         }, 0);
       }
     } else {
-      // Cells with an existing guess: keep the value and place caret at the start
-      // Do it in a timeout to run after focus/render
-      // Avoid programmatic caret movement on touch devices to reduce paste/copy bubble
-      if (!isTouchDevice()) {
-        setTimeout(() => {
-          try {
-            e.target.setSelectionRange(0, 0);
-          } catch (_) {
-            /* noop */
-          }
-        }, 0);
-      }
+      // Always place caret after the single character so typing replaces it
+      setTimeout(() => {
+        try {
+          e.target.setSelectionRange(1, 1);
+        } catch (_) {
+          /* noop */
+        }
+      }, 0);
     }
   };
 
@@ -591,7 +569,6 @@ const Game: React.FC<CryptogramGameProps> = ({
                           className={`guess-input ${getInputClass(char)}`}
                           value={guesses[char] || ''}
                           onChange={(e) => handleInputChange(e, char)}
-                          onInput={(e) => handleInputEvent(e, char)}
                           onFocus={(e) => handleInputFocus(e, char)}
                           onBlur={handleInputBlur}
                           data-char={char}
