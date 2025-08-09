@@ -65,14 +65,14 @@ export const GLASS_BUTTON_THEME: ButtonTheme = {
   padding: '12px 24px',
   fontSize: '1rem',
   fontWeight: 'bold',
-  background: 'rgba(255, 255, 255, 0.1)',
-  color: '#e6ccff',
-  border: '2px solid #800080',
+  background: 'var(--glass-bg-light)',
+  color: 'var(--color-light-purple)',
+  border: '2px solid var(--color-purple)',
   borderRadius: '20px',
   cursor: 'pointer',
   transition: 'all 0.3s ease',
-  fontFamily: "'Courier New', Courier, monospace",
-  backdropFilter: 'blur(5px)',
+  fontFamily: 'var(--font-mono)',
+  backdropFilter: 'var(--blur-effect)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -80,17 +80,17 @@ export const GLASS_BUTTON_THEME: ButtonTheme = {
   minHeight: '45px',
   
   // Hover states
-  hoverBackground: 'rgba(128, 0, 128, 0.2)',
+  hoverBackground: 'var(--purple-bg)',
   hoverTransform: 'translateY(-2px)',
-  hoverBoxShadow: '0 4px 12px rgba(128, 0, 128, 0.3)',
+  hoverBoxShadow: 'var(--shadow-purple)',
   
   // Disabled states
   disabledOpacity: '0.5',
   disabledCursor: 'not-allowed',
   disabledTransform: 'none',
   disabledBoxShadow: 'none',
-  disabledBorderColor: '#800080',
-  disabledHoverBackground: 'rgba(255, 255, 255, 0.1)'
+  disabledBorderColor: 'var(--color-purple)',
+  disabledHoverBackground: 'var(--glass-bg-light)'
 };
 
 // Mobile responsive adjustments for glass buttons
@@ -106,23 +106,3 @@ export const GLASS_BUTTON_MOBILE = {
     minHeight: '36px'
   }
 };
-
-/*
-  //optional color wheell
-
-  // Comprehensive color wheel definition with all properties
-export const COLOR_WHEEL_ITEMS: ColorWheelItem[] = [
-    { id: 1, name: 'dark blue', color: '#001a98', textColor: '#FFFFFF' },
-    { id: 2, name: 'red', color: '#ff1e26', textColor: '#FFFFFF' },
-    { id: 3, name: 'green', color: '#06bd00', textColor: '#FFFFFF' },
-    { id: 4, name: 'orange', color: '#fe941e', textColor: 'var(--color-bg-dark)' },
-    { id: 5, name: 'bright pink', color: '#ff00ff', textColor: 'var(--color-bg-dark)' },
-    { id: 6, name: 'light blue', color: '#55cdfd', textColor: 'var(--color-bg-dark)' },
-    { id: 7, name: 'brown', color: '#604814', textColor: '#FFFFFF' },
-    { id: 8, name: 'purple', color: '#760088', textColor: 'var(--color-bg-dark)' },
-    { id: 9, name: 'yellow', color: '#ffff00', textColor: 'var(--color-bg-dark)' },
-    { id: 10, name: 'light pink', color: '#f6aab7', textColor: 'var(--color-bg-dark)' }
-  ];
-
-  //
-*/
