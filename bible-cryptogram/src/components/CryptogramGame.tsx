@@ -321,7 +321,15 @@ const Game: React.FC<CryptogramGameProps> = ({
 
   // Blur handler
   const handleInputBlur = () => {
-    // Keep focus highlighting until another input is focused
+    // If focus moved outside any guess input (e.g., background click),
+    // clear the highlight so all cells return to normal.
+    setTimeout(() => {
+      const activeEl = document.activeElement as HTMLElement | null;
+      const stillOnInput = Boolean(activeEl && activeEl.classList && activeEl.classList.contains('guess-input'));
+      if (!stillOnInput) {
+        setFocusedChar(null);
+      }
+    }, 30);
   };
 
   // On-screen keyboard handlers
