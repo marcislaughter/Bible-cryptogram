@@ -170,6 +170,7 @@ body.android-device .guess-input {
 .punctuation-mark.comma {
   align-items: flex-end;
   padding-bottom: 8px;
+  left: calc(50% + 2px);
 }
 
 .punctuation-mark.apostrophe {
