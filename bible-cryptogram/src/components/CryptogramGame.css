@@ -145,7 +145,7 @@ body.android-device .guess-input {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--color-light-gray);
   background: transparent;
@@ -236,7 +236,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 30px; /* match input width on tablet */
     height: 38px; /* align with guess-input height */
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding-left: 4px; /* consistent across breakpoints */
     padding-right: 4px; /* consistent across breakpoints */
   }
@@ -297,7 +297,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 30px;
     height: 38px; /* align with guess-input height */
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding-left: 4px; /* consistent across breakpoints */
     padding-right: 4px; /* consistent across breakpoints */
   }
@@ -423,7 +423,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark {
     width: 10px;
     height: 32px; /* align with guess-input height */
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding-left: 4px; /* consistent across breakpoints */
     padding-right: 4px; /* consistent across breakpoints */
   }
