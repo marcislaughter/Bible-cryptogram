@@ -19,8 +19,6 @@
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat, no-repeat;
-  min-height: 100vh;
-  width: 100%;
 }
 
 .verse-container {
