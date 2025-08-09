@@ -35,10 +35,23 @@
 }
 
 .guess-input {
-  width: 32px;
-  height: 40px;
+  width: 34px;
+  height: 42px;
+  line-height: 42px; /* vertically center single character */
+  box-sizing: content-box;
+  padding: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  -webkit-padding-start: 0;
+  -webkit-padding-end: 0;
+  text-indent: 0;
+  margin: 0;
   text-align: center;
   font-size: 1.1rem;
+  font-family: var(--font-mono);
+  direction: ltr;
   border: 2px solid var(--color-purple);
   border-radius: 4px;
   text-transform: uppercase;
@@ -49,6 +62,38 @@
   color: var(--color-light-purple);
   transition: all 0.2s ease;
   font-weight: bold;
+}
+
+/* Android-only: shift text 1px left to counter visual bias */
+body.android-device .guess-input {
+  text-indent: 4px;
+}
+
+/* Normalize search input appearance and hide default clear button */
+.guess-input[type="search"] {
+  /* Normalize Android/Chrome to behave like text fields */
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+
+.guess-input::-webkit-search-cancel-button,
+.guess-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Ensure no hidden inner padding in some WebKit implementations */
+.guess-input::-webkit-search-field {
+  padding: 0;
+}
+
+/* Additional Blink/WebKit decorations that can reserve left space */
+.guess-input[type="search"]::-webkit-search-results-button,
+.guess-input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+.guess-input[type="search"]::-webkit-textfield-decoration-container {
+  display: none;
 }
 
 .guess-input:disabled {
@@ -77,8 +122,8 @@
 }
 
 .encrypted-char {
-  width: 32px;
-  height: 40px;
+  width: 34px;
+  height: 42px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -156,20 +201,21 @@ body.cryptogram-win-gradient .citation {
 /* Tablet sizing (1024px and below) */
 @media (max-width: 1024px) {
   .guess-input {
-    width: 28px;
-    height: 36px;
+    width: 30px;
+    height: 38px;
+    line-height: 38px; /* vertically center */
     font-size: 1rem;
   }
   
   .encrypted-char {
-    width: 28px;
-    height: 36px;
+    width: 30px;
+    height: 38px;
     font-size: 0.75rem;
   }
   
   .punctuation-mark {
-    width: 28px;
-    height: 36px;
+    width: 30px;
+    height: 38px;
     font-size: 0.9rem;
   }
 }
@@ -195,9 +241,10 @@ body.cryptogram-win-gradient .citation {
     min-width: 100%;
   }
   .guess-input {
-    /* Smaller size for mobile */
-    width: 20px;
-    height: 32px;
+    /* Larger size for mobile */
+    width: 26px;
+    height: 38px;
+    line-height: 38px; /* vertically center */
     font-size: 1rem;
     
     /* Prevent zoom on iOS when focusing inputs */
@@ -210,15 +257,15 @@ body.cryptogram-win-gradient .citation {
   }
   
   .encrypted-char {
-    width: 24px;
-    height: 32px;
-    font-size: 0.7rem;
+    width: 30px;
+    height: 38px;
+    font-size: 0.75rem;
   }
   
   .punctuation-mark {
-    width: 24px;
-    height: 32px;
-    font-size: 0.8rem;
+    width: 30px;
+    height: 38px;
+    font-size: 0.9rem;
   }
   
   .guess-input:focus {
@@ -310,17 +357,18 @@ body.cryptogram-win-gradient .citation {
     min-width: 100%;
   }
   .guess-input {
-    width: 14px;
-    height: 25px;
+    width: 20px;
+    height: 32px;
+    line-height: 32px; /* vertically center */
     font-size: 1rem;
     /* Keep 16px for iOS to prevent zoom */
     font-size: 16px;
   }
   
   .encrypted-char {
-    width: 18px;
-    height: 25px;
-    font-size: 0.8rem;
+    width: 24px;
+    height: 32px;
+    font-size: 0.85rem;
   }
   
   .punctuation-mark {

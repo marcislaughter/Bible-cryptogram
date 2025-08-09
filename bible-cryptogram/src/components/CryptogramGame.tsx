@@ -19,6 +19,12 @@ const isTouchDevice = (): boolean => {
   );
 };
 
+// Detect Android platform
+const isAndroid = (): boolean => {
+  if (typeof navigator === 'undefined') return false;
+  return /Android/i.test(navigator.userAgent);
+};
+
 // Utility function to create a substitution cipher
 const createCipher = (): Record<string, string> => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -161,6 +167,16 @@ const Game: React.FC<CryptogramGameProps> = ({
   useEffect(() => {
     generateNewGame();
   }, [currentVerse]);
+
+  // Add Android body class for platform-specific tweaks
+  useEffect(() => {
+    if (isAndroid()) {
+      document.body.classList.add('android-device');
+      return () => {
+        document.body.classList.remove('android-device');
+      };
+    }
+  }, []);
 
   // Focus first input when game starts
   useEffect(() => {
@@ -562,7 +578,7 @@ const Game: React.FC<CryptogramGameProps> = ({
                         <div className={`punctuation-mark ${getPunctuationClass(char)}`}>{char}</div>
                       ) : (
                         <input
-                          type="text"
+                          type="search"
                           className={`guess-input ${getInputClass(char)}`}
                           value={guesses[char] || ''}
                           onChange={(e) => handleInputChange(e, char)}
