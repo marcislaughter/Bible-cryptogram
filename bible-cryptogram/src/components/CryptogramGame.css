@@ -14,7 +14,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
   row-gap: 8px;
   padding: 10px;
   border: 2px solid var(--color-purple);
@@ -381,7 +381,7 @@ body.cryptogram-win-gradient .citation {
   }
   
   .verse-container {
-    gap: 15px;
+    gap: 20px;
     row-gap: 8px;
     padding: 10px;
   }
@@ -439,7 +439,7 @@ body.cryptogram-win-gradient .citation {
   .punctuation-mark.semicolon { padding-bottom: 4px; }
   
   .verse-container {
-    gap: 10px;
+    gap: 20px;
     row-gap: 6px;
     padding: 10px;
   }
