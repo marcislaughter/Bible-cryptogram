@@ -39,11 +39,13 @@
 
 /* Photo mode: set background image similar to ReferenceMatch */
 .cryptogram-container.photo-mode {
-  /* Use CSS variable set from component inline style (no overlay) */
-  background: var(--crypt-bg-image);
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  /* Use CSS variable set from component inline style, with color wheel overlay */
+  background:
+    linear-gradient(var(--crypt-overlay-color-rgba, rgba(0,0,0,0))),
+    var(--crypt-bg-image);
+  background-size: cover, cover;
+  background-position: center center, center center;
+  background-repeat: no-repeat, no-repeat;
   /* min-height already set on base container to keep image to bottom */
 }
 

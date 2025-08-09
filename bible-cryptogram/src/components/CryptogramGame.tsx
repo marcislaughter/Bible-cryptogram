@@ -8,6 +8,7 @@ import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faShuffle, faImage } from '@fortawesome/free-solid-svg-icons';
 import './CryptogramGame.css';
+import { COLOR_WHEEL } from '../theme';
 
 // Heuristic to detect touch-capable devices (mobile/tablet)
 const isTouchDevice = (): boolean => {
@@ -565,6 +566,27 @@ const Game: React.FC<CryptogramGameProps> = ({
 
   const verseBackgroundImageUrl = React.useMemo(() => getImageForReference(currentVerse.reference), [currentVerse.reference, IMAGE_MAP]);
 
+  // ================= Color wheel overlay (match ReferenceMatch behavior) =================
+  const hexToRgba = (hex: string, alpha: number): string => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const getOverlayColorRgba = (reference: string): string => {
+    const verseMatch = reference.match(/:(\d+)(?:-\d+)?$/);
+    const fallbackHex = COLOR_WHEEL[1]?.color || '#00008B';
+    if (!verseMatch) return hexToRgba(fallbackHex, 0.3);
+    const verseNumber = parseInt(verseMatch[1]);
+    const lastDigit = verseNumber % 10;
+    const colorKey = lastDigit === 0 ? 10 : lastDigit;
+    const colorHex = COLOR_WHEEL[colorKey]?.color || fallbackHex;
+    return hexToRgba(colorHex, 0.3);
+  };
+
+  const overlayColorRgba = React.useMemo(() => getOverlayColorRgba(currentVerse.reference), [currentVerse.reference]);
+
   return (
     <>
       <GameHeader 
@@ -579,8 +601,9 @@ const Game: React.FC<CryptogramGameProps> = ({
       <div
         className={`cryptogram-container ${photoModeEnabled ? 'photo-mode' : ''}`}
         style={photoModeEnabled && verseBackgroundImageUrl ? ({
-          // CSS variable for background image in photo mode
-          ['--crypt-bg-image' as any]: `url(${verseBackgroundImageUrl})`
+          // CSS variables for background image and colorwheel overlay in photo mode
+          ['--crypt-bg-image' as any]: `url(${verseBackgroundImageUrl})`,
+          ['--crypt-overlay-color-rgba' as any]: overlayColorRgba
         } as React.CSSProperties) : undefined}
       >
         <Controls
