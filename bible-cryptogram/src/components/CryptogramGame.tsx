@@ -570,8 +570,12 @@ const Game: React.FC<CryptogramGameProps> = ({
                   };
                   
                   const punctuationClass = isPunctuation ? getPunctuationClass(char) : '';
+                  // Heuristic for opening vs closing quotes/apostrophes: at start => opening, at end => closing
+                  const isOpeningPunct = isPunctuation && (punctuationClass === 'quote' || punctuationClass === 'apostrophe') && charIndex === 0;
+                  const isClosingPunct = isPunctuation && (punctuationClass === 'quote' || punctuationClass === 'apostrophe') && charIndex === word.length - 1;
+                  const openCloseClass = isOpeningPunct ? 'opening' : (isClosingPunct ? 'closing' : '');
                   const containerClassName = isPunctuation
-                    ? `char-container punctuation-cell ${punctuationClass ? `punct-${punctuationClass}` : ''}`
+                    ? `char-container punctuation-cell ${punctuationClass ? `punct-${punctuationClass}` : ''} ${openCloseClass}`.trim()
                     : 'char-container';
 
                   return (
@@ -580,7 +584,7 @@ const Game: React.FC<CryptogramGameProps> = ({
                       className={containerClassName}
                     >
                       {isPunctuation ? (
-                        <div className={`punctuation-mark ${punctuationClass}`}>{char}</div>
+                        <div className={`punctuation-mark ${punctuationClass} ${openCloseClass}`.trim()}>{char}</div>
                       ) : (
                         <input
                           type="search"

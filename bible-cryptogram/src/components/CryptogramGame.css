@@ -156,9 +156,16 @@ body.android-device .guess-input {
   transform: translateX(-50%);
   padding-left: 4px; /* consistent nudge right */
   padding-right: 4px; /* ensure space on the right, e.g., opening quotes */
-  margin-left: 4px; /* actually shifts the centered box to the right */
   user-select: none;
 }
+
+/* Add breathing room to the right of opening punctuation cells */
+.punctuation-cell.punct-quote.opening,
+.punctuation-cell.punct-apostrophe.opening { margin-right: 4px; }
+
+/* Match spacing for closing quotes/apostrophes (space before them) */
+.punctuation-cell.punct-quote.closing,
+.punctuation-cell.punct-apostrophe.closing { margin-left: 4px; }
 
 .punctuation-mark.comma {
   align-items: flex-end;
@@ -234,8 +241,10 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
-  .punctuation-cell.punct-quote,
-  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
+  .punctuation-cell.punct-quote.opening,
+  .punctuation-cell.punct-apostrophe.opening { margin-right: 4px; }
+  .punctuation-cell.punct-quote.closing,
+  .punctuation-cell.punct-apostrophe.closing { margin-left: 4px; }
 
   /* Bottom-align within the input band (slightly above the edge) */
   .punctuation-mark.comma,
@@ -293,8 +302,10 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
-  .punctuation-cell.punct-quote,
-  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
+  .punctuation-cell.punct-quote.opening,
+  .punctuation-cell.punct-apostrophe.opening { margin-right: 4px; }
+  .punctuation-cell.punct-quote.closing,
+  .punctuation-cell.punct-apostrophe.closing { margin-left: 4px; }
 
   /* Bottom-align within the input band */
   .punctuation-mark.comma,
