@@ -36,9 +36,6 @@
   min-height: 84px; /* input (42) + cipher (42) */
 }
 
-/* Add breathing room to the right of opening punctuation cells */
-.punctuation-cell.punct-quote,
-.punctuation-cell.punct-apostrophe { margin-right: 4px; }
 
 .guess-input {
   width: 34px;
@@ -102,11 +99,7 @@ body.android-device .guess-input {
   display: none;
 }
 
-.guess-input:disabled {
-  background-color: transparent;
-  border: none;
-  cursor: default;
-}
+
 
 .guess-input:focus {
   background-color: var(--color-success);
@@ -244,10 +237,6 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
-  .punctuation-cell.punct-quote.opening,
-  .punctuation-cell.punct-apostrophe.opening { margin-right: 4px; }
-  .punctuation-cell.punct-quote.closing,
-  .punctuation-cell.punct-apostrophe.closing { margin-left: 4px; }
 
   /* Bottom-align within the input band (slightly above the edge) */
   .punctuation-mark.comma,
@@ -280,7 +269,6 @@ body.cryptogram-win-gradient .citation {
     width: 26px;
     height: 38px;
     line-height: 38px; /* vertically center */
-    font-size: 1rem;
     
     /* Prevent zoom on iOS when focusing inputs */
     font-size: 16px;
@@ -305,16 +293,8 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
-  .punctuation-cell.punct-quote.opening,
-  .punctuation-cell.punct-apostrophe.opening { margin-right: 4px; }
-  .punctuation-cell.punct-quote.closing,
-  .punctuation-cell.punct-apostrophe.closing { margin-left: 4px; }
 
   /* Bottom-align within the input band */
-  .punctuation-mark.comma,
-  .punctuation-mark.period,
-  .punctuation-mark.semicolon { padding-bottom: 6px; }
-
   /* Place bottom-aligned punctuation near baseline on mobile */
   .punctuation-mark.comma,
   .punctuation-mark.period,
@@ -390,29 +370,10 @@ body.cryptogram-win-gradient .citation {
 
 /* Additional mobile optimizations for smaller screens */
 @media (max-width: 500px) {
-  /* Maintain equal button sizes on very small screens */
-  .cryptogram-container .controls-container {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .cryptogram-container .controls-container button {
-    /* Two per row */
-    flex: 1 1 calc(50% - 10px);
-    min-width: calc(50% - 10px);
-  }
-
-  /* Make the last button span the full row (2 then 1) */
-  .cryptogram-container .controls-container button:last-child {
-    flex-basis: 100%;
-    min-width: 100%;
-  }
   .guess-input {
     width: 20px;
     height: 32px;
     line-height: 32px; /* vertically center */
-    font-size: 1rem;
     /* Keep 16px for iOS to prevent zoom */
     font-size: 16px;
   }
@@ -431,8 +392,6 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 64px; }
-  .punctuation-cell.punct-quote,
-  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
 
   /* Bottom-align within the input band */
   .punctuation-mark.comma,
@@ -462,11 +421,3 @@ body.cryptogram-win-gradient .citation {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
-
-.guess-input:focus {
-  /* Keep text selection disabled even when focused */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-} 
