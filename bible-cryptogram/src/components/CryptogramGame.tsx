@@ -569,13 +569,18 @@ const Game: React.FC<CryptogramGameProps> = ({
                     return '';
                   };
                   
+                  const punctuationClass = isPunctuation ? getPunctuationClass(char) : '';
+                  const containerClassName = isPunctuation
+                    ? `char-container punctuation-cell ${punctuationClass ? `punct-${punctuationClass}` : ''}`
+                    : 'char-container';
+
                   return (
                     <div
                       key={charIndex}
-                      className="char-container"
+                      className={containerClassName}
                     >
                       {isPunctuation ? (
-                        <div className={`punctuation-mark ${getPunctuationClass(char)}`}>{char}</div>
+                        <div className={`punctuation-mark ${punctuationClass}`}>{char}</div>
                       ) : (
                         <input
                           type="search"

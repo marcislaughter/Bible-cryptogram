@@ -36,6 +36,10 @@
   min-height: 84px; /* input (42) + cipher (42) */
 }
 
+/* Add breathing room to the right of opening punctuation cells */
+.punctuation-cell.punct-quote,
+.punctuation-cell.punct-apostrophe { margin-right: 4px; }
+
 .guess-input {
   width: 34px;
   height: 42px;
@@ -136,7 +140,7 @@ body.android-device .guess-input {
 }
 
 .punctuation-mark {
-  width: 10px;
+  width: 34px; /* match guess-input width on desktop */
   height: 42px; /* align with guess-input area only */
   display: flex;
   justify-content: center;
@@ -152,6 +156,7 @@ body.android-device .guess-input {
   transform: translateX(-50%);
   padding-left: 4px; /* consistent nudge right */
   padding-right: 4px; /* ensure space on the right, e.g., opening quotes */
+  margin-left: 4px; /* actually shifts the centered box to the right */
   user-select: none;
 }
 
@@ -190,6 +195,7 @@ body.android-device .guess-input {
 .punctuation-mark.quote {
   align-items: flex-start;
   padding-top: 8px;
+  justify-content: flex-start; /* allow left padding to create right-side space */
 }
 
 /* Cryptogram-specific win gradient */
@@ -221,13 +227,15 @@ body.cryptogram-win-gradient .citation {
   }
   
   .punctuation-mark {
-    width: 30px;
+    width: 30px; /* match input width on tablet */
     height: 38px; /* align with guess-input height */
     font-size: 1rem;
-    padding-left: 6px; /* consistent across breakpoints */
-    padding-right: 6px; /* consistent across breakpoints */
+    padding-left: 4px; /* consistent across breakpoints */
+    padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
+  .punctuation-cell.punct-quote,
+  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
 
   /* Bottom-align within the input band (slightly above the edge) */
   .punctuation-mark.comma,
@@ -285,6 +293,8 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 76px; }
+  .punctuation-cell.punct-quote,
+  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
 
   /* Bottom-align within the input band */
   .punctuation-mark.comma,
@@ -407,6 +417,8 @@ body.cryptogram-win-gradient .citation {
     padding-right: 4px; /* consistent across breakpoints */
   }
   .char-container { min-height: 64px; }
+  .punctuation-cell.punct-quote,
+  .punctuation-cell.punct-apostrophe { margin-right: 4px; }
 
   /* Bottom-align within the input band */
   .punctuation-mark.comma,
