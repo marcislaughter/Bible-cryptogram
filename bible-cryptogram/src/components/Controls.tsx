@@ -10,6 +10,7 @@ interface ControlsProps {
   hintsRemaining: number;
   autoCheckEnabled: boolean;
   showAutoCheck?: boolean;
+  children?: React.ReactNode;
 }
 
 const Controls: React.FC<ControlsProps> = ({ 
@@ -18,7 +19,8 @@ const Controls: React.FC<ControlsProps> = ({
   onAutoCheck, 
   hintsRemaining, 
   autoCheckEnabled,
-  showAutoCheck = true
+  showAutoCheck = true,
+  children
 }) => {
   return (
     <div className="controls-container">
@@ -38,6 +40,7 @@ const Controls: React.FC<ControlsProps> = ({
       >
         <FontAwesomeIcon icon={faLightbulb} /> Hint ({hintsRemaining})
       </button>
+      {children}
     </div>
   );
 };

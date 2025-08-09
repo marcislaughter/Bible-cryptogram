@@ -6,7 +6,7 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faShuffle, faImage } from '@fortawesome/free-solid-svg-icons';
 import './CryptogramGame.css';
 
 // Heuristic to detect touch-capable devices (mobile/tablet)
@@ -57,6 +57,7 @@ const Game: React.FC<CryptogramGameProps> = ({
   const [revealedLetters, setRevealedLetters] = useState<string[]>([]);
   const [autoCheckEnabled, setAutoCheckEnabled] = useState(false);
   const [wordStatsEnabled, setWordStatsEnabled] = useState(false);
+  const [photoModeEnabled, setPhotoModeEnabled] = useState(false);
   const currentVerse = propCurrentVerse || BIBLE_VERSES[0];
   const onVerseChange = propOnVerseChange || (() => {});
   const [focusedChar, setFocusedChar] = useState<string | null>(null);
@@ -502,6 +503,68 @@ const Game: React.FC<CryptogramGameProps> = ({
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, [isSolved]);
 
+  // ===== Verse image support (similar to ReferenceMatch) =====
+  const imageModules = import.meta.glob('../assets/*.{png,jpg,jpeg,svg}', { eager: true });
+  const IMAGE_MAP: Record<string, string> = React.useMemo(() => {
+    const map: Record<string, string> = {};
+    Object.entries(imageModules).forEach(([path, module]) => {
+      const filename = path.split('/').pop()?.replace(/\.(png|jpg|jpeg|svg)$/i, '') || '';
+      const imageUrl = (module as { default: string }).default;
+      map[filename] = imageUrl;
+      const simplifiedKey = filename.replace(/_realistic$/, '');
+      if (simplifiedKey !== filename) {
+        map[simplifiedKey] = imageUrl;
+      }
+    });
+    return map;
+  }, []);
+
+  const normalizeBookName = (bookInput: string): string | null => {
+    const normalized = bookInput.toLowerCase().replace(/\s+/g, '');
+    const bookMappings: Record<string, string> = {
+      '1cor': '1cor',
+      '1corinthians': '1cor',
+      '2cor': '2cor',
+      '2corinthians': '2cor',
+      'john': 'john',
+      'psalm': 'ps',
+      'psalms': 'ps',
+      'genesis': 'gen',
+      'matthew': 'matt',
+      'mark': 'mark',
+      'luke': 'luke',
+      'romans': 'rom'
+    };
+    return bookMappings[normalized] || null;
+  };
+
+  const getReferenceImageKey = (reference: string): string | null => {
+    const bibleMatch = reference.match(/(\d*)\s*([A-Za-z]+)\s*(\d+):(\d+)/i);
+    if (bibleMatch) {
+      const [, bookNum, book, chapter, verse] = bibleMatch as RegExpMatchArray;
+      const bookKey = normalizeBookName((bookNum || '') + book);
+      if (bookKey) return `${bookKey}_${chapter}_${verse}`;
+    }
+    return null;
+  };
+
+  const getImageForReference = (reference: string): string | null => {
+    const imageKey = getReferenceImageKey(reference);
+    if (!imageKey) return null;
+    const possibleKeys = [
+      `${imageKey}_realistic`,
+      imageKey,
+      `${imageKey}_artistic`,
+      `${imageKey}_illustration`
+    ];
+    for (const key of possibleKeys) {
+      if (IMAGE_MAP[key]) return IMAGE_MAP[key];
+    }
+    return null;
+  };
+
+  const verseBackgroundImageUrl = React.useMemo(() => getImageForReference(currentVerse.reference), [currentVerse.reference, IMAGE_MAP]);
+
   return (
     <>
       <GameHeader 
@@ -513,14 +576,28 @@ const Game: React.FC<CryptogramGameProps> = ({
         onGameTypeChange={onGameTypeChange}
       />
 
-      <div className="cryptogram-container">
+      <div
+        className={`cryptogram-container ${photoModeEnabled ? 'photo-mode' : ''}`}
+        style={photoModeEnabled && verseBackgroundImageUrl ? ({
+          // CSS variable for background image in photo mode
+          ['--crypt-bg-image' as any]: `url(${verseBackgroundImageUrl})`
+        } as React.CSSProperties) : undefined}
+      >
         <Controls
           onReset={handleReset}
           onHint={handleHint}
           onAutoCheck={handleAutoCheck}
           hintsRemaining={hintsRemaining}
           autoCheckEnabled={autoCheckEnabled}
-        />
+        >
+          <button
+            onClick={() => setPhotoModeEnabled(prev => !prev)}
+            className={photoModeEnabled ? 'active' : ''}
+            title="Toggle photo background mode"
+          >
+            <FontAwesomeIcon icon={faImage} /> Photo Mode
+          </button>
+        </Controls>
         
         {wordStatsEnabled && <WordStats />}
         
