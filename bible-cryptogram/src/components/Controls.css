@@ -98,6 +98,7 @@
   justify-content: center;
   gap: 8px;
   min-height: 45px;
+  white-space: nowrap; /* prevent wrapping so heights stay consistent */
 }
 
 .controls-container button:hover:not(.disabled) {
@@ -136,6 +137,11 @@
 .controls-container button svg {
   margin-right: 5px;
   color: inherit;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em; /* match FA default */
+  flex-shrink: 0;
+  display: inline-block;
 }
 
 .controls-container .auto-check-btn {

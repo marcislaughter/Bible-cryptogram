@@ -374,11 +374,10 @@ body.cryptogram-win-gradient .citation {
     flex: 1 1 calc(50% - 10px);
     min-width: calc(50% - 10px);
   }
-
-  /* Make the last button span the full row (2 then 1) */
+  /* Ensure all buttons (including last) remain 50% width for a 2x2 layout */
   .cryptogram-container .controls-container button:last-child {
-    flex-basis: 100%;
-    min-width: 100%;
+    flex-basis: calc(50% - 10px);
+    min-width: calc(50% - 10px);
   }
   .guess-input {
     /* Larger size for mobile */
