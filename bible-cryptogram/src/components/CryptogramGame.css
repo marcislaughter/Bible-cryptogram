@@ -42,7 +42,7 @@
   /* Use CSS variable set from component inline style (no overlay) */
   background: var(--crypt-bg-image);
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
   background-repeat: no-repeat;
   /* min-height already set on base container to keep image to bottom */
 }
