@@ -7,7 +7,9 @@
   font-family: var(--font-mono);
   position: relative;
   padding: 70px 10px 0 10px; /* push content below fixed banner while keeping bg visible */
-  min-height: calc(100vh - 70px); /* fill viewport minus top padding so no vertical overflow */
+  /* Ensure the background covers the full viewport height; padding is included via border-box */
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   box-sizing: border-box;
 }
@@ -16,19 +18,22 @@
 @media (min-width: 1280px) {
   .cryptogram-container { 
     padding-top: 100px; 
-    min-height: calc(100vh - 100px);
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 @media (min-width: 1600px) {
   .cryptogram-container { 
     padding-top: 120px; 
-    min-height: calc(100vh - 120px);
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 @media (min-width: 1920px) {
   .cryptogram-container { 
     padding-top: 140px; 
-    min-height: calc(100vh - 140px);
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 
