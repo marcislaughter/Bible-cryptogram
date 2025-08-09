@@ -32,6 +32,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  min-height: 84px; /* input (42) + cipher (42) */
 }
 
 .guess-input {
@@ -135,7 +137,7 @@ body.android-device .guess-input {
 
 .punctuation-mark {
   width: 10px;
-  height: 40px;
+  height: 42px; /* align with guess-input area only */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -144,7 +146,11 @@ body.android-device .guess-input {
   color: var(--color-light-gray);
   background: transparent;
   border: none;
-  position: relative;
+  position: absolute;
+  top: 0; /* sit in the guess-input band */
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 4px; /* consistent nudge right */
   user-select: none;
 }
 
@@ -215,9 +221,16 @@ body.cryptogram-win-gradient .citation {
   
   .punctuation-mark {
     width: 30px;
-    height: 38px;
+    height: 38px; /* align with guess-input height */
     font-size: 1rem;
+    padding-left: 4px; /* consistent across breakpoints */
   }
+  .char-container { min-height: 76px; }
+
+  /* Bottom-align within the input band (slightly above the edge) */
+  .punctuation-mark.comma,
+  .punctuation-mark.period,
+  .punctuation-mark.semicolon { padding-bottom: 6px; }
 }
 
 /* Mobile-specific optimizations for keyboard handling */
@@ -264,9 +277,21 @@ body.cryptogram-win-gradient .citation {
   
   .punctuation-mark {
     width: 30px;
-    height: 38px;
+    height: 38px; /* align with guess-input height */
     font-size: 1rem;
+    padding-left: 4px; /* consistent across breakpoints */
   }
+  .char-container { min-height: 76px; }
+
+  /* Bottom-align within the input band */
+  .punctuation-mark.comma,
+  .punctuation-mark.period,
+  .punctuation-mark.semicolon { padding-bottom: 6px; }
+
+  /* Place bottom-aligned punctuation near baseline on mobile */
+  .punctuation-mark.comma,
+  .punctuation-mark.period,
+  .punctuation-mark.semicolon { padding-bottom: 2px; }
   
   .guess-input:focus {
     /* Full dark green cell on mobile */
@@ -373,9 +398,16 @@ body.cryptogram-win-gradient .citation {
   
   .punctuation-mark {
     width: 10px;
-    height: 20px;
+    height: 32px; /* align with guess-input height */
     font-size: 1rem;
+    padding-left: 4px; /* consistent across breakpoints */
   }
+  .char-container { min-height: 64px; }
+
+  /* Bottom-align within the input band */
+  .punctuation-mark.comma,
+  .punctuation-mark.period,
+  .punctuation-mark.semicolon { padding-bottom: 4px; }
   
   .verse-container {
     gap: 10px;
