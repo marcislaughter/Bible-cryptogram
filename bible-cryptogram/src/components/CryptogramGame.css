@@ -367,6 +367,15 @@ body.cryptogram-win-gradient .citation {
   background: var(--glass-bg-medium);
 }
 
+/* Add dark outline to FontAwesome arrow icons on on-screen keyboard in photo mode */
+.cryptogram-container.photo-mode .arrow-key svg {
+  filter:
+    drop-shadow(1px 0 0 var(--color-bg-dark))
+    drop-shadow(-1px 0 0 var(--color-bg-dark))
+    drop-shadow(0 1px 0 var(--color-bg-dark))
+    drop-shadow(0 -1px 0 var(--color-bg-dark));
+}
+
 /* Photo mode: citation in a medium glass box with dark gray text */
 .cryptogram-container.photo-mode .citation {
   color: var(--color-bg-dark);
