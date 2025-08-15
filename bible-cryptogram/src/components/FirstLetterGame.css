@@ -7,7 +7,8 @@
   position: relative;
   padding: 70px 10px 0 10px; /* push content below fixed banner while keeping bg visible */
   min-height: 100vh;
-  min-height: 100dvh;
+  /* Avoid double min-height that can trigger extra vertical scroll in some browsers */
+  /* min-height: 100dvh; */
   width: 100%;
   box-sizing: border-box;
 }
@@ -40,7 +41,8 @@
 .first-letter-container.photo-mode::before {
   content: '';
   position: fixed;
-  inset: 0;
+  /* Avoid overlay covering body scrollbar gutter area to prevent unexpected horizontal scroll */
+  top: 0; right: 0; bottom: 0; left: 0;
   background:
     linear-gradient(var(--crypt-overlay-color-rgba, rgba(0,0,0,0))),
     var(--crypt-bg-image);

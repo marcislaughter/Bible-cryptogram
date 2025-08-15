@@ -9,7 +9,8 @@
   padding: 70px 10px 0 10px; /* push content below fixed banner while keeping bg visible */
   /* Ensure the background covers the full viewport height; padding is included via border-box */
   min-height: 100vh;
-  min-height: 100dvh;
+  /* Avoid double min-height that can trigger extra vertical scroll in some browsers */
+  /* min-height: 100dvh; */
   width: 100%;
   box-sizing: border-box;
 }
@@ -47,6 +48,8 @@
   background-position: center center, center center;
   background-repeat: no-repeat, no-repeat;
   /* min-height already set on base container to keep image to bottom */
+  /* Prevent background from creating scroll due to painting beyond content box */
+  overflow-x: hidden;
 }
 
 .verse-container {

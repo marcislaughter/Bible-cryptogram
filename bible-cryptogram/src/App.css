@@ -78,7 +78,8 @@
 
 body {
   min-height: 100vh;
-  min-width: 100vw;
+  /* Avoid forcing viewport width that, combined with scrollbar gutter, can cause horizontal scroll */
+  min-width: 0;
   margin: 0;
   padding: 0;
   display: flex;
@@ -86,12 +87,9 @@ body {
   align-items: center;
   background: var(--color-bg-dark);
   transition: background 0.5s ease;
-  /* Keep layout width stable when scrollbars appear/disappear */
-  scrollbar-gutter: stable both-edges;
+  /* Reserve vertical scrollbar space without creating horizontal overflow */
+  scrollbar-gutter: stable;
 }
-
-/* Reserve vertical scrollbar space on desktop to avoid width jumps */
-html { overflow-y: scroll; }
 
 /* solved message - used by multiple games */
 
