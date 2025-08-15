@@ -130,6 +130,17 @@
     1px 1px 0 var(--color-bg-dark);
 }
 
+/* Photo mode: when correct, do not turn green or animate; render as white chip with dark text */
+.cryptogram-container.photo-mode .guess-input.correct {
+  background: var(--glass-bg-heavy) !important;
+  border-color: var(--color-white) !important;
+  box-shadow: 0 0 0 3px var(--color-bg-dark) !important;
+  color: var(--color-bg-dark) !important;
+  -webkit-text-fill-color: var(--color-bg-dark) !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
 /* Maintain focus state within photo mode */
 .cryptogram-container.photo-mode .guess-input:focus {
   background: var(--glass-bg-heavy);
@@ -519,6 +530,16 @@ body.cryptogram-win-gradient .citation {
     border-color: var(--color-purple) !important;
     color: var(--color-success) !important;
     -webkit-text-fill-color: var(--color-success) !important;
+  }
+
+  /* Photo mode: override mobile green focus to match desktop white/glass style */
+  .cryptogram-container.photo-mode .guess-input:focus {
+    color: var(--color-white) !important;
+    -webkit-text-fill-color: var(--color-white) !important;
+    background-color: var(--glass-bg-heavy) !important;
+    border-color: var(--color-white) !important;
+    box-shadow: 0 0 0 3px var(--color-bg-dark) !important;
+    outline: none !important;
   }
 
 /* Highlight recently typed letters in light pink */

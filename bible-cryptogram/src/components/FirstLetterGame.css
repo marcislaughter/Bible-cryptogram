@@ -117,6 +117,11 @@
     1px 1px 0 var(--color-bg-dark);
 }
 
+/* Photo mode: when first letter correct, keep neutral styling (no green) */
+.first-letter-container.photo-mode .first-letter-input:not(.incorrect) {
+  transition: none;
+}
+
 .first-letter-input:focus {
   background-color: var(--color-success);
   border-color: var(--color-success);
@@ -177,6 +182,34 @@
   border: none;
   color: var(--color-light-gray);
   font-size: 1rem;
+}
+
+/* Photo mode: word text under boxes in a white chip like the citation, with dark text */
+.first-letter-container.photo-mode .word-display,
+.first-letter-container.photo-mode .word-display.hidden,
+.first-letter-container.photo-mode .word-display.revealed,
+.first-letter-container.photo-mode .word-display.always-visible {
+  background: var(--glass-bg-medium);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: var(--color-bg-dark) !important;
+  text-shadow: none;
+  transition: none;
+}
+
+/* Keep error feedback red but use the same chip background for consistency */
+.first-letter-container.photo-mode .word-display.correct-word-red {
+  background: var(--glass-bg-medium);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: var(--color-error);
+  text-shadow: none;
+}
+
+/* Disable reveal/flash animations in photo mode to avoid transient color effects */
+.first-letter-container.photo-mode .word-display.revealed,
+.first-letter-container.photo-mode .word-display.correct-word-red {
+  animation: none;
 }
 
 .word-display.correct-word-red {
@@ -580,11 +613,9 @@ body.first-letter-win-gradient .first-letter-error-label {
   }
   
   .first-letter-input:focus {
-    /* Force white text color on focus for mobile */
+    /* Default mobile behavior */
     color: var(--color-white) !important;
     -webkit-text-fill-color: var(--color-white) !important;
-    
-    /* Ensure focus background is visible */
     background-color: var(--color-success) !important;
     border-color: var(--color-success) !important;
   }
@@ -595,6 +626,15 @@ body.first-letter-win-gradient .first-letter-error-label {
     border-color: var(--color-error) !important;
     color: var(--color-error) !important;
     -webkit-text-fill-color: var(--color-error) !important;
+  }
+
+  /* Photo mode: match desktop white/glass focus style on mobile */
+  .first-letter-container.photo-mode .first-letter-input:focus {
+    background: var(--glass-bg-heavy) !important;
+    border-color: var(--color-white) !important;
+    color: var(--color-white) !important;
+    -webkit-text-fill-color: var(--color-white) !important;
+    box-shadow: 0 0 0 3px var(--color-bg-dark) !important;
   }
   
   .word-display {
