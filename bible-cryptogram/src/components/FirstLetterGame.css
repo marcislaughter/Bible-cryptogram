@@ -314,7 +314,7 @@ body.first-letter-win-gradient .first-letter-error-label {
 
 /* Photo mode: chip-style citation for readability */
 .first-letter-container.photo-mode .first-letter-citation {
-  color: var(--color-dark-gray);
+  color: var(--color-bg-dark);
   background: var(--glass-bg-medium);
   border-radius: 4px;
   padding: 10px 14px;
