@@ -349,6 +349,16 @@ body.first-letter-win-gradient .first-letter-error-label {
   box-shadow: 0 0 0 3px var(--color-dark-gray), var(--shadow-dark);
 }
 
+/* Add dark outline to FontAwesome icons in photo mode for legibility */
+.first-letter-container.photo-mode .controls-container button svg,
+.first-letter-container.photo-mode .solved-button-base svg {
+  filter:
+    drop-shadow(1px 0 0 var(--color-bg-dark))
+    drop-shadow(-1px 0 0 var(--color-bg-dark))
+    drop-shadow(0 1px 0 var(--color-bg-dark))
+    drop-shadow(0 -1px 0 var(--color-bg-dark));
+}
+
 /* Button styles now handled by Controls.css - removed custom button styles */
 
 .first-letter-difficulty-stepper {

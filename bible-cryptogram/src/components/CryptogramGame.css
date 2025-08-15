@@ -338,6 +338,16 @@ body.cryptogram-win-gradient .citation {
   box-shadow: 0 0 0 3px var(--color-dark-gray), var(--shadow-dark);
 }
 
+/* Add dark outline to FontAwesome icons in photo mode for legibility */
+.cryptogram-container.photo-mode .controls-container button svg,
+.cryptogram-container.photo-mode .solved-button-base svg {
+  filter:
+    drop-shadow(1px 0 0 var(--color-bg-dark))
+    drop-shadow(-1px 0 0 var(--color-bg-dark))
+    drop-shadow(0 1px 0 var(--color-bg-dark))
+    drop-shadow(0 -1px 0 var(--color-bg-dark));
+}
+
 /* On-screen keyboard keys in photo mode for readability */
 .cryptogram-container.photo-mode .keyboard-key,
 .cryptogram-container.photo-mode .arrow-key {
