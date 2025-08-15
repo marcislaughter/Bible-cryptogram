@@ -371,6 +371,20 @@ body.first-letter-win-gradient .first-letter-error-label {
   max-width: 95%;
 }
 
+/* Photo mode: make difficulty box a transparent white chip like the citation, with dark text */
+.first-letter-container.photo-mode .first-letter-difficulty-stepper {
+  background: var(--glass-bg-medium);
+  border-radius: 4px;
+  padding: 10px 14px;
+  border: none;
+  color: var(--color-bg-dark);
+}
+
+.first-letter-container.photo-mode .first-letter-difficulty-label,
+.first-letter-container.photo-mode .first-letter-error-label {
+  color: var(--color-bg-dark);
+}
+
 .first-letter-difficulty-label {
   font-size: 1rem;
   font-weight: bold;
@@ -402,20 +416,26 @@ body.first-letter-win-gradient .first-letter-error-label {
   justify-content: center;
 }
 
+/* Ensure stepper buttons remain legible on photo backgrounds */
+.first-letter-container.photo-mode .first-letter-stepper-button {
+  border-color: var(--color-bg-dark);
+  color: var(--color-bg-dark);
+}
+
 .first-letter-stepper-button:hover {
-  background-color: var(--color-stepper-hover);
+  background-color: var(--color-light-gray);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.2);
+  box-shadow: var(--shadow-dark);
 }
 
 .first-letter-stepper-button.active {
-  background-color: var(--color-purple);
-  color: var(--color-white);
+  background-color: var(--color-light-gray);
+  color: var(--color-bg-dark);
   box-shadow: 0 4px 15px rgba(128, 0, 128, 0.3);
 }
 
 .first-letter-stepper-button.active:hover {
-  background-color: var(--color-purple);
+  background-color: var(--color-light-gray);
   transform: translateY(-2px);
 }
 
@@ -457,6 +477,12 @@ body.first-letter-win-gradient .first-letter-error-label {
   justify-content: space-between;
   gap: 8px;
   min-width: 120px;
+}
+
+/* Photo mode: dropdown trigger in dark text to match the chip */
+.first-letter-container.photo-mode .first-letter-error-dropdown {
+  background: var(--glass-bg-medium);
+  color: var(--color-bg-dark);
 }
 
 .first-letter-error-dropdown:hover {
@@ -505,8 +531,13 @@ body.first-letter-win-gradient .first-letter-error-label {
 }
 
 .first-letter-error-dropdown-item.selected {
-  background-color: var(--color-purple);
-  color: var(--color-light-purple);
+  background-color: var(--color-light-gray);
+  color: var(--color-bg-dark);
+}
+
+/* Keep selected style consistent on hover */
+.first-letter-error-dropdown-item.selected:hover {
+  background-color: var(--color-light-gray);
 }
 
 /* Tablet sizing (1024px and below) */
