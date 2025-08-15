@@ -210,6 +210,16 @@ body.android-device .guess-input {
     1px 1px 0 var(--color-bg-dark);
 }
 
+/* Photo mode: punctuation legibility matches other text with black outline */
+.cryptogram-container.photo-mode .punctuation-mark {
+  color: var(--color-white);
+  text-shadow:
+    -1px -1px 0 var(--color-bg-dark),
+    1px -1px 0 var(--color-bg-dark),
+    -1px 1px 0 var(--color-bg-dark),
+    1px 1px 0 var(--color-bg-dark);
+}
+
 .cryptogram-container.photo-mode .guess-input {
   /* Force white text in photo mode for better contrast */
   color: var(--color-white);
