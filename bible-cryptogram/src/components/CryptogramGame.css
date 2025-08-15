@@ -211,8 +211,9 @@ body.android-device .guess-input {
 }
 
 .cryptogram-container.photo-mode .guess-input {
-  /* Input character legibility */
-  -webkit-text-fill-color: var(--color-bg-dark);
+  /* Force white text in photo mode for better contrast */
+  color: var(--color-white);
+  -webkit-text-fill-color: var(--color-white);
 }
 
 .punctuation-mark {
