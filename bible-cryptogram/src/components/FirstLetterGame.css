@@ -12,6 +12,23 @@
   box-sizing: border-box;
 }
 
+/* Add extra top padding on large desktop screens (align with Cryptogram) */
+@media (min-width: 1280px) {
+  .first-letter-container {
+    padding-top: 100px;
+  }
+}
+@media (min-width: 1600px) {
+  .first-letter-container {
+    padding-top: 120px;
+  }
+}
+@media (min-width: 1920px) {
+  .first-letter-container {
+    padding-top: 140px;
+  }
+}
+
 /* Photo mode background (mirrors Cryptogram look) */
 .first-letter-container.photo-mode {
   /* Keep content width and spacing identical to non-photo mode */
@@ -497,7 +514,7 @@ body.first-letter-win-gradient .first-letter-error-label {
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .first-letter-container {
-    padding: 0 15px;
+    padding: 70px 15px 0 15px; /* keep 70px top like Cryptogram on mobile */
   }
   
   .first-letter-verse-container {
