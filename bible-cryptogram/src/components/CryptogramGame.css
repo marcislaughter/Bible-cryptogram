@@ -133,6 +133,7 @@
   border-color: var(--color-white);
   color: var(--color-white);
   -webkit-text-fill-color: var(--color-white);
+  box-shadow: 0 0 0 3px var(--color-bg-dark);
 }
 
 /* Android-only: shift text 1px left to counter visual bias */
