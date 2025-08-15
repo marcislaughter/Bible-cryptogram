@@ -129,7 +129,7 @@
 
 /* Maintain focus state within photo mode */
 .cryptogram-container.photo-mode .guess-input:focus {
-  background: var(--glass-bg-medium);
+  background: var(--glass-bg-heavy);
   border-color: var(--color-white);
   color: var(--color-white);
   -webkit-text-fill-color: var(--color-white);
@@ -212,6 +212,14 @@ body.android-device .guess-input {
 
 .cryptogram-container.photo-mode .guess-input {
   /* Force white text in photo mode for better contrast */
+  color: var(--color-white);
+  -webkit-text-fill-color: var(--color-white);
+}
+
+/* Photo mode: other cells in the same cipher (not focused) use lighter gray */
+.cryptogram-container.photo-mode .guess-input.same-letter:not(:focus) {
+  background-color: var(--glass-bg-medium);
+  border-color: var(--color-white);
   color: var(--color-white);
   -webkit-text-fill-color: var(--color-white);
 }
