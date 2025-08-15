@@ -353,6 +353,14 @@ body.cryptogram-win-gradient .citation {
   background: var(--glass-bg-medium);
 }
 
+/* Photo mode: citation in a medium glass box with dark gray text */
+.cryptogram-container.photo-mode .citation {
+  color: var(--color-dark-gray);
+  background: var(--glass-bg-medium);
+  border-radius: 4px;
+  padding: 10px 14px;
+}
+
 
 
 /* Tablet sizing (1024px and below) */
