@@ -4,9 +4,10 @@ import GameHeader from './GameHeader';
 import { BIBLE_VERSES } from '../data/bibleVerses';
 import type { BibleVerse } from '../data/bibleVerses';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';
 import './Controls.css';
+import { COLOR_WHEEL } from '../theme';
 
 interface FirstLetterGameProps {
   gameType?: import('./GameHeader').GameType;
@@ -39,6 +40,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [showingCorrectWord, setShowingCorrectWord] = useState<number | null>(null);
   const [lastFocusedWordIndex, setLastFocusedWordIndex] = useState<number | null>(null);
   const [errorDropdownOpen, setErrorDropdownOpen] = useState(false);
+  const [photoModeEnabled, setPhotoModeEnabled] = useState(false);
   
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
@@ -213,6 +215,76 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
       isAdvancingFocus.current = false;
     }, 10);
   };
+
+  // ===== Verse image + color overlay support (mirrors Cryptogram) =====
+  const imageModules = import.meta.glob('../assets/*.{png,jpg,jpeg,svg}', { eager: true });
+  const IMAGE_MAP: Record<string, string> = React.useMemo(() => {
+    const map: Record<string, string> = {};
+    Object.entries(imageModules).forEach(([path, module]) => {
+      const fileName = path.split('/').pop() || '';
+      const key = fileName.replace(/\.(png|jpg|jpeg|svg)$/i, '').replace(/\s+/g, '_');
+      // @ts-ignore Vite eager glob returns module with default export
+      map[key] = (module as any).default || (module as any);
+    });
+    return map;
+  }, []);
+
+  const normalizeBookName = (raw: string): string | null => {
+    const normalized = raw.replace(/\s+/g, '').toLowerCase();
+    const bookMappings: Record<string, string> = {
+      '1corinthians': '1cor', 'iicorinthians': '2cor', '2corinthians': '2cor',
+      'icorinthians': '1cor', '1cor': '1cor', '2cor': '2cor',
+      'romans': 'rom', 'rom': 'rom'
+    };
+    return bookMappings[normalized] || null;
+  };
+
+  const getReferenceImageKey = (reference: string): string | null => {
+    const bibleMatch = reference.match(/(\d*)\s*([A-Za-z]+)\s*(\d+):(\d+)/i);
+    if (bibleMatch) {
+      const [, bookNum, book, chapter, verse] = bibleMatch as RegExpMatchArray;
+      const bookKey = normalizeBookName((bookNum || '') + book);
+      if (bookKey) return `${bookKey}_${chapter}_${verse}`;
+    }
+    return null;
+  };
+
+  const getImageForReference = (reference: string): string | null => {
+    const imageKey = getReferenceImageKey(reference);
+    if (!imageKey) return null;
+    const possibleKeys = [
+      `${imageKey}_realistic`,
+      imageKey,
+      `${imageKey}_artistic`,
+      `${imageKey}_illustration`
+    ];
+    for (const key of possibleKeys) {
+      if (IMAGE_MAP[key]) return IMAGE_MAP[key];
+    }
+    return null;
+  };
+
+  const verseBackgroundImageUrl = React.useMemo(() => getImageForReference(currentVerse.reference), [currentVerse.reference, IMAGE_MAP]);
+
+  const hexToRgba = (hex: string, alpha: number): string => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const getOverlayColorRgba = (reference: string): string => {
+    const verseMatch = reference.match(/:(\d+)(?:-\d+)?$/);
+    const fallbackHex = COLOR_WHEEL[1]?.color || '#00008B';
+    if (!verseMatch) return hexToRgba(fallbackHex, 0.3);
+    const verseNumber = parseInt(verseMatch[1]);
+    const lastDigit = verseNumber % 10;
+    const colorKey = lastDigit === 0 ? 10 : lastDigit;
+    const colorHex = COLOR_WHEEL[colorKey]?.color || fallbackHex;
+    return hexToRgba(colorHex, 0.3);
+  };
+
+  const overlayColorRgba = React.useMemo(() => getOverlayColorRgba(currentVerse.reference), [currentVerse.reference]);
 
   // Check if all first letters are correctly guessed
   const checkIfSolved = (currentGuesses: string[]) => {
@@ -761,7 +833,13 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
         onGameTypeChange={onGameTypeChange}
       />
 
-      <div className="first-letter-container">
+      <div 
+        className={`first-letter-container ${photoModeEnabled ? 'photo-mode' : ''}`}
+        style={photoModeEnabled && verseBackgroundImageUrl ? ({
+          ['--crypt-bg-image' as any]: `url(${verseBackgroundImageUrl})`,
+          ['--crypt-overlay-color-rgba' as any]: overlayColorRgba
+        } as React.CSSProperties) : undefined}
+      >
         {wordStatsEnabled && <WordStats />}
         
         {!isSolved && (
@@ -776,6 +854,13 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               >
                 <FontAwesomeIcon icon={faLightbulb} />
                 Hint
+              </button>
+              <button 
+                onClick={() => setPhotoModeEnabled(prev => !prev)}
+                className={photoModeEnabled ? 'active' : ''}
+                title="Toggle photo background mode"
+              >
+                <FontAwesomeIcon icon={faImage} /> Photo Mode
               </button>
             </div>
           </div>
