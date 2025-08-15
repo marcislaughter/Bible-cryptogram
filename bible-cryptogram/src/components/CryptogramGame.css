@@ -115,7 +115,7 @@
 
 /* Photo mode input cells: white outline, dark gray outline, light gray transparent fill */
 .cryptogram-container.photo-mode .guess-input {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-dark);
   border: 2px solid var(--color-white);
   box-shadow: 0 0 0 3px var(--color-dark-gray);
   color: var(--color-white);

@@ -52,6 +52,7 @@
   --glass-bg-light: rgba(255, 255, 255, 0.1);
   --glass-bg-medium: rgba(255, 255, 255, 0.2);
   --glass-bg-heavy: rgba(255, 255, 255, 0.3);
+  --glass-bg-dark: rgba(18, 18, 18, 0.3);
   --purple-bg: rgba(128, 0, 128, 0.2);
   
   /* Typography */
