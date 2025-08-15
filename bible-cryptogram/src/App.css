@@ -86,7 +86,12 @@ body {
   align-items: center;
   background: var(--color-bg-dark);
   transition: background 0.5s ease;
+  /* Keep layout width stable when scrollbars appear/disappear */
+  scrollbar-gutter: stable both-edges;
 }
+
+/* Reserve vertical scrollbar space on desktop to avoid width jumps */
+html { overflow-y: scroll; }
 
 /* solved message - used by multiple games */
 
