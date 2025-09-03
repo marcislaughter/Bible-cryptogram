@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
-import { BIBLE_VERSES, ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
-import type { BibleVerse } from '../data/bibleVerses';
+import { BIBLE_VERSES, ALL_CONTENT_CHAPTERS } from '../data/bibleVersesPublic';
+import type { BibleVerse } from '../data/bibleVersesPublic';
 import './FirstLetterTestGame.css';
 import './Controls.css';
 

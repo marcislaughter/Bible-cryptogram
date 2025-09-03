@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
-import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVerses';
-import type { BibleVerse } from '../data/bibleVerses';
+import { BIBLE_VERSES, getChapterFromReference } from '../data/bibleVersesPublic';
+import type { BibleVerse } from '../data/bibleVersesPublic';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { COLOR_WHEEL } from '../theme';

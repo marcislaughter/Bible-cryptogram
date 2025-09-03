@@ -5,8 +5,8 @@ import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import Dropdown, { type DropdownItem } from './Dropdown';
 import HierarchicalDropdown from './HierarchicalDropdown';
-import { ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
-import type { BibleVerse } from '../data/bibleVerses';
+import { ALL_CONTENT_CHAPTERS } from '../data/bibleVersesPublic';
+import type { BibleVerse } from '../data/bibleVersesPublic';
 import './Dropdown.css';
 
 export type GameType = 'cryptogram' | 'unscramble' | 'first-letter' | 'first-letter-test' | 'reference-match';

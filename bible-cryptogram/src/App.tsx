@@ -12,8 +12,8 @@ import ReferenceMatchInstructions from './components/ReferenceMatchInstructions'
 import WhyMemorize from './components/WhyMemorize.tsx';
 import StatementOfFaith from './components/StatementOfFaith.tsx';
 import type { GameType } from './components/GameHeader';
-import { BIBLE_VERSES } from './data/bibleVerses';
-import type { BibleVerse } from './data/bibleVerses';
+import { BIBLE_VERSES } from './data/bibleVersesPublic';
+import type { BibleVerse } from './data/bibleVersesPublic';
 import './App.css';
 
 // Game container component that manages game switching

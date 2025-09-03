@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WordStats from './WordStats';
 import GameHeader from './GameHeader';
-import { BIBLE_VERSES } from '../data/bibleVerses';
-import type { BibleVerse } from '../data/bibleVerses';
+import { BIBLE_VERSES } from '../data/bibleVersesPublic';
+import type { BibleVerse } from '../data/bibleVersesPublic';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowUp, faArrowRotateLeft, faLightbulb, faUndo, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
 import './FirstLetterGame.css';

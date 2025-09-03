@@ -1,6 +1,6 @@
 import type { WordItem } from './FirstLetterTestGameTypes';
-import { ALL_CONTENT_CHAPTERS } from '../data/bibleVerses';
-import type { BibleVerse } from '../data/bibleVerses';
+import { ALL_CONTENT_CHAPTERS } from '../data/bibleVersesPublic';
+import type { BibleVerse } from '../data/bibleVersesPublic';
 
 export const extractVerseNumber = (reference: string): string => {
   const parts = reference.split(':');
