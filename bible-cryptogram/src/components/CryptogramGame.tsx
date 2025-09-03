@@ -665,7 +665,7 @@ const Game: React.FC<CryptogramGameProps> = ({
                         <div className={`punctuation-mark ${punctuationClass} ${openCloseClass}`.trim()}>{char}</div>
                       ) : (
                         <input
-                          type="search"
+                          type={isAndroid() ? 'search' : 'text'}
                           className={`guess-input ${getInputClass(char)}`}
                           value={guesses[char] || ''}
                           onChange={(e) => handleInputChange(e, char)}
