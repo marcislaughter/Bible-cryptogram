@@ -1,5 +1,5 @@
 .first-letter-test-container {
-  margin-top: 50px; /* Reduced from 70px to match banner height exactly */
+  margin-top: calc(50px + env(safe-area-inset-top, 0px)); /* match fixed banner incl. safe area */
   width: 100%;
   max-width: 100vw;
   line-height: 2;
@@ -37,6 +37,49 @@
   margin-top: -10px; /* Pull up to eliminate gap */
   padding-top: 20px; /* Add padding to maintain button spacing */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* When virtual keyboard is open, pin controls so they never scroll away */
+body.first-letter-test-keyboard-open .first-letter-test-sticky-controls {
+  position: fixed;
+  top: calc(50px + env(safe-area-inset-top, 0px) + var(--vv-offset-top, 0px));
+  left: 0;
+  right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  z-index: 1100;
+}
+/* Add top spacer to prevent content jump when controls become fixed */
+body.first-letter-test-keyboard-open .first-letter-test-container {
+  padding-top: 70px; /* approximate controls height to offset fixed positioning */
+}
+
+/* Also fix controls when any test input is focused */
+body.first-letter-test-force-fixed-controls .first-letter-test-sticky-controls {
+  position: fixed;
+  top: calc(50px + env(safe-area-inset-top, 0px) + var(--vv-offset-top, 0px));
+  left: 0;
+  right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  z-index: 1100;
+}
+body.first-letter-test-force-fixed-controls .first-letter-test-container {
+  padding-top: 70px;
+}
+
+/* Dark background fill between header and fixed controls so no text peeks through */
+body.first-letter-test-keyboard-open .first-letter-test-sticky-controls::before,
+body.first-letter-test-force-fixed-controls .first-letter-test-sticky-controls::before {
+  content: '';
+  position: fixed;
+  top: calc(50px + env(safe-area-inset-top, 0px)); /* just below header */
+  left: 0;
+  right: 0;
+  height: var(--vv-offset-top, 0px); /* fills the dynamic gap */
+  background-color: var(--color-bg-dark);
+  z-index: 1090; /* below the controls (1100), above content */
+  pointer-events: none;
 }
 
 body.first-letter-test-high-score {

@@ -265,6 +265,76 @@ const FirstLetterTestGame: React.FC<FirstLetterTestGameProps> = ({
     };
   }, [state.isSolved]);
 
+  // Keep controls visible when virtual keyboard is open by toggling a body class
+  useEffect(() => {
+    const KEYBOARD_OPEN_CLASS = 'first-letter-test-keyboard-open';
+    const FORCE_FIXED_CLASS = 'first-letter-test-force-fixed-controls';
+    const thresholdPx = 120; // treat as keyboard-open if viewport is reduced by more than this
+
+    const visualViewport = window.visualViewport;
+
+    const updateVVVars = () => {
+      try {
+        const vv = window.visualViewport;
+        const offsetTop = vv ? Math.max(0, Math.round(vv.offsetTop)) : 0;
+        document.documentElement.style.setProperty('--vv-offset-top', `${offsetTop}px`);
+      } catch {
+        // ignore
+      }
+    };
+
+    const checkKeyboard = () => {
+      try {
+        const layoutViewportHeight = window.innerHeight;
+        const visualHeight = visualViewport ? visualViewport.height : window.innerHeight;
+        const isOpen = layoutViewportHeight - visualHeight > thresholdPx;
+        document.body.classList.toggle(KEYBOARD_OPEN_CLASS, isOpen);
+        updateVVVars();
+      } catch {
+        // no-op: feature not available
+      }
+    };
+
+    // Also force controls fixed while an input is focused
+    const updateForceFixedControls = () => {
+      const active = document.activeElement as HTMLElement | null;
+      const isWordInputFocused = !!(active && active.classList && active.classList.contains('first-letter-test-word-input'));
+      document.body.classList.toggle(FORCE_FIXED_CLASS, isWordInputFocused);
+    };
+
+    if (visualViewport) {
+      visualViewport.addEventListener('resize', checkKeyboard);
+      visualViewport.addEventListener('scroll', checkKeyboard);
+    }
+    window.addEventListener('orientationchange', checkKeyboard);
+    window.addEventListener('focusin', checkKeyboard);
+    window.addEventListener('focusout', checkKeyboard);
+    window.addEventListener('focusin', updateForceFixedControls);
+    window.addEventListener('focusout', () => setTimeout(updateForceFixedControls, 0));
+
+    // initial check
+    checkKeyboard();
+    updateVVVars();
+    updateForceFixedControls();
+
+    return () => {
+      document.body.classList.remove(KEYBOARD_OPEN_CLASS);
+      document.body.classList.remove(FORCE_FIXED_CLASS);
+      if (visualViewport) {
+        visualViewport.removeEventListener('resize', checkKeyboard);
+        visualViewport.removeEventListener('scroll', checkKeyboard);
+      }
+      window.removeEventListener('orientationchange', checkKeyboard);
+      window.removeEventListener('focusin', checkKeyboard);
+      window.removeEventListener('focusout', checkKeyboard);
+      window.removeEventListener('focusin', updateForceFixedControls);
+      window.removeEventListener('focusout', () => setTimeout(updateForceFixedControls, 0));
+      try {
+        document.documentElement.style.removeProperty('--vv-offset-top');
+      } catch {}
+    };
+  }, []);
+
   // Computed values (optimized with useMemo)
   const currentChapter = useMemo(() => 
     getCurrentChapter(currentVerse), 
