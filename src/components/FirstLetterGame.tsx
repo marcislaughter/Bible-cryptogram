@@ -186,6 +186,41 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     return allInputs[currentIndex > 0 ? currentIndex - 1 : allInputs.length - 1];
   };
 
+  // Ensure the next input and its word (dashes/text) are visible within viewport,
+  // taking the on-screen keyboard into account via visualViewport when available
+  const ensureNextBoxAndWordVisible = (currentInput: HTMLInputElement) => {
+    const targetInput = getNextInput(currentInput) || currentInput;
+    const targetContainer = targetInput.closest('.first-letter-word-container') as HTMLElement | null;
+    if (!targetContainer) return;
+
+    const rect = targetContainer.getBoundingClientRect();
+
+    // Use visualViewport to account for soft keyboard reducing visible height
+    const vv = (window as any).visualViewport as VisualViewport | undefined;
+    const viewportHeight = vv?.height || window.innerHeight || document.documentElement.clientHeight;
+
+    // Start scrolling before it's actually clipped so both box and word are visible
+    const bottomMargin = 32;
+    const visibleBottom = viewportHeight - bottomMargin;
+
+    // If near the very top after scroll/advance, keep a small top margin as well
+    const topMargin = 8;
+    if (rect.top < topMargin) {
+      const deltaUp = rect.top - topMargin;
+      if (deltaUp < 0) {
+        window.scrollBy({ top: deltaUp, behavior: 'smooth' });
+        return;
+      }
+    }
+
+    if (rect.bottom > visibleBottom) {
+      const deltaDown = rect.bottom - visibleBottom;
+      if (deltaDown > 0) {
+        window.scrollBy({ top: deltaDown, behavior: 'smooth' });
+      }
+    }
+  };
+
   // Advance focus to next input
   const advanceFocus = (currentInput: HTMLInputElement) => {
     if (isAdvancingFocus.current) return;
@@ -194,6 +229,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     
     const nextInput = getNextInput(currentInput);
     nextInput.focus();
+    // After focusing, make sure the upcoming input and its word are visible
+    ensureNextBoxAndWordVisible(nextInput);
     
     setTimeout(() => {
       isAdvancingFocus.current = false;
@@ -208,6 +245,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     
     const previousInput = getPreviousInput(currentInput);
     previousInput.focus();
+    // Keep the previous input visible as well if we moved up
+    ensureNextBoxAndWordVisible(previousInput);
     
     setTimeout(() => {
       isAdvancingFocus.current = false;
@@ -222,6 +261,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     
     const nextInput = getNextInput(currentInput);
     nextInput.focus();
+    ensureNextBoxAndWordVisible(nextInput);
     
     setTimeout(() => {
       isAdvancingFocus.current = false;
@@ -589,6 +629,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     e.target.value = '';
     setTimeout(() => {
       e.target.select();
+      // Ensure focused input and its word are visible if near bottom
+      ensureNextBoxAndWordVisible(e.target);
     }, 0);
   };
 
