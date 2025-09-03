@@ -42,6 +42,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   const [errorDropdownOpen, setErrorDropdownOpen] = useState(false);
   const [photoModeEnabled, setPhotoModeEnabled] = useState(false);
   
+  // Detect Android to switch input type without affecting other platforms
+  const isAndroid = React.useMemo(() => /Android/i.test(navigator.userAgent), []);
+  
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
   const errorDropdownRef = useRef<HTMLDivElement>(null);
@@ -746,7 +749,9 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     }
     
     const calculatedWidth = Math.max(minWidth, baseWidth + (wordLength * charWidth));
-    return `${calculatedWidth}px`;
+    // Widen on Android to improve tap targets/visual alignment
+    const androidExtra = isAndroid ? 12 : 0;
+    return `${calculatedWidth + androidExtra}px`;
   };
 
   // Resize listener to update input widths on screen size change
@@ -872,7 +877,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
               <div className="first-letter-input-container">
                 {!isSolved && (
                   <input
-                    type="text"
+                    type={isAndroid ? 'search' : 'text'}
                     maxLength={1}
                     className={`first-letter-input ${getInputClass(wordIndex)}`}
                     style={{ width: getInputWidth(wordIndex) }}

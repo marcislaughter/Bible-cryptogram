@@ -103,6 +103,22 @@
   user-select: none;
 }
 
+/* Neutralize search input decorations so sizing remains identical when type=search on Android */
+.first-letter-input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-inline-start: 0.5rem; /* keep same feel as text inputs */
+  padding-inline-end: 0.5rem;
+}
+
+/* Remove clear (x) and cancel icons that can affect box size on some browsers */
+.first-letter-input[type="search"]::-webkit-search-decoration,
+.first-letter-input[type="search"]::-webkit-search-cancel-button,
+.first-letter-input[type="search"]::-webkit-search-results-button,
+.first-letter-input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
 /* Photo mode: input glass, white outline, legible text */
 .first-letter-container.photo-mode .first-letter-input {
   background: var(--glass-bg-dark);
