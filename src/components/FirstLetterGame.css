@@ -453,6 +453,7 @@ body.first-letter-win-gradient .first-letter-error-label {
 .first-letter-container.photo-mode .first-letter-stepper-button {
   border-color: var(--color-bg-dark);
   color: var(--color-bg-dark);
+  background-color: var(--color-light-gray);
 }
 
 .first-letter-stepper-button:hover {
@@ -481,8 +482,13 @@ body.first-letter-win-gradient .first-letter-error-label {
 
 /* Photo mode: keep selected step gray with dark text */
 .first-letter-container.photo-mode .first-letter-stepper-button.active {
-  background-color: var(--color-light-gray);
+  background-color: var(--color-white);
   color: var(--color-bg-dark);
+}
+
+/* Keep active button white on hover in photo mode */
+.first-letter-container.photo-mode .first-letter-stepper-button.active:hover {
+  background-color: var(--color-white);
 }
 
 .first-letter-error-handling {
