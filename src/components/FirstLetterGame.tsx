@@ -48,6 +48,15 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
   // Use ref to track if we're currently advancing focus to prevent race conditions
   const isAdvancingFocus = useRef(false);
   const errorDropdownRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Smoothly scroll the top of the game container into view with a small offset
+  const scrollToGameTop = (offsetPx: number = 8) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const targetTop = Math.max(0, window.scrollY + rect.top - offsetPx);
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+  };
 
   // Function to find the previous verse (for verses > 1)
   const findPreviousVerse = (currentReference: string): BibleVerse | null => {
@@ -683,6 +692,8 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
     }
     
     onVerseChange(BIBLE_VERSES[nextIndex]);
+    // After changing verse, scroll the container back near top
+    setTimeout(() => scrollToGameTop(8), 60);
   };
 
   const handleStepperClick = (level: number) => {
@@ -693,11 +704,15 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
 
   const handleRepeatVerse = () => {
     handleReset();
+    // Scroll back to game container after reset
+    setTimeout(() => scrollToGameTop(8), 60);
   };
 
   const handleNextLevel = () => {
     if (difficultyLevel < 5) {
       setDifficultyLevel(difficultyLevel + 1);
+      // Scroll back to top when moving to the next level
+      setTimeout(() => scrollToGameTop(8), 60);
     } else {
       // If already at max level, go to next verse
       handleNextVerse();
@@ -844,6 +859,7 @@ const FirstLetterGame: React.FC<FirstLetterGameProps> = ({
           ['--crypt-bg-image' as any]: `url(${verseBackgroundImageUrl})`,
           ['--crypt-overlay-color-rgba' as any]: overlayColorRgba
         } as React.CSSProperties) : undefined}
+        ref={containerRef}
       >
         {wordStatsEnabled && <WordStats />}
         
