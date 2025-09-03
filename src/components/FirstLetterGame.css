@@ -266,6 +266,36 @@
   max-width: 95%;
 }
 
+/* Photo mode: grayscale, semi-transparent win message for better photo compatibility */
+.first-letter-container.photo-mode .solved-message {
+  background: var(--glass-bg-medium);
+  color: var(--color-bg-dark);
+  text-shadow: none;
+  border-radius: 4px;
+  padding: 10px 14px;
+  border: none;
+  box-shadow: none;
+}
+
+.first-letter-container.photo-mode .solved-message h2,
+.first-letter-container.photo-mode .score-text,
+.first-letter-container.photo-mode .first-letter-revealed-verse,
+.first-letter-container.photo-mode .first-letter-reference {
+  color: var(--color-bg-dark);
+  text-shadow: none;
+}
+
+/* Ensure solved buttons remain highly legible on the lighter grayscale card */
+.first-letter-container.photo-mode .solved-button-base {
+  background: var(--glass-bg-dark);
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.first-letter-container.photo-mode .solved-button-base:hover {
+  background: var(--glass-bg-dark);
+}
+
 .solved-message h2 {
   margin: 0 0 10px 0;
   font-size: 1.3rem;
